@@ -1,0 +1,78 @@
+DOBO 21 januari 2021
+
+Hi, this has been explained several times in the old forum so please also look there.
+You may also need related functions so look in the Juce API for the File object.
+
+In my Pro-2 panel there is a method called Save_onChange and another one SaveProgramData.
+
+The way to analyze a panel is to start from a button, look at the OnChange method and then look further from there.
+You should have found that as I'm also adding many comments...
+
+Different steps are needed:
+
+    Create a file object that you will save into
+    Create and fill a memory block with data
+    Fill the file with the content of the memory block
+
+f = utils.saveFileWindow ("Save text file", File(""), "*.txt", true)
+if f:isValid() then
+	if f:existsAsFile()==false then
+		f:create()
+	end	
+	mbTemp = MemoryBlock(str2hex(modYourLabel:getComponent():getProperty("uiLabelText")))
+	f:replaceWithData(mbTemp)
+end
+
+From there you can expand and handle anything ;-)
+Good luck!
+
+Save label text to binary_1_1_2021-01-21_18-02.zip
+
+
+Dnaldoog
+
+Hi Baus,
+
+Goodweather beat me to it!
+
+The trick is to loop through each character of a string received from a label and then convert hex and save as binary, but how to do that?
+
+See attached panel:
+
+function printBinaryToLabel(myText)
+    -- Your method code here
+    local word = {} -- initialize an empty table
+
+    for i = 1, string.len(myText) do -- loop through each character in a string
+        local w = myText:sub(i, i) -- extract the character at position i,i i.e. 2,2 returns the second character in myText
+        word[i] = string.byte(w) -- write the byte representation to table (Could use table.insert() too)
+    end
+    m = MemoryBlock() -- create a block of Memory
+    m:createFromTable(word) -- dump the table 'word' into the MemoryBlock
+   end
+
+You then pass that MemoryBlock m object to be saved as file: Here I made it global, because the function is a callback to a uiButton method, so the MemoryBlock isn't passed as a parameter to the function, but I would usually do that to avoid global soup.
+
+i.e.
+
+save=function(mBlock)
+
+end
+
+save = function(--[[ CtrlrComponent --]] comp --[[ MouseEvent --]], event)
+    if panel:getRestoreState() == true or panel:getProgramState() == true then
+        return
+    end
+    if m ~= nil then
+        file = utils.saveFileWindow("Save file", File.getSpecialLocation(File.userDesktopDirectory), "*.syx", true)
+        if file:hasWriteAccess() then
+            file:replaceWithData(m)
+        end
+    end
+end
+
+... and there's probably an easier way of doing this!
+
+If you're adding multiple texts from different labels, I guess you would have to add them to one large string, but you would need some sort of delimiter (a character not in the allowed set of characters) like '|' = 7c ( ceci n'est pas une pipe) for example, so then when you read the file back into your panel you know how to divide up and reassemble the binary string.
+@tomlem
+

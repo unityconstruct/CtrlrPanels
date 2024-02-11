@@ -1,0 +1,891 @@
+Dnaldoog in MemoryBlock v CtrlrLuaMemoryBlock 8mei 2020
+
+
+Here are a few constructors:
+
+HexString
+empty *two examples
+Lua table
+mB=MemoryBlock(“0a 14 1e”)
+console(String(mB:getSize()))
+console(String(“tohex”..mB:toHexString(1)))
+
+mB=MemoryBlock()
+mB:loadFromHexString(string.format(“%.2X”,10))
+mB:append(MemoryBlock(“14”))
+mB:append(MemoryBlock({0x1e}))
+console(String(mB:getSize()))
+console(String(mB:toHexString(1)))
+
+t={10,20,30}
+mB=MemoryBlock()
+mB:createFromTable(t)
+console(String(mB:getSize()))
+console(String(mB:toHexString(1)))
+
+mB=MemoryBlock({10,20,30})
+console(String(mB:getSize()))
+console(String(mB:toHexString(1))
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+Best way to assign values to modulator (started by dasfaker in 2012)
+
+dasfaker
+
+I have two ways of assigning values to modulators after a dump request; one way is to assign one by one the value to each modulator (with a lot of lines of code), and the other way is to loop thru modulators more or lees like this
+
+for n = 0,73,1 do
+if panel:getModulatorWithProperty("modulatorCustomIndexGroup",n) ~= nil then
+panel:getModulatorWithProperty("modulatorCustomIndexGroup",n):setValue(patchCommonData:getByte(n), false)
+end
+end
+
+I’ve observed (but not in the same panel) that the first way is much faster once you make the dump. Is this true or it is my imagination?
+
+
+atom
+
+Well linear programming (instead of using loops) is always faster, but loops are just easier to use. I spent some time on this some time ago and tried to address the performance issue by adding hash tables with modulator names, but that wasn’t very helpful.
+
+What you have to keep in mind, that when you do getModulatorByName() Ctrlr iterates through the entire list of modulators and tries to find the one with the name provided, if the modulator is at the end of the list then it might take a while. I should provide some faster examples that are possible, and i’ll do that asap.
+
+July 24, 2012 at 3:09 pm#4608REPLY | REPORT | QUOTE
+
+
+dasfaker
+
+I suspected that, thx.
+
+I have another question: after receiving the dump request, I set the modulators with
+
+setValue(value,false)
+
+What I want is that the modulator don’t send it’s value via midi, so I set
+
+false 
+
+but the modulator always send it’s value via midi.
+
+Have I to use
+
+setModulatorValue
+
+instead?
+
+July 24, 2012 at 3:36 pm#4609REPLY | REPORT | QUOTE
+
+atom
+
+
+That issue is a bit problematic due to Threading issues, the only work around for now is to use setModulatorValue(value, false, false, false) (only the 2nd false/true works anyway and indicates MIDI event), but this might also not work always (the call is not syncrhonus and might sometimes miss the dont-send-midi flag). This is something i know about but have no idea how to fix for now.
+
+July 24, 2012 at 3:51 pm#4610REPLY | REPORT | QUOTE
+
+
+dasfaker
+
+Ok. I’ll don’t change anything for now, I think setModulatorValue didn’t worked in the midiMessageReceived method.
+
+August 23, 2012 at 7:38 pm#4611REPLY | REPORT | QUOTE
+
+
+dasfaker
+
+"atom" wrote:
+Well linear programming (instead of using loops) is always faster, but loops are just easier to use. I spent some time on this some time ago and tried to address the performance issue by adding hash tables with modulator names, but that wasn’t very helpful.
+What you have to keep in mind, that when you do getModulatorByName() Ctrlr iterates through the entire list of modulators and tries to find the one with the name provided, if the modulator is at the end of the list then it might take a while. I should provide some faster examples that are possible, and i’ll do that asap.
+
+If you have a little time it would be cool to see those examples
+
+August 23, 2012 at 7:47 pm#4612REPLY | REPORT | QUOTE
+
+
+atom
+
+One way to go through all the modulators in the panel quickly:
+
+n = panel:getNumModulators()
+for i=0,n-1 do
+mod = panel:getModulatorByIndex(i)
+end
+
+You can use it to quickly send patches for users, to change properties on the panel to all modulators/components (i’ll be doing a patch manager with a web repository so that i can distribute simple patches quickly, like the bug with the mouse cursor beeing None should be fixed by a small snip of code like that)
+
+August 24, 2012 at 3:24 pm#4613REPLY | REPORT | QUOTE
+
+
+dasfaker
+
+It makes a huge difference, thx.
+
+October 15, 2012 at 12:03 am#4614REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+This is something I wish to do with my project.
+
+I want it so that when I do a program/patch change, the Ctrlr panel will do a single patch dump request from my Korg and get something like this back:
+
+F0 42 21 06 00 00 01 00 00 00 00 00 00 00 00 00 04 01 0f 00 00 00 01 00 00 00 00 00 00 00 00 00 07 01 0F 00 00 00 00 00 02 00 00 04 0B 00 0A 00 0A 01 00 00 00 05 05 00 00 00 01 00 00 00 00 00 0C 00 0C 00 01 00 00 01 0B 01 0F 01 0F 01 0F 00 03 00 00 00 00 00 00 01 0F 01 0F 01 0F 01 0F 00 03 00 00 00 00 01 03 00 05 01 0F 00 00 01 0F 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 08 00 00 00 09 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 06 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 03 F7
+
+The patch parameter values start with byte’s 6&7. So this patch’s first parameter value is 00 01.
+
+Problem is.. the Ctrlr modulator/controls are set for values 0-127(as they should/need be). But the above patch dump is giving the values in a format/# that the Korg understands/displays.
+So say Parameter#1 has a value of 1-2.. two numbers. The above example shows 00 01 and the Korg interprets it as value "2".. if it was 00 00, the Korg would interpret it as a "1".
+
+So since each parameter in the patch dump can vary in max. number size.. like 1-2, 0-15, 0-31, 0-62, 0-99… I have to somehow run the raw data thru a formula that will change the raw number into a number that will span 0-127 that will be appropriate for each parameter’s actual range.
+
+The example above of only two numbers would have to equate as 0=0, 1=127.
+That way when the dump is received and translated to the modulator/control, it will display a 0 for 1 and 127 for a two.
+
+The reason behind all this chaos is because the Korg will accept on the fly parameter edits.. but it receives those edits via a multi CC#(like NRPN) with values of 0-127 (just like the modulators default values).. and inside the Korg it changes the 0-127 value into an appropriate number for that parameter before it saves it to it’s proper parameter value memory location and finally update that parameter value to be displayed on the Korg and heard by the change in the patch’s sound (like a VCF opening up).
+
+Cliff notes- I want to make Ctrlr do a dump request, read the raw data, starting at byte 6.. convert the numbers with varying formulas, then send the formulated # to set each modulator/control with a number that falls between 0-127.
+It will be a way to update all the modulators values each time I change the patch.. so I can instantly see what each parameter’s value in a patch is the moment it is called.
+
+I’ve never programmed in C or JUCE.. but I think I can catch on quickly if given some hints/tips.
+
+-Blaine
+
+October 29, 2012 at 12:20 am#4615REPLY | REPORT | QUOTE
+Synthetech
+
+Ok.. msepsis has been helping me out with this-
+
+I’m trying to build a script to read the hex dump from my synth so it can setup all the controls in a patch when I change patches using Ctrlr.
+
+Here’s the code
+
+[code:3iz871mr]
+– Called when a modulator value changes
+— @modulator http://ctrlr.org/api/class_ctrlr_modulator.html
+— @newValue new numeric value of the modulator
+— Patch Configure = function(modulator, newValue)
+— end
+
+FilterMsb = midiMessage:getLuaData():getByte(54)
+FilterLsb = midiMessage:getLuaData():getByte(55)
+
+FilterValue = (FilterMsb*16)+(FilterLsb)
+
+panel:getModulatorByName("VCF Cutoff"):setModulatorValue(FilterValue, false, false, false)
+[/code:3iz871mr]
+
+when I goto save/compile it, it tells me it has errors…
+
+[quote:3iz871mr]
+Compile of Patch Configure at 10/28/12 19:12:43:
+ERROR: [string "–…"]:10: attempt to index global ‘midiMessage’ (a nil value)
+[/quote:3iz871mr]
+
+I’m not sure what I’m doing wrong.
+I can get the synth to do a patch dump.. I see it show up on OX’s monitor.. it’s even the correct patch#.
+But the script evidently is not altering the value of my cutoff filter knob.
+
+I’m sure I have the correct bytes.. it’s just that error makes no sense to me.
+
+The Filter Values in the previous post’s dump are "05 05" the first byte is my msb and it is the 54th byte in my dump.. the 2nd 05 is my lsb and it is the 55th byte in my dump… if that helps.
+
+October 29, 2012 at 3:11 pm#4616REPLY | REPORT | QUOTE
+
+
+msepsis
+
+You commented out the name of your script and the "end".. Those two elements should be like the bun of your sandwich, so to speak, and they shouldn’t be commented out with double dashes. One goes at the top, one goes at the bottom. This concept is important to grasp. When you start a function you must end a function.
+
+it should be something like:
+
+[code:1jfd3aiv]
+Patch Configure = function(modulator, newValue)
+
+FilterMsb = midiMessage:getLuaData():getByte(54)
+FilterLsb = midiMessage:getLuaData():getByte(55)
+
+FilterValue = (FilterMsb*16)+(FilterLsb)
+
+panel:getModulatorByName("VCF Cutoff"):setModulatorValue(FilterValue, false, false, false)
+
+end
+[/code:1jfd3aiv]
+
+
+October 29, 2012 at 4:16 pm#4617REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+I tried your code and got this..
+
+ERROR: [string "Patch Configure = function(modulator, newValue)…"]:1: ‘=’ expected near ‘Configure’
+
+October 29, 2012 at 4:25 pm#4618REPLY | REPORT | QUOTE
+
+atom
+
+[code:1212z05c]
+— this is how you declare a function
+myFunction = function(parameter1, parameter2, parameter3)
+— function body goes here
+console ("this is my function")
+console ("parameters: parameter1=%d parameter2=%s parameter3=%d", parameter1, parameter2, parameter3)
+end
+[/code:1212z05c]
+
+to call the function
+[code:1212z05c]
+value = 30
+myFunction(1, "i love britney spears", value)
+[/code:1212z05c]
+
+October 29, 2012 at 5:08 pm#4619REPLY | REPORT | QUOTE
+
+
+msepsis
+
+Well.. I said your code should look "something like…" <img src=” title=”Very Happy” />
+You’re very close.. That first line, as the error indicates is malformed.
+Try looking at a new script and notice how the name you give the script must be declared in that first line.
+
+Also.. No spaces in lua script names <img src=” title=”Smile” />
+Monstrum Media | Music, Sound & Software Design, Chicago / San Francisco listen
+
+October 29, 2012 at 7:19 pm#4620REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+I cleaned up my code and it appears to compile with "Success"
+
+but when I goto use it in my Patch combobox, it fails.
+
+My Patch Select Box is used to not only make my synth select a patch, it also sends a sysex command to get that patch’s dump.
+
+Midi message type is Multi.
+I have the sysex command first, then the patch select.
+The sysex command works.. it even selects the same single Patch Dump as the Patch# I select as verified in OX’s monitor.
+
+But when I try to use it, I get this..
+
+[attachment=0:3j4d8pwu]luaerror1.jpg[/attachment:3j4d8pwu]
+
+October 30, 2012 at 6:31 am#4621REPLY | REPORT | QUOTE
+
+
+msepsis
+
+The error message tells you what line the error is, and what the problem is on that line. You’re using a nil global on line 7 name ‘midiMessage’. What are you actually trying to do on line 7?
+
+Just a reminder again, you want the function to set modulator values from the patch dump attached to the panel, not to the same combobox you’re requesting patch dumps from. A combobox requests a program and forms a patch dump request to send to the synth based on the program selection. The synth sends the patch dump. The panel receives the patch dump as a midi message. What does the panel do when it receives a midi message? It does what you tell it to do in the "Called when panels receives a MIDI message" script slot.
+
+October 30, 2012 at 2:20 pm#4622REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+Ok,
+
+so I took this code
+
+[code:2l8rvc4p]
+PrgChange = function(modulator, newValue)
+
+FilterMsb = midiMessage:getLuaData():getByte(54)
+FilterLsb = midiMessage:getLuaData():getByte(55)
+
+FilterValue = (FilterMsb*16)+(FilterLsb)
+
+panel:getModulatorByName("VCFCutoff"):setModulatorValue(FilterValue, false, false, false)
+
+end
+[/code:2l8rvc4p]
+
+Called it PrgChange, set to be called when Panel receives a midi message.
+
+The Patch change combobox is set to multi midi message. First one is "ProgramChange,Direct,Direct,-1,-1,F0 00 F7", the other is a sysex message that shows up as "SysEx,Direct,Direct,-1,-1,F0 42 21 07 xx F7" in the multimessage listbox after I’ve added it in.
+
+Right below that, Sysex Formula shows as "F0 00 F7"
+
+When I try to change a patch after a fresh load, I get the error msg,
+
+Callback error: PrgChange
+at line 6 and a nil value when it attempts to index global "midimessage"
+
+then it disables the script and I’m back to square one.
+The synth is sending the dump… I have the combobox setup so it sends the synth a Program Change first, then the sysex dump req.
+I tried using the midi program change features you can check off in Panel, but it doesnt seem to help.
+
+I thought I was on the right track… but evidently I’m not.
+
+October 30, 2012 at 10:51 pm#4623REPLY | REPORT | QUOTE
+
+
+msepsis
+
+change that first line to:
+
+function PrgChange(midiMessage)
+
+that should do it.. report back if not.
+
+October 31, 2012 at 3:14 pm#4624REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+OK, I finally have my Filter Knob changing position/value when I do a dump call.
+
+But, I have to set the uiImageslider to a min. of 1 . If I set it to 0, it wont stay at the dump adjustment value… I see the knob try to set/move, and then it just snaps back to 0.
+I dont have the snap feature on.
+
+Same thing happens to a uiButton. I see it change, then it goes back to 0.. WTF?
+
+It’s always something..
+
+October 31, 2012 at 4:24 pm#4625REPLY | REPORT | QUOTE
+
+
+msepsis
+
+Do you have MIDI thru turned on at the synth? Turn it off, and/or make sure you’re coming out of your synth’s MIDI out port, not MIDI thru port if it has one.
+That’s a weird one. I haven’t experienced that. You need to just troubleshoot this down. Maybe, unless you’ve already tried this put nothing on the panel but the midiMessageReceived script, a combobox which does the program change and sends the dump request and a knob on the panel that gets assigned a value. Strip it down to the basic functionality and go from there. You don’t have any other scripts in your panel that contain any setModulatorValue calls, do you? Do you happen to have any linked modulators? Disable them if so. I also recommend opening up the MIDI monitor and enable monitoring of both In and Out. Watch the MIDI monitor when you do a program change. Also you can insert lines in your lua script that print messages in the Lua console. This can be helpful to verify you’re getting the correct values for things and to print a message in the console at different steps of the script.
+Here are some examples:
+
+console ("this text will print in Lua console")
+console (string.format ("my modulator’s value is=%", modulatorsUniqueName))
+
+You’re getting there, you’ll look back at this soon and laugh.. just keep working it.
+
+msepsis
+
+"atom" wrote:
+That issue is a bit problematic due to Threading issues, the only work around for now is to use setModulatorValue(value, false, false, false) (only the 2nd false/true works anyway and indicates MIDI event), but this might also not work always (the call is not syncrhonus and might sometimes miss the dont-send-midi flag). This is something i know about but have no idea how to fix for now.[/quote:18mjip3p]
+Synth, are you infact using setModulatorValue like atom suggested or are you using setValue as you originally posted. I’d recommend setModulatorValue.
+
+Also Atom – about the asynchronous bit – I missed your comment the first time around. I think it explains why a handful of my modulators are actually sending their value to the synth when I do a program change even though every boolean known to man in my script is set to false… Of course this ends up causing the program to display as having been edited on the synth when all i’ve done is change programs. I spent days a while back trying to track this down/resolve it.. I think your explanation sheds a little light.
+.. I actually printed out the output from the midi monitor after doing a test, just change programs from 01 up to 10 and back down to 01. Out of 260 some modulators there are about 20 modulators that seemed to send their value back to the synth from the panel on program change. Not all 20 would send on every program, but there definitely was some pattern there, I just was never able to figure out what was different about those 20 modulators. If I were to change to program2 for example the same 12 or 13 modulators would send their value every time. If I then change to program3, a similar grouping of modulators but maybe a few more or less would be sent. Change back to program 2 and the same 12 or 13 modulator values that were sent originally were get sent again.
+
+October 31, 2012 at 5:23 pm#4627REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+Yea, I’m using setModulatorValue
+
+Here’s the most recent code
+
+[code:1srziyp8]
+
+PrgChange = function(midiMessage)
+
+FilterMsb = midiMessage:getLuaData():getByte(53)
+FilterLsb = midiMessage:getLuaData():getByte(54)
+KBTrkMsb = midiMessage:getLuaData():getByte(55)
+KBTrkLsb = midiMessage:getLuaData():getByte(56)
+LFO1MdltrLsb = midiMessage:getLuaData():getByte(184)
+FilterValue = (FilterMsb*16)+(FilterLsb)
+KBTrkValue =(KBTrkMsb*16)+(KBTrkLsb)
+LFO1MdltrValue=(LFO1MdltrLsb)
+
+panel:getModulatorByName("VCFCutoff"):setModulatorValue(FilterValue, false, false, false)
+panel:getModulatorByName("KBTrack"):setModulatorValue(KBTrkValue, false, false, false)
+panel:getModulatorByName("LFO1ModSrc"):setModulatorValue(LFO1MdltrValue, false, false, false)
+
+end
+[/code:1srziyp8]
+
+I’m not sure how I can resolve this, it seems to be a bug in the min/max values set for the modulator.
+For knobs and buttons, I can get them to adjust and stay put after a patch dump by making them min value of 1.
+For combobox, it doesnt seem to help if I set the min value of 1.
+
+I did notice that knobs have two min/max values. A setting under Modulator and another under Component.
+The button and combobox does not have a min/max value under component.. probably because of the listbox settings…
+
+Man.. talk about frustrating.. I got real excited when I saw the knob move.. then it was like a Challenger incident when it sets back to 0.
+
+November 2, 2012 at 10:10 pm#4628REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+maybe this has something to do with it…
+
+I finally got my midimonitor to work on Ctrlr.. I also noticed this in OXs monitor.
+
+Everytime a patch dump is req, this is what the synth transmits-
+
+[16:23:34:000931]: Time(-780361647) [System exclusive] Ch: No: Val: RAW:[f0 42 21 06 02 00 02 00 00 00 07 00 00 00 00 00 03 01 0f 00 01 00 02 00 01 00 01 00 01 00 00 00 03 01 0f 00 00 00 03 00 02 00 00 00 00 00 00 00 00 00 00 00 00 02 09 00 00 00 00 00 00 00 01 00 00 00 00 00 01 00 05 01 01 01 0f 00 00 01 0f 00 00 00 00 00 00 01 08 01 0f 01 0a 01 0f 01 0f 01 02 00 00 00 00 00 00 00 00 01 0d 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 00 01 00 00 00 00 00 04 00 08 00 00 00 05 00 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 02 00 03 00 00 00 03 00 02 00 00 00 00 03 0a 00 03 00 00 00 0a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 0a 00 00 00 01 00 00 00 04 00 00 00 01 00 00 00 00 00 00 00 00 00 00 03 0f 00 00 00 00 00 02 f7]
+[16:23:35:000491]: Time(-1639355106) [System exclusive] Ch: No: Val: RAW:[f0 42 21 7e 06 02 f7]
+
+see that at the end, it sends a second sysex msg back. f0 42 21 7e 06 02 f7
+
+So am I correct to assume that if the panel is set to run the PrgChange script everytime it receives a midimessage, that if it gets that 2nd message, it will cause the script to run again.. but this time it wont have any series of hex values to use to set the modulator values.. so it defaults them all to "0"?
+But why would it work correctly if I set the min value to "1" instead??
+
+I can probably get my synth to not send that second message.. but it’ll be awhile before I’ll get that new Firmware update to remove it.
+
+November 3, 2012 at 12:24 am#4629REPLY | REPORT | QUOTE
+
+
+msepsis
+
+ok.. so we were chatting about this but it’s far easier to describe in a full message <img src=” title=”Smile” />
+First you want to put in logic that determines what messages are actually program/patch dumps from the synth.
+You sent me the sysex chart for your synth which shows a program dump is sent from the synth in this format:
+F0 42 21 06 0x 0h(1) 0l(1) … 0h(128) 0l(128) F7.
+
+the fourth byte 0x06 is the message ID for program dumps from the synth. So you want to write logic that looks for that..
+Rememeber, anything prefixed with "–" is commented out and ignored by the Lua interpreter, these are notes for you.
+–[[ text within brackets that look like this are also
+commented out. it’s a good handy way to comment out
+multiple lines of code
+–]]
+Also, 0x before a number is just notation to indicate that the number is a HEX value, not a DEC value. sysex messages are ALL 7 bit hex values.
+
+[code:3fhhxif7]
+
+midiMessageReceived = function(midiMessage)
+
+–If the fourth byte (index 3) equals 0x06, then this message is a Sound Dump
+
+IDM = midiMessage:getLuaData():getByte(3) — creates variable "IDM" and sets it’s value to the fourth byte (index 3!!) of incoming msg
+
+console (string.format ("decimal=%d hex=%x", IDM, IDM)) –prints to the Lua console for debugging purposes
+
+if IDM == 06 then
+assignValues(midiMessage)
+end
+
+–[[
+The stuff above should weed out anything that’s not actually a program dump from the synth.
+the stuff below should be basically the same as what you’ve got in your script now but we’re naming it a function that is only called if byte3 is 0x06
+–]]
+
+function assignValues(midiMessage)
+
+–calculate actual parameter value from MSB and LSB format used by your synth:
+
+FilterMsb = midiMessage:getLuaData():getByte(53)
+FilterLsb = midiMessage:getLuaData():getByte(54)
+KBTrkMsb = midiMessage:getLuaData():getByte(55)
+KBTrkLsb = midiMessage:getLuaData():getByte(56)
+LFO1MdltrLsb = midiMessage:getLuaData():getByte(184)
+
+FilterValue = (FilterMsb*16)+(FilterLsb)
+KBTrkValue =(KBTrkMsb*16)+(KBTrkLsb)
+LFO1MdltrValue=(LFO1MdltrLsb)
+
+–actually assigning the values
+panel:getModulatorByName("VCFCutoff"):setModulatorValue(FilterValue, false, false, false)
+panel:getModulatorByName("KBTrack"):setModulatorValue(KBTrkValue, false, false, false)
+panel:getModulatorByName("LFO1ModSrc"):setModulatorValue(LFO1MdltrValue, false, false, false)
+
+end
+
+[/code:3fhhxif7]
+
+I really think this should solve your issue. The problem as it stands now after I understand what’s going on w/ that second message is that you’re telling ctrlr to assign values from ANY sysex message that comes into the panel. If the message is not an actual program dump, the values are getting zero’d out cause none of these MSB or LSBs exist to assign based from!!
+
+November 3, 2012 at 4:56 am#4630REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+well after figuring out that there needs to be two ENDs at the end of that code, I got it working.. finally!
+Well at least in my test panel for now. I’ll do the Korg panel when I got 2=3hrs to kill.
+
+Thanks msepsis, I couldnt have figured it out without your help..
+
+I’m finding that googling the error msg gives me clues on what to look for. That’s how I figured out the end error.
+
+Thanks again.. now back to the envelope daskafar created…
+
+-Blaine
+
+November 3, 2012 at 6:28 pm#4631REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+yea.. I figured out why the zero settings.. also figured out why setting to a min of "1" for the modulator caused it to stay at the dump value.. since it only was accepting a value of at LEAST 1.. when it saw a ZERO, it ignored it and just left it at the last value…. some kinda if/then logic in there that was doing that.
+
+I almost have this down. I have one more problem (besides the hours of time spent creating and debugging code for each modulator in the dump assignment script)..
+
+When I first load the panel up and attempt to do a dump request/patch change for the first time, it fails and the method is disabled.
+If I go to the script, refresh it/save it, then try again, it works.
+I’m wondering if it needs a dump req. at startup of the panel so it has some kind of value/data in there before I request it for the very first time.
+
+November 5, 2012 at 5:39 pm#4633REPLY | REPORT | QUOTE
+
+
+Synthetech
+
+Would a script like this trigger a patch dump for me from the panel?
+I need something like this to send out when I open the panel file up.
+
+[code:29yidpsc]
+
+StartupDump = function(midMessage)
+
+fetchDump = {0xF0; 0x42, 0x21, 0x07, 0x00, 0xF7}
+panel:sendMidiMessageNow(CtrlrMidiMessage(fetchDump))
+
+end
+
+[/code:29yidpsc]
+
+I stole that from the other current thread and altered it for my use.
+Thanks to hecticc for posting it.
+
+November 6, 2012 at 11:00 pm#4634REPLY | REPORT | QUOTE
+
+
+msepsis
+
+Yes it should work, put that on the script that is called when the panel is opened and see if it spits any errors <img src=” title=”Smile” />
+Also, probably the reason your script is failing the first time is because of that idle time bug (we chatted a bit about this last week w/ das faker). You probably need a statement in there that says if the variable is nil then do nothing, else proceed with assigning values.
+
+I can elaborate a bit more later if needed. . .
+
+
+Synthetech
+
+I figured out what was wrong..
+
+check this code out and you can probably see the problem.
+
+[code:98rjaory]
+
+PrgChange = function(midiMessage)
+
+–If the fourth byte (index 3) equals 0x06, then this message is a Sound Dump
+
+IDM = midiMessage:getLuaData():getByte(3) — creates variable "IDM" and sets it’s value to the fourth byte (index 3!!) of incoming msg
+
+console (string.format ("decimal=%d hex=%x", IDM, IDM)) –prints to the Lua console for debugging purposes
+
+if IDM == 06 then
+assignValues(midiMessage)
+end
+
+function assignValues(midiMessage)
+
+–Get LFO Knob Values
+FilterMsb = midiMessage:getLuaData():getByte(53)
+FilterLsb = midiMessage:getLuaData():getByte(54)
+KBTrkMsb = midiMessage:getLuaData():getByte(55)
+KBTrkLsb = midiMessage:getLuaData():getByte(56)
+ResValMsb = midiMessage:getLuaData():getByte(197)
+ResValLsb = midiMessage:getLuaData():getByte(198)
+LFO1Lsb = midiMessage:getLuaData():getByte(134)
+LFO2Lsb = midiMessage:getLuaData():getByte(150)
+LFO1DpthLsb = midiMessage:getLuaData():getByte(186)
+LFO2DpthLsb = midiMessage:getLuaData():getByte(192)
+
+LFO1PWMsb = midiMessage:getLuaData():getByte(141)
+LFO1PWLsb = midiMessage:getLuaData():getByte(142)
+LFO2PWMsb = midiMessage:getLuaData():getByte(157)
+LFO2PWLsb = midiMessage:getLuaData():getByte(158)
+LFO1DlyLsb = midiMessage:getLuaData():getByte(136)
+LFO2DlyLsb = midiMessage:getLuaData():getByte(152)
+SLFO3FqLsb = midiMessage:getLuaData():getByte(230)
+SLFO4FqLsb = midiMessage:getLuaData():getByte(238)
+SLFO3DpthLsb = midiMessage:getLuaData():getByte(146)
+SLFO4DpthLsb = midiMessage:getLuaData():getByte(162)
+SLFO3PWMsb = midiMessage:getLuaData():getByte(231)
+SLFO3PWLsb = midiMessage:getLuaData():getByte(232)
+SLFO4PWMsb = midiMessage:getLuaData():getByte(239)
+SLFO4PWLsb = midiMessage:getLuaData():getByte(240)
+
+–Get EG Values
+Attk1Msb = midiMessage:getLuaData():getByte(69)
+Attk1Lsb = midiMessage:getLuaData():getByte(70)
+Dcy1Msb = midiMessage:getLuaData():getByte(71)
+Dcy1Lsb = midiMessage:getLuaData():getByte(72)
+Brk1Msb = midiMessage:getLuaData():getByte(73)
+Brk1Lsb = midiMessage:getLuaData():getByte(74)
+Slop1Msb = midiMessage:getLuaData():getByte(75)
+Slop1Lsb = midiMessage:getLuaData():getByte(76)
+Sust1Msb = midiMessage:getLuaData():getByte(77)
+Sust1Lsb = midiMessage:getLuaData():getByte(78)
+Rls1Msb = midiMessage:getLuaData():getByte(79)
+Rls1Lsb = midiMessage:getLuaData():getByte(80)
+Attk2Msb = midiMessage:getLuaData():getByte(85)
+Attk2Lsb = midiMessage:getLuaData():getByte(86)
+Dcy2Msb = midiMessage:getLuaData():getByte(87)
+Dcy2Lsb = midiMessage:getLuaData():getByte(88)
+Brk2Msb = midiMessage:getLuaData():getByte(89)
+Brk2Lsb = midiMessage:getLuaData():getByte(90)
+Slop2Msb = midiMessage:getLuaData():getByte(91)
+Slop2Lsb = midiMessage:getLuaData():getByte(92)
+Sust2Msb = midiMessage:getLuaData():getByte(93)
+Sust2Lsb = midiMessage:getLuaData():getByte(94)
+Rls2Msb = midiMessage:getLuaData():getByte(95)
+Rls2Lsb = midiMessage:getLuaData():getByte(96)
+Attk3Msb = midiMessage:getLuaData():getByte(101)
+Attk3Lsb = midiMessage:getLuaData():getByte(102)
+Dcy3Msb = midiMessage:getLuaData():getByte(103)
+Dcy3Lsb = midiMessage:getLuaData():getByte(104)
+Brk3Msb = midiMessage:getLuaData():getByte(105)
+Brk3Lsb = midiMessage:getLuaData():getByte(106)
+Slop3Msb = midiMessage:getLuaData():getByte(107)
+Slop3Lsb = midiMessage:getLuaData():getByte(108)
+Sust3Msb = midiMessage:getLuaData():getByte(109)
+Sust3Lsb = midiMessage:getLuaData():getByte(110)
+Rls3Msb = midiMessage:getLuaData():getByte(111)
+Rls3Lsb = midiMessage:getLuaData():getByte(112)
+
+LFO1MdltrLsb = midiMessage:getLuaData():getByte(184)
+LFO1WavLsb = midiMessage:getLuaData():getByte(182)
+LFO2MdltrLsb = midiMessage:getLuaData():getByte(190)
+LFO2WavLsb = midiMessage:getLuaData():getByte(188)
+SLFO3WavLsb = midiMessage:getLuaData():getByte(144)
+SLFO4WavLsb = midiMessage:getLuaData():getByte(160)
+
+FilterValue = (FilterMsb*16)+(FilterLsb)
+KBTrkValue =(KBTrkMsb*16)+(KBTrkLsb)
+
+ResValue=(ResValMsb*16)+(ResValLsb)
+— 15’s
+LFO1FQValue=(LFO1Lsb)*8
+LFO2FQValue=(LFO2Lsb)*8
+LFO1DpthValue=(LFO1DpthLsb)*8
+LFO2DpthValue=(LFO2DpthLsb)*8
+
+LFO1PWValue=((LFO1PWMsb*16)+(LFO1PWLsb))*2
+LFO2PWValue=((LFO2PWMsb*16)+(LFO2PWLsb))*2
+LFO1DlyValue=(LFO1DlyLsb)*8
+LFO2DlyValue=(LFO2DlyLsb)*8
+SLFO3FqValue=(SLFO3FqLsb)*8
+SLFO4FqValue=(SLFO4FqLsb)*8
+SLFO3DpthValue=(SLFO3DpthLsb)*8
+SLFO4DpthValue=(SLFO4DpthLsb)*8
+SLFO3PWValue=((SLFO3PWMsb*16)+(SLFO3PWLsb))*2
+SLFO4PWValue=((SLFO4PWMsb*16)+(SLFO3PWLsb))*2
+
+— 32’s
+Attack1Value=(Attk1Msb*16)+(Attk1Lsb)*4
+Decay1Value=(Dcy1Msb*16)+(Dcy1Lsb)*4
+BreakPoint1Value=(Brk1Msb*16)+(Brk1Lsb)*4
+Slope1Value=(Slop1Msb*16)+(Slop1Lsb)*4
+Sustain1Value=(Sust1Msb*16)+(Sust1Lsb)*4
+Release1Value=(Rls1Msb*16)+(Rls1Lsb)*4
+Attack2Value=(Attk2Msb*16)+(Attk2Lsb)*4
+Decay2Value=(Dcy2Msb*16)+(Dcy2Lsb)*4
+BreakPoint2Value=(Brk2Msb*16)+(Brk2Lsb)*4
+Slope2Value=(Slop2Msb*16)+(Slop2Lsb)*4
+Sustain2Value=(Sust2Msb*16)+(Sust2Lsb)*4
+Release2Value=(Rls2Msb*16)+(Rls2Lsb)*4
+Attack3Value=(Attk3Msb*16)+(Attk3Lsb)*4
+Decay3Value=(Dcy3Msb*16)+(Dcy3Lsb)*4
+BreakPoint3Value=(Brk3Msb*16)+(Brk3Lsb)*4
+Slope3Value=(Slop3Msb*16)+(Slop3Lsb)*4
+Sustain3Value=(Sust3Msb*16)+(Sust3Lsb)*4
+Release3Value=(Rls3Msb*16)+(Rls3Lsb)*4
+
+LFO1MdltrValue=(LFO1MdltrLsb)
+LFO1WavValue=(LFO1WavLsb)
+LFO2MdltrValue=(LFO2MdltrLsb)
+LFO2WavValue=(LFO2WavLsb)
+SLFO3WavValue=(SLFO3WavLsb)
+SLFO4WavValue=(SLFO4WavLsb)
+
+panel:getModulatorByName("VCFCutoff"):setModulatorValue(FilterValue, false, false, false)
+panel:getModulatorByName("KBTrack"):setModulatorValue(KBTrkValue, false, false, false)
+
+panel:getModulatorByName("Resonance"):setModulatorValue(ResValue, false, false, false)
+panel:getModulatorByName("LFO1Frequency"):setModulatorValue(LFO1FQValue, false, false, false)
+panel:getModulatorByName("LFO2Frequency"):setModulatorValue(LFO2FQValue, false, false, false)
+panel:getModulatorByName("LFO1Depth"):setModulatorValue(LFO1DpthValue, false, false, false)
+panel:getModulatorByName("LFO2Depth"):setModulatorValue(LFO2DpthValue, false, false, false)
+panel:getModulatorByName("LFO1PWM"):setModulatorValue(LFO1PWValue, false, false, false)
+panel:getModulatorByName("LFO2PWM"):setModulatorValue(LFO2PWValue, false, false, false)
+panel:getModulatorByName("LFO1Delay"):setModulatorValue(LFO1DlyValue, false, false, false)
+panel:getModulatorByName("LFO2Delay"):setModulatorValue(LFO2DlyValue, false, false, false)
+panel:getModulatorByName("SLFO3Freq"):setModulatorValue(SLFO3FqValue, false, false, false)
+panel:getModulatorByName("SLFO4Freq"):setModulatorValue(SLFO4FqValue, false, false, false)
+panel:getModulatorByName("SLFO3Depth"):setModulatorValue(SLFO3DpthValue, false, false, false)
+panel:getModulatorByName("SLFO4Depth"):setModulatorValue(SLFO3DpthValue, false, false, false)
+panel:getModulatorByName("SLFO3PWM"):setModulatorValue(SLFO3PWValue, false, false, false)
+panel:getModulatorByName("SLFO4PWM"):setModulatorValue(SLFO4PWValue, false, false, false)
+
+–EG1
+panel:getModulatorByName("Attack1"):setModulatorValue(Attack1Value, false, false, false)
+panel:getModulatorByName("Decay1"):setModulatorValue(Decay1Value, false, false, false)
+panel:getModulatorByName("BreakPoint1"):setModulatorValue(BreakPoint1Value, false, false, false)
+panel:getModulatorByName("Slope1"):setModulatorValue(Slope1Value, false, false, false)
+panel:getModulatorByName("Sustain1"):setModulatorValue(Sustain1Value, false, false, false)
+panel:getModulatorByName("Release1"):setModulatorValue(Release1Value, false, false, false)
+
+–EG2
+panel:getModulatorByName("Attack2"):setModulatorValue(Attack2Value, false, false, false)
+panel:getModulatorByName("Decay2"):setModulatorValue(Decay2Value, false, false, false)
+panel:getModulatorByName("BreakPoint2"):setModulatorValue(BreakPoint2Value, false, false, false)
+panel:getModulatorByName("Slope2"):setModulatorValue(Slope2Value, false, false, false)
+panel:getModulatorByName("Sustain2"):setModulatorValue(Sustain2Value, false, false, false)
+panel:getModulatorByName("Release2"):setModulatorValue(Release2Value, false, false, false)
+
+–EG3
+panel:getModulatorByName("Attack3"):setModulatorValue(Attack3Value, false, false, false)
+panel:getModulatorByName("Decay3"):setModulatorValue(Decay3Value, false, false, false)
+panel:getModulatorByName("BreakPoint3"):setModulatorValue(BreakPoint3Value, false, false, false)
+panel:getModulatorByName("Slope3"):setModulatorValue(Slope3Value, false, false, false)
+panel:getModulatorByName("Sustain3"):setModulatorValue(Sustain3Value, false, false, false)
+panel:getModulatorByName("Release3"):setModulatorValue(Release3Value, false, false, false)
+
+–LFO and SLFO comboboxs
+panel:getModulatorByName("LFO1ModSrc"):setModulatorValue(LFO1MdltrValue, false, false, false)
+panel:getModulatorByName("LFO1Waveform"):setModulatorValue(LFO1WavValue, false, false, false)
+panel:getModulatorByName("LFO2ModSrc"):setModulatorValue(LFO2MdltrValue, false, false, false)
+panel:getModulatorByName("LFO2Waveform"):setModulatorValue(LFO2WavValue, false, false, false)
+panel:getModulatorByName("SLFO3Waveform"):setModulatorValue(SLFO3WavValue, false, false, false)
+panel:getModulatorByName("SLFO4Waveform"):setModulatorValue(SLFO4WavValue, false, false, false)
+
+end
+end
+[/code:98rjaory]
+
+What I did was I created a separate method for "assignValues"
+
+it didnt like the scripts being inside the same method.
+
+Seems to all work correctly everytime now.
+
+February 28, 2014 at 3:01 am#20048REPLY | REPORT | QUOTE
+
+
+jasefos
+
+Finding this thread very educational. Just posting so that I can keep track of further conversation and find this again easily.
+
+Cheers
+
+JaseFOS
+
+February 15, 2015 at 10:14 pm#38028REPLY | REPORT | QUOTE
+
+
+dasfaker
+
+atom wrote:
+That issue is a bit problematic due to Threading issues, the only work around for now is to use setModulatorValue(value, false, false, false) (only the 2nd false/true works anyway and indicates MIDI event), but this might also not work always (the call is not syncrhonus and might sometimes miss the dont-send-midi flag). This is something i know about but have no idea how to fix for now.
+
+I know this is an old post, but i wonder if there has been some change here.
+
+Using setModulatorValue(xx, false, false, false) works fine (it doesn’t send the midi message) except with combos, they always send the message.
+
+Using setValue(xx,false) the message is sent always with all modulators, and with combos the message is sent duplicated.
+
+August 7, 2016 at 12:02 am#69777REPLY | REPORT | QUOTE
+
+
+t0f4st
+
+atom wrote:
+That issue is a bit problematic due to Threading issues, the only work around for now is to use setModulatorValue(value, false, false, false) (only the 2nd false/true works anyway and indicates MIDI event), but this might also not work always (the call is not syncrhonus and might sometimes miss the dont-send-midi flag). This is something i know about but have no idea how to fix for now.
+
+does this statement still complie to the current version (5…)??
+
+setValueMapped(const int newValue, const bool force, const bool mute)
+setValueNonMapped(const int newValue, const bool force, const bool mute)
+setValue(const int newValue, const bool force, const bool mute)
+setModulatorValue(const int newValue, bool unused_vst, bool midi, bool unused_ui)
+
+
+dnaldoog
+
+This elaborates on some code Atom posted before – how to generate a list of modulators in your program by name. 
+print() function is optional – can use console() instead.
+
+myGenerateModNames = function()
+n = panel:getNumModulators()
+
+for i=0,n-1 do
+mod = panel:getModulatorByIndex(i)
+local Name= L(mod:getName())
+print (i,Name)
+end
+end — function
+
+print=function(…)
+local output=””
+for i,v in ipairs(arg) do
+v=string.format(“%s”,v)
+output = output..” “..v
+end
+console(String(output))
+end –function
+
+myGenerateModNames()
+
+
+
+dnaldoog july 2020
+
+
+Anyway, I wrote about this recently for someone using a Roland device, so here is a slightly altered version/strategy for incoming sysex:
+
+I would find out from the manual which byte is to be assigned to which EQ parameter in the dump message and make a table of your Ctrlr modulators uiSliders variable names etc in that exact order:
+
+myList={
+“my20HzSlider”,
+“my125KhzSlider”,
+“my20KhzSlider”, …
+}
+
+You would then in the Ctrlr program create a function that reacts to incoming MIDI LuaPanelMidiReceived eg myMidiReceived=function()
+
+When you perform a patch dump from the machine it will be a certain size. You monitor for incoming messages of that size triggering the function only when the packet size is that size; I would pass the MIDI memory block as a parameter to a function myUpdateInterface=function(). This function will update all the uiSliders.
+
+
+myMidiReceived = function(--[[ CtrlrMidiMessage --]] midi)
+
+local s = midi:getSize() 
+---------------------------------------------------------
+if s ==  129 then -- change to the size of your dump
+    updateInterface(midi) -- pass the whole MIDI message to the function
+end
+
+end
+in the updateInterface(midi) function you would loop through the table assigning MIDI message bytes values to each control.
+
+Usually there will be a sysex header offset of about 9 bytes before you get to the data.
+
+Loop though each byte with the table.
+
+For example
+
+
+updateInterface=function(midi)
+local offset =9
+for i,v in ipairs (myList) do
+panel:getModulatorByname(v):setValue(midi:getData():getByte(i+offset,true)
+end
+end
+i+offset might be 10, so you’ll have to play around with that to get the correct byte position.
+
+Good luck!
+
+NOTE:
+Not too sure about this, but if you find yourself in a loop where the updated modulator is firing off a sysex message again after being updated, try;
+
+
+updateInterface=function(midi)
+panel:setPropertyInt("panelMidiPauseOut",1) -- PAUSE SENDING MIDI
+local offset =9
+for i,v in ipairs (myList) do
+panel:getModulatorByname(v):setValue(midi:getData():getByte(i+offset,true)
+end
+panel:setPropertyInt("panelMidiPauseOut",0)
+end
+end
+or
+
+
+updateInterface=function(midi)
+local offset =9
+for i,v in ipairs (myList) do
+panel:getModulatorByname(v):setValue(midi:getData():getByte(i+offset,false) --SET TO FALSE
+end
+end
+JG.

@@ -1,0 +1,73 @@
+Possemo
+
+I guess your dump is “one piece” beginning wiht F0 and ending wit F7
+
+IMHO the best way would be making a memoryblock out of your dump if not already done then selecting parts with getRange. I am not sure if it will work as a conform sysex dump needs the start and stop byte (F0/F7) but in general Ctrlr sends anything to MIDI-out when doing it by Lua scripts:
+
+DumpData = MemoryBlock()
+firstSplit = DumpData:getRange(0,256) — values explanation => (Starting Byte, Number of Bytes)
+secondSplit = DumpData:getRange(254,256) — values explanation => (Starting Byte, Number of Bytes)
+
+panel:sendMidiMessageNow(CtrlrMidiMessage(firstSplit))
+os.execute(sleep(20))
+panel:sendMidiMessageNow(CtrlrMidiMessage(secondSplit))
+
+Edit: ok. you already tried that… I was too late. How about the “Midi Global Delay”, have you tried it? It’s probably no solution either. This seems to be a real problem.
+
+VernorR
+
+Thanks. Tried that – the splitting works fine.. as does the loop. I’m pretty sure the first call to sendMidiMessage gets sent – the monitor confirms (and the synth says “Receiving Sysex” – but never sees the following packets – and finally fails with “Timeout”.
+
+Possemo
+
+Ok, so these sysex dumps are correct. It is strange as normally you cannot vary the speed MIDI data is transmitted. It is defined by the MIDI specifications (MIDI has a single baud rate: 31250 baud – taken form there: http://www.personal.kent.edu/~sbirch/Music_Production/MP-II/MIDI/midi_physical_layer.htm).
+
+I have now looked into a wavestation dump (64k) with the help of a hex editor. This dump consists in fact of 3 sysex messages. So it is clear what you have to do. Seperate the messages and set a delay in-between. When sysex messages are sent without delay many synths/systems will make problems.
+
+
+dasfaker
+
+The sysex file you are trying to send, has only one F0 and one F7 (one single block of data) or has several blocks? According to these links, it’s made of several blocks.
+http://www.korgforums.com/forum/phpBB2/viewtopic.php?t=7550
+https://www.soundonsound.com/techniques/korg-wavestation-tips-techniques
+
+If that’s the case, you need to send them individually with a timer to allow a delay between them.
+
+possemo
+
+I would prefer os.execute(sleep(value in milliseconds)) instead of a timer. sleep works fine – just be aware that the MIDI Monitor of Ctrlr will display wrong values. It looks like sleep has no effect but in fact when you look at it with MIDIOX you can see that it does work flawlessly.
+
+M.Tarenskeen
+
+Thanks, I didn’t know that. I can use that in one of my homemade panels. For me the timer construction is difficult to grasp. Using os.execute(sleep()) is easier to understand. But I can imagine situations where sleep can not be used. For example when used in situations where a track is playing in a DAW simultaneously. Timing will be ruined then, or maybe the system will crash?
+
+Posssemo
+
+To vernonr: have you tried sending the dumps with a sleep command in-between? Until now it fixed all issues I encountered. I think synths with MIDI interfaces should be able to handle sysex data at the speed that meets MIDI specifications. Various MIDI-interfaces and quality of the MIDI cables may give different results.
+
+To m.tarenskeen: yea this is true, sleep is not a substitute for timers. There are many cases where you absolutely need a timer. Mainly because Ctrlr is single-threaded and therefore does not always do what you want when using Lua scripts.
+
+M.Tarenskeen
+
+I have some questions about that os.execute stuff.
+I develop my panels mainly on a Linux system. Once in a while I start an old Windows laptop just to check compatibility issues. I don’t own an Apple computer.
+I guess (for example) os.execute(sleep(100)) executes a command that has to be available on the host operating system.
+Question one: shouldn’t it be os.execute("sleep(10)") (with quotes)?
+Question two: is the command working on Linux, Windows, and, OSX and working with the same syntax? My aim is to create panels that work on all these three OS’s
+
+Possemo
+
+it is without quotes – like this: os.execute(sleep(dely)). It does work for windows and mac. Some time ago I tried Ubuntu for testing panels and… at least it does not throw an error but I have not tested if it really works. When I saw that you cannot make instances on linux and when I didn’t found a DAW host where the plugin does work I gave up on linux. Raspberry linux would be an interesting option but unfortunately there is no Ctrlr ARM-Linux port.
+
+dnaldoog
+
+m.tarenskeen – There’s an excellent explanation here by Goodweather on timers:
+
+basic timer setup (== lesblogs05Timer)
+
+I couldn’t get the concept of timers until I read the post carefully and realised a timer is a loop or rather a process that keeps running until told not to.
+
+If you set an external global variable as he does iCounter=0 it is picked up by the timer (which is a loop) – you can stop the timer when a condition is met; in this case an incremented variable.
+
+Within the timer you increment iCounter iCounter=iCounter+1 – if iCounter == 10 then timer:stopTimer(thisTimerId) end for example and the timer will return back to your code that triggered the timer.
+

@@ -1,0 +1,827 @@
+
+
+/*  1 ----------------------  forum list backgrounds --------------------------*/
+	
+	 
+	
+	/*  2 ----------------------  headers backgrounds --------------------------*/
+
+	
+	  
+/*  3 ----------------------  Font - Forum headings --------------------------*/
+ 
+	 
+	 
+			
+	
+/*  4 ----------------------  Font - breadcrumb --------------------------*/
+ 
+	 
+	 
+	  
+	 
+/*  5 ----------------------  Font - links --------------------------*/
+ 
+	 
+	 
+ 
+	
+/*  6 ----------------------  Font - Forum and category lists --------------------------*/
+ 
+		
+	 
+	
+/*  7 ----------------------  Font - Sub Forum lists --------------------------*/
+/*   !important added as bbpress 2.6 loads the min. css file, so doesn't allow the change in this plugin */
+ 
+	 
+	 
+	 
+/*  8 ----------------------  Font - forum description --------------------------*/
+ 
+/*Note we also set bsp-forum-content as if add descriptions are set in forum display, then we need to replicate these settings */ 
+  
+	 
+	 
+	 
+			 
+
+/*  9 ----------------------  Font - Freshness --------------------------*/
+ 
+				#bbpress-forums .bbp-forum-freshness, 
+			#bbpress-forums .bbp-topic-freshness
+			{
+				font-size: 12px;
+			}
+		 
+
+ 
+	 
+	 
+/*  10 ----------------------  Font - Freshness Author--------------------------*/
+ 
+					#bbpress-forums .bbp-topic-freshness-author
+				{
+					font-size: 12px;
+				}
+			 
+	 
+			
+/*  11 ----------------------  Freshness Avatar Size--------------------------*/
+
+	 
+ 
+/*  12 ----------------------  Forum border --------------------------*/
+ 
+					
+		#bbpress-forums #bbp-user-wrapper ul.bbp-lead-topic, #bbpress-forums #bbp-user-wrapper ul.bbp-topics, #bbpress-forums #bbp-user-wrapper ul.bbp-replies {
+    clear: both;
+}
+		
+
+/*   13 ----------------------  Font - topic count --------------------------*/
+ 
+	 
+	 
+	 
+	
+/*  14 ----------------------  Font - Post counts --------------------------*/
+ 
+	 
+	 
+	 
+	                                
+/*  15 ----------------------  Message - empty forum --------------------------*/
+
+         
+
+ 
+/********______________TOPIC INDEX___________________________________________*/ 
+
+/*  1 ----------------------  Font - pagination --------------------------*/
+ 
+	 
+	 
+	 
+	
+
+/*  2 ----------------------  Font - voice/post count --------------------------*/
+ 
+				#bbpress-forums li.bbp-topic-voice-count, li.bbp-topic-reply-count
+			{
+				font-size: 14px;
+			}
+		 
+	 
+	 
+	
+/*  3 ----------------------  topic title Font - links --------------------------*/
+ 
+	 
+	 
+	/*  4 ----------------------  Font - Topic Title --------------------------*/
+ 
+	 
+	 
+	 
+/*   5 ----------------------  Font - template notice --------------------------*/
+ 
+	 
+	 
+	 
+	
+/*  6 ----------------------  Font - template background --------------------------*/
+ 
+	 
+/*  7 ----------------------  Font - template border --------------------------*/
+ 
+	
+/*  8 ----------------------  Font - Started by --------------------------*/
+ 
+	 
+	 
+	 
+			
+/*  9 ----------------------  sticky/super sticky background --------------------------*/
+
+	
+				.bbp-topics-front ul.super-sticky,
+			.bbp-topics ul.super-sticky
+			{
+				background-color: #9e9e9e !important;
+			}
+
+		
+/*  10. ----------------------  Font - forum info notice (also does topic info)--------------------------*/
+ 
+	 
+	 
+	 
+	
+/* 11 ----------------------  Font - forum info background  (also does topic info)--------------------------*/
+ 
+	 
+/*  12 ----------------------  Font - forum info border  (also does topic info)--------------------------*/
+ 
+	 
+/*   13 ----------------------  Topic Index headings font --------------------------*/
+ 
+	 
+	 
+	 
+					
+
+			 
+/*******_________________TOPIC/REPLY___________________________________________*/ 
+
+/*   1 ----------------------topic/reply backgrounds   --------------------------*/
+
+				#bbpress-forums div.odd
+			{
+				background-color: #fff;
+			}
+		
+				#bbpress-forums div.even
+			{
+				background-color: #fbfbfb;
+			}
+		 
+/*   2 ----------------------  Topic/reply header background --------------------------*/
+ 
+				#bbpress-forums div.bbp-reply-header,
+			#bbpress-forums div.bbp-topic-header
+			{
+				background-color: #f4f4f4;
+			}
+				 
+/*   3 ----------------------  Trash/Spam backgrounds --------------------------*/
+ 
+				#bbpress-forums .status-trash.odd,
+			#bbpress-forums .status-spam.odd 
+			{
+				background-color: #fdd;
+			}
+		
+				#bbpress-forums .status-trash.even,
+			#bbpress-forums .status-spam.even
+			{
+				background-color: #fee;
+			}
+		 
+/*   4 ----------------------  Closed Topic backgrounds --------------------------*/
+ 
+				#bbpress-forums .status-closed,
+			#bbpress-forums .status-closed a
+			{
+				background-color: #fdd;
+			}
+		 
+/*   5 ----------------------  Font - topic/reply date --------------------------*/
+
+	 
+	 
+	 
+	
+/*   6 ----------------------  Font - topic/reply text --------------------------*/
+ 
+
+	 
+	 
+	 
+	 
+/*   7 ----------------------  Font - Author name --------------------------*/
+ 
+				#bbpress-forums a.bbp-author-name
+			{
+				font-size: 14px;
+			}
+		 
+	 
+			
+/*   8 ----------------------  Font - reply permalink --------------------------*/
+ 
+	 
+
+ 
+	 
+	 
+/*   9 ----------------------  Font - author role --------------------------*/
+ 
+	 
+	 
+	 
+	 
+/*   10 ----------------------  Topic Header --------------------------*/
+ 
+	 
+	 
+	 
+				 
+ 
+/*   11 ----------------------  Topic Admin Links --------------------------*/
+ 
+	 
+	 
+	 
+		
+/*   13 ----------------------  @mentions --------------------------*/
+ 
+	 
+		
+	 
+		
+/* *******_________________TOPIC REPLY FORM___________________________________________*/ 
+ 
+/*   1 ----------------------  Topic/reply Labels --------------------------*/
+ 
+	 
+	 
+	 
+	 
+/* 2 ----------------------  Text area background --------------------------*/
+ 
+			 
+/*   3 ----------------------  Text area font --------------------------*/
+ 
+	 
+	 
+	 
+				 
+/*   4 ----------------------  button background --------------------------*/
+
+	 
+	 
+/*   1 ----------------------  topic posting rules --------------------------*/
+ 
+	 
+	 
+
+ 
+	 
+	 
+	 
+	 
+/* ********_________________Forum Display___________________________________________*/ 
+
+/*   1 ----------------------  Alter the list from horizontal to vertical - remove comma (,) seperator in 2.6--------------------------*/
+				#bbpress-forums .bbp-forums-list .bbp-forum.css-sep:not(:last-child)::after {
+				content: none;
+			} 
+		 
+/*   9 ----------------------  Remove Forum Description --------------------------*/
+			
+/*********_________________SINGLE FORUM WIDGET___________________________________________*/ 
+
+ul.bsp-sf-info-list a.subscription-toggle {
+float : left ;
+}	
+
+ 
+/*********_________________LATEST ACTIVITY WIDGET___________________________________________*/ 
+ 
+/*   2 ----------------------  Widget title --------------------------*/
+ 
+	 
+			 
+	 
+	
+/*   2 ----------------------  topic/reply title --------------------------*/
+ 
+	 
+ 
+	 
+	 
+ /*   3 ----------------------  Text font --------------------------*/
+ 
+	 
+	 
+	 
+	 
+/*   4 ----------------------  Topic author Font --------------------------*/
+ 
+	 
+
+	 
+	 
+/*   5 ----------------------  Freshness Font--------------------------*/
+ 
+	 
+	 
+	 
+	 
+/*   6 ----------------------  Forum Font --------------------------*/
+ 
+	 
+  
+	 
+	
+/*   7 ----------------------  Topic-reply links --------------------------*/
+ 
+	 
+	 
+	 
+/* ********_________________FORUM DISPLAY___________________________________________*/ 
+ 
+/* ----------------------  Move breadcrumb --------------------------*/
+				.subscription-toggle
+			{	
+				float:right;
+			}
+		 
+ 
+/* ----------------------  forum description styling --------------------------*/
+ 
+		#bbpress-forums div.bsp-forum-content
+		{
+		clear:both;
+		margin-left: 0px;
+		padding: 0 0 0 0;
+		}
+	
+/* ----------------------  Rounded corners --------------------------*/
+ 
+		
+			.bbp-forums , .bbp-topics  , .bbp-replies
+			{			
+				border-top-left-radius: 10px;
+				border-top-right-radius: 10px;
+				border-bottom-left-radius: 10px;
+				border-bottom-right-radius: 10px;
+			}
+			
+		
+/*----------------------  thumbnails on forum lists --------------------------*/
+ 
+	/*----------------------------------------- ROLES--------------------------------------------------------------------*/
+
+		 
+		 
+		 
+			 
+				 
+				 
+				
+/*----------------------  Create new topic link styling--------------------------*/
+/*styles the element if it is set */
+
+			.bsp-new-topic
+			{
+				text-align: center;
+			}
+
+
+/*----------------------  Create new topic button Button--------------------------*/
+
+				.bsp_button1
+						{
+				font-size: 10px !important;
+				
+			}
+		
+
+				.bsp_button1
+						{
+				font-family: Arial;
+			}
+		
+				.bsp_button1
+									{
+				color: #ffffff !important;
+			}
+		
+				.bsp_button1
+						{
+				background: #3498db;
+				background-image: -webkit-linear-gradient(top, #3498db, #2980b9);
+				background-image: -moz-linear-gradient(top, #3498db, #2980b9);
+				background-image: -ms-linear-gradient(top, #3498db, #2980b9);
+				background-image: -o-linear-gradient(top, #3498db, #2980b9);
+				background-image: linear-gradient(to bottom, #3498db, #2980b9);
+			}
+		
+				.bsp_button1:hover
+						{
+				background: #3cb0fd;
+				background-image: -webkit-linear-gradient(top, #3cb0fd, #3498db);
+				background-image: -moz-linear-gradient(top, #3cb0fd, #3498db);
+				background-image: -ms-linear-gradient(top, #3cb0fd, #3498db);
+				background-image: -o-linear-gradient(top, #3cb0fd, #3498db);
+				background-image: linear-gradient(to bottom, #3cb0fd, #3498db);
+			}
+		
+					.bsp_button1
+								{
+					font-weight: normal; 
+				}
+		
+		.bsp_button1
+				{  
+			-webkit-border-radius: 28;
+			-moz-border-radius: 28;
+			border-radius: 28px;
+			padding: 7px 15px 7px 15px;
+			text-decoration: none;  
+			border : none;
+			cursor : pointer;
+			line-height : 15px !important;
+		}
+
+		.bsp_button1:hover
+		{
+		   text-decoration: none;
+		}
+
+                /* fix for Mark All Topics Read offset */
+                div.bsp-center > form > input.bsp_button1 {
+                        margin-top: -7px;	
+                }
+                
+		.bsp-center
+		{
+			width: 100%;
+			max-width: 100%;
+			float: none;
+			text-align: center;
+			margin: 10px 0px 10px 0px;
+		}
+	
+		.bsp-one-half
+		{
+			float: left;
+			width: 50%;
+			margin-right: 0;
+		}
+
+		.bsp-one-third
+		{
+			width: 33.33%;
+			float: left;
+			margin-right: 0;
+			position: relative;
+		}
+		
+		
+		/* stack if on mobile */
+		@media only screen and (max-width: 480px) {
+			 .bsp-center
+			 {
+			 clear:both;
+			 width: 100%;
+			 max-width: 100%;
+			 float: left;
+			 text-align: left;
+			 margin-top: 10px;
+			 margin-bottom : 10px;
+			 }
+
+			.bsp-one-half
+			 {
+			 float: left;
+			 width: 48%;
+			 margin-right: 4%;
+			 }
+
+			.bsp-one-third
+			 {
+			 width: 30.66%;
+			 float: left;
+			 margin-right: 4%;
+			 position: relative;
+			 }
+		}
+
+
+/* ******************to get the spinner.gif loaded before submit executes */
+		#bsp-spinner-load
+		{
+			background: url(/wp-admin/images/spinner.gif) no-repeat;
+			display : none;
+		}
+
+		.bsp-spinner
+		{		 
+			background: url(/wp-admin/images/spinner.gif) no-repeat;
+			-webkit-background-size: 20px 20px;
+			background-size: 20px 20px;
+			float: right;
+			opacity: 0.7;
+			filter: alpha(opacity=70);
+			width: 20px;
+			height: 20px;
+			margin: 2px 5px 0;
+		}
+
+
+		#bsp_topic_submit
+		{
+			display : none;
+		}
+
+		#bsp_reply_submit
+		{
+			display : none;
+		}
+
+
+/* /////////////////////////and support for search spinner*/
+
+		#bsp_search_submit2
+		{
+			display : none;
+		}
+
+		.bsp-search-submitting
+		{
+			font-size : 16px;
+			line-height : 24px;
+		
+		}
+/*********_________________TOPIC PREVIEW___________________________________________*/ 		
+		
+
+
+		
+/*   search styling--------------------------*/
+
+			/*search content */
+
+			
+		
+		
+
+			
+		
+
+			
+		
+			
+		/*search box */
+	
+				
+		
+		
+
+			
+		
+
+			
+		
+			
+		
+/*----------------------  pin for stickies-----------------------------------------------------------------------------------------------------*/
+
+				#bbpress-forums ul.sticky li.bbp-topic-title a.bbp-topic-permalink::before, #bbpress-forums ul.super-sticky li.bbp-topic-title a.bbp-topic-permalink::before
+			{
+				float: left;
+				margin-right: 5px;
+				padding-top: 3px;
+				font-family: dashicons;
+				content: "\f109";
+			}
+
+				#bbpress-forums ul.sticky li.bbp-topic-title a.bbp-topic-permalink::before, #bbpress-forums ul.super-sticky li.bbp-topic-title a.bbp-topic-permalink::before
+			{
+				font-size: 12px;
+			}	
+
+						#bbpress-forums ul.sticky li.bbp-topic-title a.bbp-topic-permalink::before, #bbpress-forums ul.super-sticky li.bbp-topic-title a.bbp-topic-permalink::before
+				{
+					color: #ffb900;
+				}	
+
+		
+/*----------------------  Breadcrumb home icon-----------------------------------------------------------------------------------------------------*/
+
+		.bsp-home-icon::before
+		{
+			content: "";
+			display: inline-block;
+			font-family: dashicons;
+			vertical-align: middle;
+		}		 
+	
+				.bsp-home-icon::before
+			{
+			font-size: 12px;
+			}	
+		
+			
+/*----------------------  login failures ID-----------------------------------------------------------------------------------------------------*/
+		
+	 
+	 
+			
+	
+		
+
+/*----------------------  topic lock icon-----------------------------------------------------------------------------------------------------*/
+
+	
+		#bbpress-forums ul.status-closed li.bbp-topic-title a.bbp-topic-permalink::before
+		{
+			content: "\f160";
+			display: inline-block;
+			font-family: dashicons;
+			vertical-align: middle;
+		}	
+
+				#bbpress-forums ul.status-closed li.bbp-topic-title a.bbp-topic-permalink::before
+			{
+			font-size: 12px;
+			}	
+		
+		
+	
+			.bbpresss_unread_posts_icon{
+				float:left;
+				margin-right:6px;
+				max-width: 45px;
+			}
+
+			.bbpresss_unread_posts_icon a img{
+				margin-top:2px;
+				-webkit-box-shadow:none;
+				-moz-box-shadow:none;
+				box-shadow:none;
+			}
+
+			.markedUnread{
+				float: right;
+			}
+
+			.bbpress_mark_all_read_wrapper{
+				transform: scale(0.8);
+				transform-origin: right;
+			}
+
+			.bbpress_mark_all_read{
+				display:inline-block;
+				margin-right:5px;
+				width: 100%;
+			}
+
+			.bbpress_mark_all_read input{
+				float:right;
+			}
+
+			.bbpress_mark_all_read input[type="submit"]{
+				margin:0px;
+			}
+
+
+			.bbpresss_unread_posts_amount{
+				float: right;
+				font-size: 9px;
+			}
+
+			#bsp_unread_optinout {
+				width : 10% !important;
+			}
+
+			.show-iconf::before {
+					 font-family: 'dashicons';
+				content : "\f449";
+			}
+
+			.show-iconr::before {
+					 font-family: 'dashicons';
+				content : "\f451";
+			}
+
+			.show-icont::before {
+					 font-family: 'dashicons';
+				content : "\f450";
+			}
+
+			.show-iconv::before {
+					 font-family: 'dashicons';
+				content : "\f307";
+			}
+
+			.show-iconlr::before {
+					 font-family: 'dashicons';
+				content : "\f338";
+			}
+
+			.show-iconla::before {
+					 font-family: 'dashicons';
+				content : "\f469";
+			}
+
+			.show-iconfa::before {
+					 font-family: 'dashicons';
+				content : "\f147";
+			}
+
+			.show-iconsu::before {
+					 font-family: 'dashicons';
+				content : "\f155";
+			}
+
+
+
+			ul.bsp-st-info-list li.topic-subscribe a.subscription-toggle {
+			float : none;
+			} 
+
+			.hide-list-style {
+				list-style: none !important;
+				margin-left : 0 !important;
+			}
+			
+	/*----------------------  prevent hide/cancel being displayed in profile following 5.6 release--------------------------*/
+		
+			#bbpress-forums #bbp-your-profile fieldset fieldset.password {
+		display: none;
+}
+
+
+/*----------------------  Quotes Styling --------------------------*/
+
+/*----------------------  mod tools--------------------------*/
+
+/*----------------------  theme support--------------------------*/
+
+
+
+/*    ----------------------  BLOCK Widget title --------------------------*/
+ 
+	 
+			 
+	 
+	
+
+/*----------------------  change avatar display - makes sure username displays corectly for profiles tabs settings --------------------------*/
+
+#bbpress-forums div.bbp-reply-author img.avatar {
+    clear: left;
+    display: block;
+}
+
+
+/*----------------------  button fixes to work with default bbPress buttons and override theme values that make buttons look wrong --------------------------*/
+
+/* override bbpress floating subscription link to the right */
+#bbpress-forums div.bsp-center #subscription-toggle {
+    float: none;
+}
+
+/* override any theme margins for generic input css so the mark as read button alignment matches */
+input.bsp_button1 {
+    margin: 0px;
+}
+
+/*----------------------  block widget titles--------------------------*/
+.bsp-widget-heading {
+	color: #222;
+	font-weight: bold;
+}
+
+ul.bsp-widget-settings{
+	font-size : 12px !important;
+}
+
+	
+
+/*----------------------  custom css--------------------------*/
+	

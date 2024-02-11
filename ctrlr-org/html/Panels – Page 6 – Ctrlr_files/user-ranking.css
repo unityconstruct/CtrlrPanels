@@ -1,0 +1,125 @@
+
+
+
+
+/* RANKS--------------------------------------------------------------------*/
+/*  1 ----------------------  set the symbol color --------------------------*/
+.ur-symbol {
+	font-family: arial, "Times New Roman", Times, serif;
+	font-size : 14px ;
+	color :  #1e73be  ;
+	
+}
+
+
+
+/*2. add the styling for the level names--------------------------------------*/
+
+	 
+		 
+	 	 
+		 
+		 
+	 	 
+	#level2			
+ 		{
+			background-image: url(  ) ;
+			background-repeat: no-repeat;
+			height :  ;
+			width :  ;
+			text-align : center ;
+			padding-top : 0px ;
+		}
+
+		
+			 
+		 
+	 	 
+		 
+		 
+	 	 
+		 
+		 
+	 	 
+		
+
+
+
+
+/* BADGES--------------------------------------------------------------------*/
+
+	 
+		 
+	 	 
+		
+
+
+	
+
+		/* Tooltip text */
+			.bur-tooltip .bur-tooltiptext1			{
+				visibility: hidden;
+				width : 180px;
+				text-align: center;
+				padding: 5px;
+				border-radius: 6px;
+				position: absolute;
+				background-color:grey ;
+				color:  ;
+				font-size:   ;
+			}
+			
+			/* Show the tooltip text when you mouse over the tooltip container */
+		.bur-tooltip:hover .bur-tooltiptext1		
+		{
+			
+		visibility: visible;
+		}
+			 
+		 
+	 	 
+		
+
+
+	
+
+		/* Tooltip text */
+			.bur-tooltip .bur-tooltiptext2			{
+				visibility: hidden;
+				width : 180px;
+				text-align: center;
+				padding: 5px;
+				border-radius: 6px;
+				position: absolute;
+				background-color:grey ;
+				color:  ;
+				font-size:   ;
+			}
+			
+			/* Show the tooltip text when you mouse over the tooltip container */
+		.bur-tooltip:hover .bur-tooltiptext2		
+		{
+			
+		visibility: visible;
+		}
+		
+
+/*----------------------  set up li for buddypress display--------------------------*/
+
+
+#buddypress div#item-header #bur_profile ul li
+{
+    float : none  ;
+}
+
+/*----------------------  set the tooltip text--------------------------*/
+/* Tooltip container */
+.bur-tooltip {
+    position: relative;
+    display: inline-block;
+}
+
+
+
+
+/*----------------------  custom css--------------------------*/

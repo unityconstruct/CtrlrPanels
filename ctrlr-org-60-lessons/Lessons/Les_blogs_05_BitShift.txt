@@ -1,0 +1,398 @@
+    -- p = panel:getModulatorByName("Program")
+    -- declare all your modulators at once in method you call at panel load! So: 
+    modProgram = panel:getModulatorByName(“Program”)
+    pn = p:getModulatorValue()
+    -- pnr = CtrlrMidiMessage({0xf0, 0x01, 0x00, pn, 0xf7}) 
+    -- you can directly put the getModulatorValue() in the message like
+    pnr = CtrlrMidiMessage({0xf0, 0x01, 0x00, modProgram:getModulatorValue(), 0xf7})
+    console (pnr:toString())
+    panel:sendMidiMessageNow(pnr)
+	
+You could also do:
+-- But clearly less straightforward than method above
+
+
+    value=23 -- for example
+    --local sysexString = "f0 43 10 5c 10 %02x f7"
+    --local sysexFormula = string.format(sysexString, value)
+    -- Here you can use the dec2hex function:
+    local sysexString = “f0 43 10 5c 10 “..dec2hex(modProgram:getModulatorValue())..” f7″
+    panel:sendMidiMessageNow(CtrlrMidiMessage(sysexFormula))
+    
+dec2hex = function(num)
+
+    local hexstr = '0123456789ABCDEF'
+    local s = ''
+
+    while num > 0 do
+        local mod = math.fmod(num, 16)
+        s = string.sub(hexstr, mod+1, mod+1) .. s
+        num = math.floor(num / 16)
+    end
+    if s == '' then s = '0' end
+    return s
+    
+Tricky things (you can make Ctrlr work flawlessly but you have to work around bugs…):
+
+-Editing the xml-file is tricky, I would avoid it unless there is no other way.
+-When you are updating the ui, could it be that the button gets a value beyond its range? A button expects value 0 or 1. If you need the button to send other values you should set them like this:
+OFF=32
+ON=64
+But to update the button you still have to use 0 and 1.
+-Also I noticed you are using variables starting with digits. One uiSlider has the name 7 among many others starting with digits. I don’t think that’s legal in lua, also don’t use the – symbol in modulator names as it is not legal in lua either.
+-mod:setModulatorValue(midiParam, false, false, false)  …in my experiences gives unpredictable results. I do remember once being very confused as to why something wasn’t working. Changing to mod:setValue(midiParam,false) or mod:getComponent():setValue(midiParam,false) or whatever worked.
+-I also had problems with the inbuilt Global Variable functionality setGlobal (1, setBit (global.k1, 6, modulatorValue)) so I ditched that route in my panels, but if Possemo says it works then it must work.
+
+
+Also this is another recommended optimising structure and the main reason why one would need legal lua variable names.
+In a panelCreated or before PanelCreated function initialise all your Modulators:
+
+op1bit0 =panel:getModulatorByName("op1bit0 ") etc
+
+Hereafter you can refer to that modulator by the variable name, not panel:getModulatorByName(“op1bit0 “) because much slower apparently. For each call to that, Ctrlr loops through all Modulators looking for that object.
+Here is a development function to help you generate the list:
+Copy and paste the console output into the init function.
+
+
+function cacheModNames()
+  n = panel:getNumModulators()
+  --Assign each modulator to a variable with same name
+  --so we can just call myModulatorsName:getValue() etc
+  console("\n\n")
+  local _t={}
+  for i=0,n-1 do
+    mod = panel:getModulatorByIndex(i)
+    local Name= L(mod:getName())
+    table.insert(_t,Name)
+  end
+  table.sort(_t)
+  for i,v in ipairs(_t) do
+    console(String(string.format("%s=panel:getModulatorByName(\"%s\") --[%d]",v,v,i)))
+  end
+  console("\n\n")
+end --function
+
+
+
+There are functions (methods?) to get/test bits in bytes/bit-positions. You could then assemble a normal byte to represent the single synth parameter byte. I’ve not tried this (and I’m no Lua expert) so you may need to experiment a bit. Maybe it’s somewhere to start.
+
+getBitRangeAsInt (value, startBit, numBits) : Get’s a number of bits (numBits) starting at position startBit as an Integer and returns that integer.
+setBitRangeAsInt (value, startBit, numBits, valueToSet) :
+clearBit (value, bitToClear) : Clears a bit at position bitToClear in the value and return that modified value.
+isBitSet (value, bitPosition) : Return true if a bit at position bitPosition in value is set, false otherwise.
+setBit (value, bitToSet) : Set’s one bit in an integer at position (bitToSet) and return the modified value with the bit set.
+
+atom:
+You can’t call getBitRangeAsInt() on a integer, and the sn2ex1 variable is a simple integer value, it has not methods. Some example code (it’s really simple stuff):
+
+bi = CtrlrLuaBigInteger(3)
+console (string.format ("bit 0=%d", bi:getBitRangeAsInt(0,1)))
+bit 0=1
+console (string.format ("bit 0=%d", bi:getBitRangeAsInt(2,1)))
+bit 0=0
+
+december 2016, atom:
+You should use now BigInteger the native JUCE class, it’s bound to Lua, the CtrlrLuaBigInteger is an obsolete class that is there for compatibility puproses. The bit.* functions will remain it’s a low level implementation that is there for performance purposes (https://docs.juce.com/master/classBigInteger.html).
+Lua bitop will be back in next builds (https://bitop.luajit.org/index.html), i will fall back to lua 5.1 since 5.3 is giving way to many issues to fix.
+(end Atom)
+
+
+◆ BigInteger() [1/6]
+BigInteger::BigInteger	(		)	
+Creates an empty BigInteger.
+
+◆ BigInteger() [5/6]
+BigInteger::BigInteger	(	const BigInteger & 		)	
+Creates a copy of another BigInteger.
+
+◆ operator[]()
+bool BigInteger::operator[]	(	int [=bit]	)	const
+Returns the value of a specified bit in the number.
+If the index is out-of-range, the result will be false.
+
+◆ isZero()
+bool BigInteger::isZero	(		)	const
+Returns true if no bits are set.
+
+◆ isOne()
+bool BigInteger::isOne	(		)	const
+Returns true if the value is 1.
+
+◆ toInteger()
+int BigInteger::toInteger	(		)	const
+Attempts to get the lowest 32 bits of the value as an integer.
+If the value is bigger than the integer limits, this will return only the lower bits.
+
+◆ clear()
+void BigInteger::clear	(		)	
+Resets the value to 0.
+
+◆ clearBit()
+void BigInteger::clearBit	(	int [=bitNumber]	)	
+Clears a particular bit in the number.
+
+◆ setBit() [1/2]
+void BigInteger::setBit	(	int [=bitNumber]	)	
+Sets a specified bit to 1.
+
+◆ setBit() [2/2]
+void BigInteger::setBit	(	int [=bitNumber], bool [=shouldBeSet] )		
+Sets or clears a specified bit.
+
+◆ setRange()
+void BigInteger::setRange	(	int [=startBit], int [=numBits], bool [=shouldBeSet] )		
+Sets a range of bits to be either on or off.
+
+Parameters
+startBit:	the first bit to change
+numBits:	the number of bits to change
+shouldBeSet:	whether to turn these bits on or off
+
+◆ insertBit()
+void BigInteger::insertBit	(	int [=bitNumber], bool [=shouldBeSet] )		
+Inserts a bit an a given position, shifting up any bits above it.
+
+◆ getBitRange()
+BigInteger BigInteger::getBitRange	(	int [=startBit], int [=numBits] )		const
+Returns a range of bits as a new BigInteger.
+e.g. getBitRangeAsInt (0, 64) would return the lowest 64 bits.
+
+◆ getBitRangeAsInt()
+uint32 BigInteger::getBitRangeAsInt	(	int [=startBit], int [=numBits] )		const
+Returns a range of bits as an integer value.
+e.g. getBitRangeAsInt (0, 32) would return the lowest 32 bits.
+Asking for more than 32 bits isn't allowed (obviously) - for that, use getBitRange().
+
+◆ shiftBits()
+void BigInteger::shiftBits	(	int [=howManyBitsLeft], int [=startBit] )		
+Shifts a section of bits left or right.
+Parameters
+howManyBitsLeft:	how far to move the bits (+ve numbers shift it left, -ve numbers shift it right).
+startBit:	the first bit to affect - if this is > 0, only bits above that index will be affected.
+
+◆ toMemoryBlock()
+MemoryBlock BigInteger::toMemoryBlock	(		)	const
+Turns the number into a block of binary data.
+The data is arranged as little-endian, so the first byte of data is the low 8 bits of the number, and so on.
+
+
+◆ loadFromMemoryBlock()
+void BigInteger::loadFromMemoryBlock	(	const MemoryBlock & 	data	)	
+Converts a block of raw data into a number.
+The data is arranged as little-endian, so the first byte of data is the low 8 bits of the number, and so on.
+
+
+function myBitShift(bits, positions, value)
+
+-- bits = how many bits to be shifted
+-- positions = how many positions to be shifted
+-- value = the decimal value that has to be altered via a someValue = someModulator:getModulatorValue()
+
+	local i
+	for i = bits, 1 do 
+		--local shftValue = bit.lshift(value(i+1),positions) --not working
+		local shftValue = bit.lshift(tonumber(modVcoValue),1)
+	end
+end
+
+M:Tarenskeen: I used a lot bit.rshift() bit.lshift() and bit.band(). I am now rewriting my lua code using code that seems to work on both my Linux and Windows boxes, and using different releases of Ctrlr and LUA. Now I am using only * / ^ % and math.floor() to achieve the same results.
+
+Possemo:
+
+using CtrlLuaBigInteger on a variable (a number) will allow you to do bit operations on it, such as getBitRangeAsInt, and setBitRangeAsInt. I used this several times on my editors. Here for the calc of the simple checksum of the Matrix-1000 sysex patch dump:
+
+-- calc checksum: addition of all bytes then mask by lower 7 bits
+
+for chk=1,134 do
+	sum=sum+PatchByteTab[chk]
+end
+
+sumBint  = CtrlrLuaBigInteger(sum)
+Checksum = sumBint:getBitRangeAsInt(0,7)
+
+
+Another one, assembling a byte and putting the result in a table field:
+
+-- assemble Nibble for Byte 53
+byte53=CtrlrLuaBigInteger(0)
+kbtrack=panel:getModulatorByName("VCF_KBTrack"):getValueMapped()
+OSC2wav=panel:getModulatorByName("OSC2_Waveshape"):getValueMapped()
+
+-- setBitRangeAsInt(0,2,0) -> (StartBit, how many bits, value in decimal)
+
+if kbtrack ==  0 then byte53:setBitRangeAsInt(0,2,0)
+elseif kbtrack ==  1 then byte53:setBitRangeAsInt(0,2,1)
+elseif kbtrack ==  2 then byte53:setBitRangeAsInt(0,2,2)
+end
+
+if OSC2wav ==  0 then byte53:setBitRangeAsInt(2,2,0)
+elseif OSC2wav ==  1 then byte53:setBitRangeAsInt(2,2,1)
+elseif OSC2wav ==  2 then byte53:setBitRangeAsInt(2,2,2)
+end
+
+byte53Int=byte53:getBitRangeAsInt(0,8)
+PatchTable[48]=string.format("%.2x", byte53Int)
+I think you could do that like this:
+
+-- assemble Nibble for Byte 53
+byte53=CtrlrLuaBigInteger(0)
+kbtrack=panel:getModulatorByName("VCF_KBTrack"):getValueMapped()
+OSC2wav=panel:getModulatorByName("OSC2_Waveshape"):getValueMapped()
+
+-- setBitRangeAsInt(0,2,0) -> (StartBit, how many bits, value in decimal)
+
+byte53:setBitRangeAsInt(0,2,kbtrack)
+byte53:setBitRangeAsInt(2,2,OSC2wav)
+
+byte53Int=byte53:getBitRangeAsInt(0,8)
+PatchTable[48]=string.format("%.2x", byte53Int)
+
+
+
+
+bit_rshift = function(x, y)
+    return math.floor(x / (2 ^ y))
+end
+
+bit_lshift = function(x, y)
+    return x * (2 ^ y)
+end
+— the following bit.band() replacement
+— only works if y=1, 3, 7, 15, 31, 63, 127, 255
+— but that was just what I needed in my Lua code anyway
+
+bit_band = function(x, y)
+    return x % (y + 1)
+end
+Using combinations of these functions I was able to do all my bit and byte manipulations, without using CtrlrLuaBigInteger or the bit library, and with the best compatibility on different systems and Ctrlr/LUA versions.
+
+
+Wikipedia:
+AND
+
+Bitwise AND of 4-bit integers
+A bitwise AND is a binary operation that takes two equal-length binary representations and performs the logical AND operation on each pair of the corresponding bits, which is equivalent to multiplying them. Thus, if both bits in the compared position are 1, the bit in the resulting binary representation is 1 (1 × 1 = 1); otherwise, the result is 0 (1 × 0 = 0 and 0 × 0 = 0). For example:
+
+    0101 (decimal 5)
+AND 0011 (decimal 3)
+  = 0001 (decimal 1)
+The operation may be used to determine whether a particular bit is set (1) or clear (0). For example, given a bit pattern 0011 (decimal 3), to determine whether the second bit is set we use a bitwise AND with a bit pattern containing 1 only in the second bit:
+
+    0011 (decimal 3)
+AND 0010 (decimal 2)
+  = 0010 (decimal 2)
+Because the result 0010 is non-zero, we know the second bit in the original pattern was set. This is often called bit masking. (By analogy, the use of masking tape covers, or masks, portions that should not be altered or portions that are not of interest. In this case, the 0 values mask the bits that are not of interest.)
+
+The bitwise AND may be used to clear selected bits (or flags) of a register in which each bit represents an individual Boolean state. This technique is an efficient way to store a number of Boolean values using as little memory as possible.
+
+For example, 0110 (decimal 6) can be considered a set of four flags, where the first and fourth flags are clear (0), and the second and third flags are set (1). The third flag may be cleared by using a bitwise AND with the pattern that has a zero only in the third bit:
+
+    0110 (decimal 6)
+AND 1011 (decimal 11)
+  = 0010 (decimal 2)
+Because of this property, it becomes easy to check the parity of a binary number by checking the value of the lowest valued bit. Using the example above:
+
+    0110 (decimal 6)
+AND 0001 (decimal 1)
+  = 0000 (decimal 0)
+Because 6 AND 1 is zero, 6 is divisible by two and therefore even.
+
+OR
+
+Bitwise OR of 4-bit integers
+A bitwise OR is a binary operation that takes two bit patterns of equal length and performs the logical inclusive OR operation on each pair of corresponding bits. The result in each position is 0 if both bits are 0, while otherwise the result is 1. For example:
+
+   0101 (decimal 5)
+OR 0011 (decimal 3)
+ = 0111 (decimal 7)
+The bitwise OR may be used to set to 1 the selected bits of the register described above. For example, the fourth bit of 0010 (decimal 2) may be set by performing a bitwise OR with the pattern with only the fourth bit set:
+
+   0010 (decimal 2)
+OR 1000 (decimal 8)
+ = 1010 (decimal 10)
+XOR
+
+Bitwise XOR of 4-bit integers
+A bitwise XOR is a binary operation that takes two bit patterns of equal length and performs the logical exclusive OR operation on each pair of corresponding bits. The result in each position is 1 if only one of the bits is 1, but will be 0 if both are 0 or both are 1. In this we perform the comparison of two bits, being 1 if the two bits are different, and 0 if they are the same. For example:
+
+    0101 (decimal 5)
+XOR 0011 (decimal 3)
+  = 0110 (decimal 6)
+The bitwise XOR may be used to invert selected bits in a register (also called toggle or flip). Any bit may be toggled by XORing it with 1. For example, given the bit pattern 0010 (decimal 2) the second and fourth bits may be toggled by a bitwise XOR with a bit pattern containing 1 in the second and fourth positions:
+
+    0010 (decimal 2)
+XOR 1010 (decimal 10)
+  = 1000 (decimal 8)
+This technique may be used to manipulate bit patterns representing sets of Boolean states.
+
+Assembly language programmers and optimizing compilers sometimes use XOR as a short-cut to setting the value of a register to zero. Performing XOR on a value against itself always yields zero, and on many architectures this operation requires fewer clock cycles and memory than loading a zero value and saving it to the register.
+
+LUA BITOP (https://bitop.luajit.org/api.html)
+
+y = bit.bor(x1 [,x2...])
+y = bit.band(x1 [,x2...])
+y = bit.bxor(x1 [,x2...])
+Returns either the bitwise or, bitwise and, or bitwise xor of all of its arguments. Note that more than two arguments are allowed.
+
+print(bit.bor(1, 2, 4, 8))                --> 15
+printx(bit.band(0x12345678, 0xff))        --> 0x00000078
+printx(bit.bxor(0xa5a5f0f0, 0xaa55ff00))  --> 0x0ff00ff0
+y = bit.lshift(x, n)
+y = bit.rshift(x, n)
+y = bit.arshift(x, n)
+Returns either the bitwise logical left-shift, bitwise logical right-shift, or bitwise arithmetic right-shift of its first argument by the number of bits given by the second argument.
+
+Logical shifts treat the first argument as an unsigned number and shift in 0-bits. Arithmetic right-shift treats the most-significant bit as a sign bit and replicates it.
+Only the lower 5 bits of the shift count are used (reduces to the range [0..31]).
+
+print(bit.lshift(1, 0))              --> 1
+print(bit.lshift(1, 8))              --> 256
+print(bit.lshift(1, 40))             --> 256
+print(bit.rshift(256, 8))            --> 1
+print(bit.rshift(-256, 8))           --> 16777215
+print(bit.arshift(256, 8))           --> 1
+print(bit.arshift(-256, 8))          --> -1
+printx(bit.lshift(0x87654321, 12))   --> 0x54321000
+printx(bit.rshift(0x87654321, 12))   --> 0x00087654
+printx(bit.arshift(0x87654321, 12))  --> 0xfff87654
+
+y = bit.rol(x, n)
+y = bit.ror(x, n)
+Returns either the bitwise left rotation, or bitwise right rotation of its first argument by the number of bits given by the second argument. Bits shifted out on one side are shifted back in on the other side.
+Only the lower 5 bits of the rotate count are used (reduces to the range [0..31]).
+
+printx(bit.rol(0x12345678, 12))   --> 0x45678123
+printx(bit.ror(0x12345678, 12))   --> 0x67812345
+y = bit.bswap(x)
+Swaps the bytes of its argument and returns it. This can be used to convert little-endian 32 bit numbers to big-endian 32 bit numbers or vice versa.
+
+printx(bit.bswap(0x12345678)) --> 0x78563412
+printx(bit.bswap(0x78563412)) --> 0x12345678
+
+Example Program
+This is an implementation of the (naïve) Sieve of Eratosthenes algorithm. It counts the number of primes up to some maximum number.
+
+A Lua table is used to hold a bit-vector. Every array index has 32 bits of the vector. Bitwise operations are used to access and modify them. Note that the shift counts don't need to be masked since this is already done by the BitOp shift and rotate functions.
+
+local bit = require("bit")
+local band, bxor = bit.band, bit.bxor
+local rshift, rol = bit.rshift, bit.rol
+
+local m = tonumber(arg and arg[1]) or 100000
+if m < 2 then m = 2 end
+local count = 0
+local p = {}
+
+for i=0,(m+31)/32 do p[i] = -1 end
+
+for i=2,m do
+  if band(rshift(p[rshift(i, 5)], i), 1) ~= 0 then
+    count = count + 1
+    for j=i+i,m,i do
+      local jx = rshift(j, 5)
+      p[jx] = band(p[jx], rol(-2, j))
+    end
+  end
+end
+
+io.write(string.format("Found %d primes up to %d\n", count, m))

@@ -1,0 +1,2463 @@
+Cleaning blank nibbles from hexstring
+
+May 9, 2020 at 10:22 pm#118284REPLY | REPORT | QUOTE
+
+damien
+
+SO, once the dump of the “Edit Buffer Message” is requested from Ctrlr I get the following hexstring:
+
+F0 0F 40 00 00 25 01 00 00 03 02 02 00 05 03 06 0F 07 05 07 02 06 03 06 05 02 00 04 03 06 0F 06 0E 06 06 06 09 06 07 02 00 00 01 02 0F 00 00 03 00 04 08 05 04 04 09 02 05 01 0B 04 0B 00 00 00 07 07 05 00 00 01 0C 01 06 00 00 05 01 00 0A 00 0D 00 01 09 04 04 0B 04 09 00 06 00 01 02 0C 07 0F 00 07 00 03 02 0F 05 0D 07 0F 07 0F 00 03 02 00 01 02 02 0D 05 01 03 02 04 0E 02 0E 01 04 00 04 00 00 02 09 09 0D 00 00 00 0C 02 0D 00 00 01 07 01 03 00 00 00 00 05 0E 0E 0D 02 00 00 06 00 01 03 0F 07 0F 00 07 00 03 02 00 00 00 07 0F 07 0F 00 00 00 00 02 0B 00 0D 02 00 00 0C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 07 0F 00 00 00 02 00 00 07 0F 07 0F 07 0F 02 0C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 00 00 07 0F 00 00 00 02 00 00 07 0F 07 0F 04 00 00 00 00 00 00 02 00 01 00 00 00 00 01 00 00 00 F7
+
+Header is “F0 0F 40 00 00”, “25” is the type of message (Edit Buffer), “01” is the current active unit (DSP1), “00 00” should be the size of the message but it’s blank (probably a bug) then the raw message is coming afterwards (current preset name, and so on).
+
+As you can see, every byte is nibblized with a 0000HHHH 0000LLLL type [2 Nibbles M]. That’s a lot of useless zeros!
+
+The structure of the message is well described in the manual.
+
+I would like to clean the received message so that I can use it after cleanup like this:
+
+32 20 53 6F 75 72 63 65 20 43 6F 6E 66 69 67 20 01 2F 00 30 ...
+
+First I skip the header (after F0) with EditBufferNibMessage = midi:getLuaData():getRange(9, 332)
+
+Now that I have the raw nibblized Edit Message how can I obtain a clean string without the first 0 from the bytes ?
+
+
+dnaldoog
+
+myMethod = function(mod,value)
+local t={}
+local reBuilt=MemoryBlock()
+local m2=MemoryBlock(
+[[
+F0 0F 40 00 00 25 01 00 
+00 03 02 02 00 05 03 06 0F 
+07 05 07 02 06 03 06 05 02 
+00 04 03 06 0F 06 0E 06 06 
+06 09 06 07 02 00 00 01 02 
+0F 00 00 03 00 F7
+]])
+for i=9,m2:getSize()-2,2 do
+assert(i < m2:getSize()) -- for debugging only
+local msb=bit.lshift(m2:getByte(i),4)
+local lsb=m2:getByte(i+1)
+local total = msb+lsb
+--console(String(string.format("[%d] = %.2X",i,total)))
+if total > 0 then
+table.insert(t,total)
+end
+end
+
+reBuilt:createFromTable(t)
+console(String(reBuilt:toHexString(1)))
+end --f
+
+goodweather
+
+Why cleaning the message? Why not reading it as it comes from the DP4?
+Don’t get any answer from the seller of the DP4 I’m targetting 🙁
+
+damien
+
+Thanks Dnaldoog for the script, this is exactly what I needed.
+I’ll place it in the midiMessageReceived global method with few adjustments.
+If the dump is an “Edit Buffer” message type (type 25) with the right size (334 bytes) then the message will be denybblized and the decoding of the current status (bypass, currently selected unit, algo parameter etc) occures…
+
+To reply to goodweather I want to denybblize it because all the instructions in the sysex manual provide in a big table the offsets position for 8bit bytes hex values for every algo parameters. The offset starts at 0 position from the 9th 8bit byte of the full message.
+
+I already set all my LUA script with this structure according to the reference manual like this:
+
+CD_Routing = midiMessage:getLuaData():getByte(155) -- 0,3 [0=Serial 1=parallel 2=Feedback1 3=Feedback2]
+
+So first of all I need to get the string structured with hexadecimal bytes.
+
+I’m sure there is better ways to decode the incoming message and process it but this is the most logical to me.
+
+May 11, 2020 at 12:03 am#118317REPLY | REPORT | QUOTE
+
+damien
+
+Thanks Dnaldoog for the script, this is exactly what I needed.
+I’ll place it in the midiMessageReceived global method with few adjustments.
+If the dump is an “Edit Buffer” message type (type 25) with the right size (334 bytes) then the message will be denybblized and the decoding of the current status (bypass, currently selected unit, algo parameter etc) occures…
+
+To reply to goodweather I want to denybblize it because all the instructions in the sysex manual provide in a big table the offsets position for 8bit bytes hex values for every algo parameters. The offset starts at 0 position from the 9th 8bit byte of the full message.
+
+I already set all my LUA script with this structure according to the reference manual like this:
+
+CD_Routing = midiMessage:getLuaData():getByte(155) -- 0,3 [0=Serial 1=parallel 2=Feedback1 3=Feedback2]
+
+So first of all I need to get the string structured with hexadecimal bytes.
+
+I’m sure there is better ways to decode the incoming message and process it but this is the most logical to me.
+
+
+goodweather
+
+I’m still not sure to understand the need…
+You get a 334 bytes message
+In the documentation, you are saying (sorry i didn’t check) that they mention the offset with each byte (=8 bits) representing one data (your example CD_Routing is byte 155)
+So, why not directly extracting the data byte by byte?
+This is what I’m doing for all sysex dumps and there is no conversion needed except of course if they used bit packing.
+Do not confuse the actual message and your way of seeing/displaying it on the screen/console!
+
+damien
+
+Hi,
+Maybe I’m off the track but this is the way I pictured it.
+Let’s take the message received from above
+03 02 02 00 05 03 06 0F 07 05 07 02 06 03 06 05 02 00 04 03 06 0F 06 0E 06 06 06 09 06 07...
+
+They say in the manual : offset 01 to 16 = Preset name
+To me, byte offset 1 to 16 from the given raw message is
+03 02 02 00 05 03 06 0F 07 05 07 02 06 03 06 05
+raw message offset would be
+offset 1 = 03
+offset 2 = 02
+offset 3 = 02
+offset 4 = 00
+etc
+
+The “clean” message with the right offset position corresponding to the manual would be without the interleaved blank nybbles:
+32 20 53 6F 75 72 63 65 20 43 6F 6E 66 69 67
+offset 1 = 32
+offset 2 = 20
+offset 3 = 53
+…
+It means ” 2 Source Config” in ASCII
+So truncating the zeros and pairing the 2nd numbers gives the useful hexadecimal bytes
+
+According to the manual it’s written for this particular message : “data segment size 163 bytes, 326 Nybbles”
+
+Message format – 8 bit data bytes must be transmitted and received using the 7 bit data format of MIDI, where the MSB of these data bytes must always be zero, so each of the 8 bit data byte is converted to two 4 bit nybbles for transmission. These nybbles each sent as bytes whose upper four bits are all zero. This is a description of the format of all nybblized data bytes within the packet frame as they are transmitted or received via MIDI.
+0000HHHH with H = Hi 4 bits of data byte – transmitted first
+0000LLLL with L = Lo 4 bits of data byte
+This represents how the 8 bit byte HHHHLLLL would be transmitted.
+
+I’m not used to manipulate bits and bytes, LSB, MSB, etc maybe there’s just a very logical and academic way to deal with the raw sysex message received according to this very structure.
+To me, removing the first 0 of a pair of number would do the job to get hex bytes with the right offset position.
+I will face the same structure when I’ll set all my knob values to send to the unit since the message formula is :
+
+F0 0F 40 00 (header) 00 (ID) 01 (Msg type) 00 01 (Command type) 00 0U (DSP Unit) 00 0P (0ppp pppp Algo Parameter) 00 00 0v 0V (Value) F7
+with
+mmmmmmmm = parameter value MSByte
+llllllll = parameter valuer LSByte
+
+So if I want to send value 127 for Param 3 on the Unit C the message would be :
+F0 0F 40 00 00 01 00 01 00 02 00 03 00 00 07 0F F7
+
+Is it a common way to send and receive sysex messages?
+Maybe there’s a 1 line LUA function to decypher sent/received message with this format but I don’t know.
+
+
+goodweather
+
+OK! With your explanation I understand now the bit packing they are using and why you need to extract the 4 lowest bits then assemble them by 2 (msb+lsb).
+Code from dnaldoog is perfect indeed (shift left x4 then add to next).
+Didn’t want to criticize, just to understand 😉
+
+
+damien
+
+This is working very well and you were absolutely right, setModulatorValue doesn’t work, the right method is
+
+panel:getModulatorByName("ModulatorName"):getComponent():setValue(Value,true)
+
+I experienced a little glitch with my code to update the panel from the received sysex of the current parameter values from the Ensoniq DP4
+
+I can get the algo Index from the 4 DSP given in hexadecimal
+
+I have a string with all the algo names listed
+
+My problem is that the value of the algo index is in hex and the string argument index is an integer
+
+i don’t know where to convert the given value with the tonumber method
+
+this is my script to update the algo name in a the dedicated label from the EditBufferMessage which is actually my cleaned MemoryBlock
+
+function UAAlgoLblDecode(EditBufferMessage)
+
+AlgoIndexUA = EditBufferMessage:getByte(16) -- Get Algo For Unit A from Edit Buffer Sysex Message in hex format
+
+AlgoName = {"No Effect","Small Room Rev","Large Room Rev","Hall Reverb","Non Lin Reverb 1","Small Plate","Large Plate","Gated Reverb","Reverse Reverb","MultiTap Delay","Dual Delay","Tempo Delay","Parametric EQ","Guitar Amp 1","VCF-Distortion","Speaker Cabinet","Rotating Speaker","EQ-Compressor","No Effect","Expander","InversExpander","8 Voice Chorus","EQ-Chorus-DDL","Flanger","Phaser-DDL","PitchShift-DDL","Pitch Shifter","Guitar Amp 2","VanderPolFilter","Sine/Noise Gen","No Effect","No Effect","Vocoder Low","Vocoder Mid 1","Vocoder Mid 2","Vocoder High","Pitch Shift 2U","Pitch Shift 2U #2","EQ-Tremolo-DDL","EQ-Vibrato-DDL","EQ-Panner-DDL","De-esser","Duck / Gate","3.3 sec DDL 2U","3.3 sec DDL 2U #2","Tunable Speaker","Non Lin Reverb 2","EQ-Flanger-DDL","FastPitchShift","No Effect","Guitar Amp 3","No Effect","No Effect","EQ-DDL-withLFO","Reverse Reverb 2","Rumble Filter","No Effect","No Effect","Keyed Expander","Non Lin Reverb 3"}
+
+AlgoNameUA = AlgoName[AlgoIndexUA+1]   -- Index position (+1) of the Algoname string, from an hex value that needs to be converted to decimal.
+AlgoTextUA = string.format("%s", AlgoNameUA)
+
+if AlgoNameUA ~= nil then 
+	panel:getLabel("lblAlgoUA"):setText(AlgoTextUA)
+else 
+	AlgoLabelUA = "Select Algo UA"
+end
+
+end
+How to convert “AlgoNameUA”, which is an hex value from the EditBufferMessage, to a decimal number that corresponds to the index position of my algoName string ?
+
+Right now if the value is 32, the given Index of the string ins 50(dec equivalent). so it’s not good.
+
+thanks a lot in advance guys !
+
+
+DnaldDoog, I got your reply by email but turned to a ghost posts online. Don’t worry.
+
+Actually there was something wrong in the denybblizing script:
+
+if total > 0 then...
+
+I removed it since we need all values even 00 that was nudging all the values.
+
+and that changed everything I now have all the correct values for my algo name so all the labels showing the right infos and the button switch the good current settings.
+
+Yes I would really like to get your exemple for nybllizing with the 0000HHHH 0000LLLL structure that would be awesome! It’s my next step so it may be very useful.
+
+Thanks 🙂
+
+May 13, 2020 at 10:13 am#118343REPLY | REPORT | QUOTE
+
+damien
+
+May 13, 2020 at 12:06 pm#118371REPLY | REPORT | QUOTE
+goodweather
+
+To complete dnaldoog answer’s (which is not appearing here but that we got in mail), here is a few conversion functions that you can put in one single method (I’m calling that method Miscellaneous).
+As dnaldoog mentioned, not needed in most cases but sometimes well 😉
+
+--
+-- Returns HEX representation of a DECimal number
+--
+dec2hex = function(num)
+
+    local hexstr = '0123456789ABCDEF'
+    local s = ''
+
+    while num > 0 do
+        local mod = math.fmod(num, 16)
+        s = string.sub(hexstr, mod+1, mod+1) .. s
+        num = math.floor(num / 16)
+    end
+    if s == '' then s = '0' end
+    return s
+
+end
+
+--
+-- 	For the conversion of a DECimal number to anything else
+--	it is just needed to use the built-in Lua function tonumber(string, base)
+--
+--	print(tonumber("0100",2))
+--	4
+-- 	print(tonumber("3F",16))
+-- 	63
+
+--
+-- Returns HEX representation of a String
+--
+function str2hex(str)
+    local hex = ''
+    while #str > 0 do
+        local hb = dec2hex(string.byte(str, 1, 1))
+        if #hb < 2 then hb = '0' .. hb end
+        hex = hex .. hb
+        str = string.sub(str, 2)
+    end
+    return hex
+end
+
+--
+-- 	To display a memory block in ASCII
+--	it is just needed to use the built-in Lua function toString()
+--
+--	message is "f0 00 20 32 28 00 74 01 32 2e 30 2e 32 f7"
+--	console(MidiMessage:getData():getRange(8, 5):toString())
+--	2.0.2
+
+--
+-- Returns ASCII representation of a string of HEX numbers separated by blanks or not
+-- Example: console(hex2ascii("32 2E 30 2E 32")) gives 2.0.2
+-- Example: console(hex2ascii("322E302E32")) gives also 2.0.2
+--
+function hex2ascii(str)
+    local ascii = ''
+    while #str > 0 do
+		if string.sub(str, 1,1) ~= " " then
+        	ascii = ascii .. string.char(tonumber(string.sub(str, 1,2), 16))
+        	str = string.sub(str, 3)
+		else
+        	str = string.sub(str, 2)
+		end
+    end
+    return ascii
+end
+
+
+dnaldoog
+
+Hi Damien,
+
+There shouldn’t be any conversion necessary. getByte() returns an unsigned integer.
+
+The Hex form of a number is used in Binary strings such as in MemoryBlocks or binary files and of course MIDI just for convenience. It’s just a human readable version of a number. That is why MemoryBlock contains the method toHexString(1). It converts integers to human readable Hexidecimal form.
+
+You will find that if you send a sysex message using decimal, it still works:
+
+
+sysexString={240,66,18,0,value,247}
+    panel:sendMidiMessageNow(CtrlrMidiMessage(sysexString))
+also:
+
+
+print(string.char(0x41)) = A
+print(string.char(65)) =A
+so AlgoName[0x0A] is the same as AlgoName[10] — I suppose most people would use [10]
+
+AlgoIndexUA = EditBufferMessage:getByte(16)
+
+Get Algo For Unit A from Edit Buffer Sysex Message in hex format » as an integer
+
+AlgoName = {[0]="No Effect","Small Room Rev",..."Non Lin Reverb 3"} -- optionally start your table with [0] to avoid incrementing by 1, but either way is okay
+
+AlgoNameUA = AlgoName[AlgoIndexUA]
+
+--or even
+
+AlgoNameUA = AlgoName[ EditBufferMessage:getByte(16)]
+This code below shouldn’t be necessary either, because you are already returning a string value from a lua table anyway:
+
+AlgoTextUA = string.format("%s", AlgoNameUA)
+
+I also added a panel attachment to my first post for reconstituting 4 bit nibbles (from a string) if you are interested.
+
+
+dnaldoog
+
+Well here is how I would refourbitnibbleize: (A new English verb) or in French I suggest requartrebitnibbilizer ????
+
+Passing that original string “32 20 53 6F 75 72 63 65 20 43 6F 6E 66 69 67” into the following function
+
+
+local mb=MemoryBlock("32 20 53 6F 75 72 63 65 20 43 6F 6E 66 69 67") -- 2 Source Config
+mynibblizedsysex=splitinto4bitnibbles(mb)
+console(String(mynibblizedsysex:toHexString(1)))
+should output
+
+02 00 03 02 02 00 05 03 06 0f 07 05 07 02 06 03 06 05 02 00 04 03 06 0f 06 0e 06 06 06 09 06 07
+
+
+splitinto4bitnibbles=function(m)
+local t={}
+local split=MemoryBlock()
+for i=0,m:getSize()-1 do
+z=m:getByte(i)
+local msb=bit.rshift(bit.band(z,240),4)
+local lsb = bit.band(z,15)
+table.insert(t,msb)
+table.insert(t,lsb)
+end
+split:createFromTable(t)
+return split -- return a MemoryBlock
+end
+See a dynamic example attached!
+
+This reply was modified 1 week, 1 day ago by dnaldoogdnaldoog.
+Attachments:
+4-bit-nybbleize-from-String_1_1.panel
+May 14, 2020 at 5:25 am#118384REPLY | REPORT | QUOTE
+
+damien
+
+Hi Dnaldoog and GoodWeather
+Thanks for the replies, I comply my script to your recommandation and it’s working very well.
+Now I need to write a global sysex midi message when the pots values are changing, I’ll work on it this weekend.
+
+
+damien
+
+I have another question about BlockMemory
+
+Right now I have the edit buffer sysex dump hard coded in a Lua Method.
+
+For another function called “UAParamBufferMessage” I need to remove the first 17 bytes from the EditBufferMessage. The first offset will shift from 17 to 0
+
+everytime I call this new string, ctrlr says the string is nil, my syntax is bad, it’s a (bad) mix between C, java and php 🙂
+
+Can you please help to create a new shortened substring from the longest one with the proper synthax?
+
+t={}
+
+m2 = MemoryBlock([[
+F0 0F 40 00 00 25 01 00 00 
+03 02 02 00 05 03 06 0F 07 05 07 02 06 03 06 05 02 00 04 03 06 0F 06 0E 06 06 06 09 06 07 02 00
+00 01 02 0F 00 00 03 00 04 08 05 04 04 09 02 05 01 0B 04 0B 00 00 00 07 07 05 00 00 01 0C 01 06 
+00 00 05 01 00 0A 00 0D 00 01 09 04 04 0B 04 09 00 06 00 01 02 0C 07 0F 00 07 00 03 02 0F 05 0D 
+07 0F 07 0F 00 03 02 00 01 02 02 0D 05 01 03 02 04 0E 02 0E 01 04 00 04 00 00 02 09 09 0D 00 00 
+00 0C 02 0D 00 00 01 07 01 03 00 00 00 00 05 0E 0E 0D 02 00 00 06 00 01 03 0F 07 0F 00 07 00 03 
+02 00 00 00 07 0F 07 0F 00 00 00 00 02 0B 00 0D 02 00 00 0C 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01 
+00 00 07 0F 00 00 00 02 00 00 07 0F 07 0F 07 0F 02 0C 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 
+00 00 00 01 00 00 07 0F 00 00 00 02 00 00 07 0F 07 0F 04 00 00 00 00 00 00 02 00 01 00 00 00 00 
+01 00 00 00 F7
+]])
+
+for i = 7,
+m2:getSize()-2,2 do
+assert(i < m2:getSize())
+msb = bit.lshift(m2:getByte(i),4)
+lsb = m2:getByte(i+1)
+total = msb+lsb
+console(String(string.format("[%d] = %.2X",i,total)))
+
+table.insert(t,total)
+
+end
+
+EditBufferMessage = MemoryBlock()
+EditBufferMessage:createFromTable(t)
+that gives me
+
+32 20 53 6F 75 72 63 65 20 43 6F 6E 66 69 67 20 | 01 2F 00 30...
+
+And I want to create the string UAParamBufferMessage
+
+something like
+
+UAParamBufferMessage = EditBufferMessage(starting at byte #17 and ends at byte #51)
+
+01 2F 00 30...
+
+Thanks a lot!
+
+
+dnaldoog
+
+Hi Damien,
+
+Looking at it, it looks like you would start at byte 42 and then if you wanted a 51 byte MemoryBlock, I am guessing you might need to extract a further 102 bytes from the message, something like m:getRange(42,102).
+
+May 14, 2020 at 11:25 pm#118400REPLY | REPORT | QUOTE
+
+damien
+
+dnaldoog wrote:
+Hi Damien,
+
+Looking at it, it looks like you would start at byte 42 and then if you wanted a 51 byte MemoryBlock, I am guessing you might need to extract a further 102 bytes from the message, something like m:getRange(42,102).
+
+Hi dnaldoog
+
+oh okay I was using the string.sub() function but it’s not working.
+You are right the getRange(start,end) is working exactly as needed.
+
+It’s easy to get mistaken by the “end” variable. which counts the amount of arguments to get, not the offset end position. I got it from a previous tip you gave a long time ago on the forum.
+thanks! have a nice day
+
+This reply was modified 1 week ago by damien. Reason: typo
+Author
+Posts
+Viewing 19 posts - 1 through 19 (of 19 total)
+Reply To: Cleaning blank nibbles from hexstring
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Playing WAV files with Ctrlr
+
+
+Goodweather
+
+The first trick is to run an external command from within Ctrlr.
+The second trick is to avoid the user to load some fancy wav player and thus the player must be native in the OS.
+After searching a bit, you find that rather easily.
+
+For Windows, the commands are:
+– powershell -c (New-Object Media.SoundPlayer ‘your_wav_filename’).PlaySync();
+– powershell -c (New-Object Media.SoundPlayer ‘your_wav_filename’).Play(); Start-Sleep -s 10; Exit;
+For MacOS, it is:
+– afplay \”your_wav_filename\”
+– afplay \”your_wav_filename\” -t 10
+
+To run the external command in Lua, it is os.execute(your_command)
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+MemoryBlock v CtrlrLuaMemoryBlock
+
+dnaldoog
+
+Here are a few constructors:
+
+HexString
+empty *two examples
+Lua table
+mB=MemoryBlock(“0a 14 1e”)
+console(String(mB:getSize()))
+console(String(“tohex”..mB:toHexString(1)))
+
+mB=MemoryBlock()
+mB:loadFromHexString(string.format(“%.2X”,10))
+mB:append(MemoryBlock(“14”))
+mB:append(MemoryBlock({0x1e}))
+console(String(mB:getSize()))
+console(String(mB:toHexString(1)))
+
+t={10,20,30}
+mB=MemoryBlock()
+mB:createFromTable(t)
+console(String(mB:getSize()))
+console(String(mB:toHexString(1)))
+
+mB=MemoryBlock({10,20,30})
+console(String(mB:getSize()))
+console(String(mB:toHexString(1)))
+
+dnaldoog
+
+Interesting about CtrlrLuaMemoryBlock(). Was not aware of that one but I’m only using 5.3.201
+You will find the available functions in the Juce API documentation at
+https://docs.juce.com/master/classes.html
+Btw, this is valid for many objects used in Ctrlr. First look in Juce API then pray if they have been implemented (bound) in Ctrlr. Most are.
+
+My most used commands are:
+– memory block creation
+ProgramFileData = MemoryBlock()
+– memory block copy to a new one
+mbName = MemoryBlock(mbNameEmpty)
+– copy a memory block into another one
+LoadedProgramData:copyFrom (mbName, 465, 11)
+– size check
+ProgramFileData:getSize()
+– Filling amemory block from a file
+file:loadFileAsData(ProgramFileData)
+– extracting single byte
+LoadedProgramData:getByte(6)
+– extracting range of bytes
+LoadedProgramData:getRange(440,15)
+– setting a byte
+LoadedProgramData:setByte(6, modOsc1Tune:getModulatorValue())
+
+What is not working (bad implementation?) is to create a memory block containing predefined data (by default a memory block is empty).
+So, to achieve this, I pre-define memory blocks like
+mbNameEmpty = MemoryBlock ({0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00})
+Then I use it to fill the memory block I’m using
+mbName = MemoryBlock(mbNameEmpty)
+
+They are really great and easy to use for all your file manipulations
+
+shooking
+
+thanks so this is what I did to convert from what appeared to work in 6.x to 5.3.201
+
+function dumpSingleBlockIndividually(ch, bias)
+    -- here we have read a multiBlock into our local buffers
+    -- if you send the whole block to the K1r it chokes.
+    -- so instead we create the sysex necessary to send as individuals.
+    for i = 0, 31 do
+        addDelayMS(125)
+		console("i "..i)
+        
+--[[
+	this worked on 6.x but not on 5.3
+        local sysex = string.format("F0 40 %02x 20 00 03 00 %02x ",ch, i + bias)
+        sysex=sysex..g_singlePatch:getRange(0, g_singlePatch:getSize() - 1):toHexString(1)
+        
+        local checksum = 0xA5
+        for j=0, g_singlePatch:getSize()-1 do
+            checksum = checksum + g_singlePatch:getByte(j)
+        end
+
+--        console("checksum"..checksum)
+        checksum = BitAND(checksum, 127)
+        console("checksum"..checksum)
+        sysex = sysex..string.format(" %02x F7",checksum)
+--        console(""..sysex)
+--]]
+		mb =MemoryBlock()
+		mb:loadFromHexString( string.format("F0 40 %02x 20 00 03 00 %02x ",ch, i + bias) )
+-- notice kinky { } around your value to make it into valid tuple for MemoryBlock
+
+		for z = 0, g_singlePatch:getSize() - 1 do
+			mb:append(MemoryBlock( { g_singlePatch[z] } ) )
+		end
+        local checksum = 0xA5
+        for j=0, g_singlePatch:getSize()-1 do
+            checksum = checksum + g_singlePatch[j]
+        end
+        checksum = BitAND(checksum, 127)
+		mb:append(MemoryBlock( { checksum } ) )
+		mb:append(MemoryBlock( { 0xF7 } ) )
+
+        panel:sendMidiMessageNow(CtrlrMidiMessage(String(mb:toHexString(1))))
+    end
+
+[Later]
+
+curse of the darned code blocks!! As you once mentioned [ followed by i followed by ] seems to go to /dev/null.
+
+In the above it did say mb:append(MemoryBlock( { g_singlePatch\[i\][z] } ) ) where I added \[ \] … remove them!!
+
+Goodweather
+
+For the correct syntax of functions, always look in Juce API
+Then realize that not everything has been ported to Ctrlr.
+Then also realize that some things are changing in Lua.
+For example, the bitwise operations have changed between Lua 5.1/5.2 and 5.3
+
+And indeed, I sometimes see strange characters in posts… Don’t know why…
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+tostring
+--------
+
+Summary
+
+Converts its argument to a string
+
+Prototype
+
+s = tostring (a)
+
+Description
+
+Converts its argument to a string in a reasonable format. If a __tostring metatable field is found, that is used for the conversion.
+
+
+print (tostring (print)) --> function: 0205A980
+print (tostring (_G)) --> table: 02072780
+print (tostring (1.23e10)) --> 12300000000
+
+-- use __tostring to print a table
+
+t = { age = 42, height = 102 }
+
+setmetatable (t, 
+  { 
+  __tostring = function (t) 
+    return "person of age " .. t.age
+    end -- __tostring 
+  }
+ )
+
+print (t) --> person of age 42
+
+
+
+Also see bit.tostring which will convert a number to a string of any base in the range 2 to 36.
+
+
+tonumber
+--------
+Summary
+
+Converts a string (of the given base) to a number
+
+Prototype
+
+n = tonumber (n, base)
+
+Description
+
+Converts n to a number using the optional base (default 10). Base can be from 2 to 36. For bases > 10 the letters a-z (not case sensitive) represent the digits. (eg. F is 15).
+For decimal numbers you can supply fractions and exponents. Others should be unsigned.
+Returns nil if the number cannot be converted.
+
+
+print (tonumber ("100100", 2)) --> 36
+print (tonumber ("1e5")) --> 100000
+print (tonumber ("1EF", 16)) --> 495 
+
+
+You can use tonumber as a quick check if a variable contains something convertable to a number.
+
+
+print (tonumber ("abc")) --> nil
+print (tonumber ("-43")) --> -43
+print (tonumber (-43))   --> -43
+
+
+To see if the variable actually is already a number type, use the "type" function:
+
+
+print (type ("-43")) --> string
+print (type (-43))   --> number
+
+
+See also bit.tonumber which will handle larger numbers.
+
+
+bit.tonumber
+------------
+
+Summary
+
+Convert a string into a number
+
+Prototype
+
+n = bit.tonumber (s, base)
+
+Description
+
+This takes a string, and converts it into a number. Unlike the standard Lua tonumber function this function will handle up to a 52-bit number (the default Lua number conversion will only go to 32-bit numbers).
+
+eg.
+
+
+print (bit.tonumber ("A7C5AC471", 16)) -->  45035996273
+
+
+The base is optional and defaults to 10. The base can be in the range 2 to 36. Fractional numbers are not supported, nor are numbers with exponents (eg. 10.24e15). For such numbers use the standard Lua "tonumber" function.
+
+Because of limitations in the size of a floating point number, the maximum string value that can be converted is a 52 bit number, ie: hex FFFFFFFFFFFFF (decimal 4503599627370495).
+
+Leading whitespace is skipped. After that, there can be an optional + or - sign.
+
+
+bit.tostring
+------------
+
+Summary
+
+Convert a number into a string
+
+Prototype
+
+s = bit.tostring (n, base)
+
+Description
+
+This takes a number, and converts it into a string to the given base, in uppercase. The base is optional and defaults to 10. The base can be in the range 2 to 36. Fractional parts are discarded, as the number is first converted to a 64-bit number internally. Negative numbers are OK, and will be converted with a leading "-" sign.
+
+eg.
+
+
+print (bit.tostring (45035996273, 16)) -->  A7C5AC471
+
+
+string.char
+-----------
+
+Summary
+
+Converts ASCII codes into their equivalent characters
+
+Prototype
+
+s = string.char (n1, n2, n3, ...)
+
+Description
+
+Receives 0 or more numbers and converts them to the corresponding characters. The inverse operation is carried out by string.byte.
+
+
+print (string.char (65, 66)) --> AB
+
+
+string.byte
+-----------
+
+Summary
+
+Converts a character into its ASCII (decimal) equivalent
+
+Prototype
+
+code = string.byte (s, n)
+
+Description
+
+Returns the ASCII code for the nth character of the string s. The inverse operation is carried out by string.char.
+
+Default for n is 1.
+
+
+print (string.byte ("ABC")) --> 65 (A is 65 in ASCII)
+print (string.byte ("ABC", 2)) --> 66 (B is 66)
+
+
+utils.tohex
+-----------
+Summary
+
+Convert a string into hex
+
+Prototype
+
+s = utils.tohex (s)
+
+Description
+
+This converts the string s to hexadecimal (printable) form. The string may contain binary zeroes. Use string.lower to make a lower-case version if that is what you prefer.
+
+eg.
+
+
+print (utils.tohex ("Nick Gammon")) --> 4E69636B2047616D6D6F6E
+
+
+utils.fromhex
+-------------
+Summary
+
+Convert a string from hex
+
+Prototype
+
+s = utils.fromhex (s)
+
+Description
+
+This converts the supplied hexadecimal string s back to a normal string. The converted string may contain binary zeroes.
+
+eg.
+
+
+print (utils.fromhex ("4E69636B2047616D6D6F6E")) --> Nick Gammon
+
+
+The supplied string may contain 'space' characters (0x09 – 0x0D or 0x20) which are ignored, otherwise if it contains characters other than A-F, a-f or 0-9 this function raises an error. If the number of characters is odd then the last character is treated as the low-order nibble of the final byte. eg.
+
+
+a = utils.fromhex ("ABC") --> same as utils.fromhex ("AB0C")
+
+
+Note that "spaces are ignored" means that a sequence like "A B C D" is treated as the same as "ABCD" not "0A 0B 0C 0D".
+
+
+
+bit.clear
+--------
+Summary
+
+Clears one or more bits
+
+Prototype
+
+n = bit.clear (a, b, ...)
+
+Description
+
+This takes one or more arguments. All are converted to signed 'long long' (64-bit integers). The result is the first argument 'and'ed with the ones-complement of the other arguments.
+
+In other words, you can clear any bits in the first argument which are set in subsequent arguments.
+
+eg.
+
+
+a = bit.clear (0x111, 0x01)  --> 0x110
+a = bit.clear (0x111, 0x01, 0x10) --> 0x100
+
+
+
+Note that setting a bit can be simply done with bit.bor.
+
+Testing a bit can be done with bit.test.
+
+
+bit.bor
+-------
+
+Summary
+
+Bitwise 'or'
+
+Prototype
+
+n = bit.bor (a, b, ...)
+
+Description
+
+This takes one or more arguments. All are converted to signed 'long long' (64-bit integers). The result is all arguments "or-ed" together bitwise.
+eg.
+
+
+print (bit.bor (1, 2, 8)) --> 11
+
+
+Effectively this sets bits (eg. flags).
+
+Note that clearing a bit can be done with bit.clear.
+
+
+bit.test
+--------
+
+Summary
+
+Bitwise 'test'
+
+Prototype
+
+n = bit.test (a, b, ...)
+
+Description
+
+This takes one or more arguments. All are converted to signed 'long long' (64-bit integers).
+
+The second and subsequent arguments are or'ed together. The result is then and'ed with the first argument. The function returns true if the result of the 'and' is the value being 'and'ed with.
+
+Effectively this tests whether or not various bits are set in the first argument.
+
+The result is a boolean (true or false) and thus can be directly used in "if" tests.
+
+eg.
+
+
+print (bit.test (0x42, 0x02)) --> true
+print (bit.test (0x42, 0x40, 0x02)) --> true
+print (bit.test (0x02, 0x03)) --> false (0x01 bit not set)
+
+
+See also bit.band and bit.bor.
+
+Note that setting a bit can be done with bit.bor.
+Clearing a bit can be done with bit.clear.
+
+
+
+string.match
+------------
+
+Summary
+
+Searches a string for a pattern
+
+Prototype
+
+cap1, cap2, cap3 = string.match (str, pattern, index)
+
+Description
+
+Find the first match of the regular expression "pattern" in "str", starting at position "index".
+
+The starting position (index) is optional, and defaults to 1 (the start of the string).
+
+If found, returns any captures in the pattern. If no captures were specified the entire matching string is returned.
+
+If not found, returns nil.
+
+This is similar to string.find, except that the starting and ending index are not returned.
+
+
+print (string.match ("You see dogs and cats", "s..")) --> see
+
+
+See string.find for an explanation of regular expressions.
+
+Note: string.match does not have the option for a "plain" search. If you want to do a search without regular expressions, use string.find.
+
+
+string.find
+-----------
+
+Summary
+
+Searches a string for a pattern
+
+Prototype
+
+st, en, cap1, cap2, cap3 = string.find (str, pattern, index, plain)
+
+Description
+
+Find the first match of the regular expression "pattern" in "str", starting at position "index".
+
+The starting position (index) is optional, and defaults to 1 (the start of the string).
+
+If found, returns the start and end position, and any captures as additional results.
+
+If not found, returns nil.
+
+If "plain" is true, the search string is plain text, not a regular expression. (The "plain" argument is optional, and defaults to false).
+
+
+
+Also see:
+
+
+string.match which operates in a similar way, but does not return the start and end positions
+string.gmatch which iterates over a string, allowing you to take action on each match (eg. on each word)
+string.gsub which lets you make replacements on matching elements (for example, replace one word with another, or make certain things all upper-case)
+
+
+
+Patterns
+
+The standard patterns (character classes) you can search for are:
+
+
+ . --- (a dot) represents all characters. 
+%a --- all letters. 
+%c --- all control characters. 
+%d --- all digits. 
+%l --- all lowercase letters. 
+%p --- all punctuation characters. 
+%s --- all space characters. 
+%u --- all uppercase letters. 
+%w --- all alphanumeric characters. 
+%x --- all hexadecimal digits. 
+%z --- the character with hex representation 0x00 (null). 
+%% --- a single '%' character.
+%1 --- captured pattern 1.
+%2 --- captured pattern 2 (and so on).
+%f[s]  transition from not in set 's' to in set 's'.
+%b()   balanced nested pair ( ... ( ... ) ... ) 
+
+
+Important! - the uppercase versions of the above represent the complement of the class. eg. %U represents everything except uppercase letters, %D represents everything except digits.
+
+Also important! If you are using string.find (or string.match etc.) in MUSHclient, and inside "send to script" in a trigger or alias, then the % sign has special meaning there (it is used to identify wildcards, for example, %1 is wildcard 1). Thus the % signs in string.find need to be doubled or they won't work properly (so use %%d instead of %d in "send to script"). This does not apply if you are scripting in a script file, because the expansion of wildcards does not apply there.
+
+
+Magic characters
+
+There are some "magic characters" (such as %) that have special meanings. These are:
+
+
+^ $ ( ) % . [ ] * + - ? 
+
+
+If you want to use those in a pattern (as themselves) you must precede them by a % symbol.
+
+eg. %% would match a single % (also see note above about "send to script")
+
+In practice, it is safe to put % in front of any non-alphanumeric character. If in doubt, put a % in front of a special character.
+
+
+Quotes and backslashes
+
+The arguments to string.find (and string.match, etc.) are just normal Lua strings. Thus, to put a backslash or quote inside such a string you still need to "escape" it with a backslash in the usual way.
+
+eg. string.find (str, "\\") -- find a single backslash
+
+
+Sets
+
+You can build your own pattern classes (sets) by using square brackets, eg.
+
+
+[abc] ---> matches a, b or c
+[a-z] ---> matches lowercase letters (same as %l)
+[^abc] ---> matches anything except a, b or c
+[%a%d] ---> matches all letters and digits
+[%a%d_] ---> matches all letters, digits and underscore
+[%[%]] ---> matches square brackets (had to escape them with %)
+
+
+You can use pattern classes in the form %x in the set. If you use other characters (like periods and brackets, etc.) they are simply themselves.
+
+You can specify a range of character inside a set by using simple characters (not pattern classes like %a) separated by a hyphen. For example, [A-Z] or [0-9]. These can be combined with other things. For example [A-Z0-9] or [A-Z,.].
+
+The end-points of a range must be given in ascending order. That is, [A-Z] would match upper-case letters, but [Z-A] would not match anything.
+
+A hyphen at the start or end of a set is itself (matches a hyphen).
+
+You can negate a set by starting it with a "^" symbol, thus [^0-9] is everything except the digits 0 to 9. The negation applies to the whole set, so [^%a%d] would match anything except letters or digits. In anywhere except the first position of a set, the "^" symbol is simply itself.
+
+Inside a set (that is a sequence delimited by square brackets) the only "magic" characters are:
+
+
+] ---> to end the set, unless preceded by %
+% ---> to introduce a character class (like %a), or magic character (like "]")
+^ ---> in the first position only, to negate the set (eg. [^A-Z)
+- ---> between two characters, to specify a range (eg. [A-F])
+
+
+Thus, inside a set, characters like "." and "?" are just themselves.
+
+
+Repetition
+
+The repetition characters, which can follow a character, class or set, are:
+
+
++  ---> 1 or more repetitions (greedy)
+*  ---> 0 or more repetitions (greedy)
+-  ---> 0 or more repetitions (non greedy)
+?  ---> 0 or 1 repetition only
+
+
+A "greedy" match will match on as many characters as possible, a non-greedy one will match on as few as possible.
+
+
+Anchor to start and/or end of string
+
+The standard "anchor" characters apply:
+
+
+^  ---> anchor to start of subject string (must be the very first character)
+$  ---> anchor to end of subject string   (must be the very last character)
+
+
+For example:
+
+
+^You see     ---> string must start with "You see"
+experience$  ---> string must end with "experience"
+^Tick$       ---> string must be exactly "Tick" with no other characters
+
+
+
+Captures
+
+You can also use round brackets to specify "captures":
+
+
+You see (.*) here
+
+
+Here, whatever matches (.*) becomes the first capture.
+
+You can also refer to matched substrings (captures) later on in an expression:
+
+
+print (string.find ("You see dogs and dogs", "You see (.*) and %1")) --> 1 21 dogs
+print (string.find ("You see dogs and cats", "You see (.*) and %1")) --> nil
+
+
+This example shows how you can look for a repetition of a word matched earlier, whatever that word was ("dogs" in this case).
+
+As a special case, an empty capture string returns as the captured pattern, the position of itself in the string. eg.
+
+
+print (string.find ("You see dogs and cats", "You .* ()dogs .*")) --> 1 21 9
+
+
+What this is saying is that the word "dogs" starts at column 9.
+
+There is a limit of 32 captures that can be returned.
+
+
+Balanced sequences
+
+Finally you can look for nested "balanced" things (such as parentheses) by using %b, like this:
+
+
+print (string.find ("I see a (big fish (swimming) in the pond) here",
+       "%b()"))  --> 9 41
+
+
+After %b you put 2 characters, which indicate the start and end of the balanced pair. If it finds a nested version it keeps processing until we are back at the top level. In this case the matching string was "(big fish (swimming) in the pond)".
+
+
+Frontier patterns
+
+A "frontier" (or boundary) pattern is used to assert a transition from one set of characters to another (eg. non-letters to letters, or non-digits to digits). This can be useful to detect words, such as "log" but omit "blog" or "logging".
+
+A frontier is specified as %f[set] and matches on a transition from not-in-set to in-set. For example, to match "log" on its own:
+
+
+print (string.find ("There is a log here", "%f[%a]log%f[%A]"))   --> 12 14 
+print (string.find ("There is a blog here", "%f[%a]log%f[%A]"))  --> nil
+print (string.find ("There is logging here", "%f[%a]log%f[%A]")) --> nil
+
+
+The first frontier ("%f[%a]") matches on the transition from not-letters to letters. The second frontier ("%f[%A]") matches on letters to not-letters. Effectively this gives you a word boundary match.
+
+
+Examples
+
+
+print (string.find ("the quick brown fox", "quick")) --> 5 9
+print (string.find ("the quick brown fox", "(%a+)")) --> 1 3 the
+print (string.find ("the quick brown fox", "(%a+)", 10)) --> 11 15 brown
+print (string.find ("the quick brown fox", "fruit")) --> nil
+
+
+string.format
+-------------
+
+Summary
+
+Formats a string
+
+Prototype
+
+s = string.format (fstr, v1, v2, v3, ...)
+
+Description
+
+Formats the supplied values (v1, v2 etc.) using format string 'fstr', similar to the C function printf.
+
+It is an error to supply too few variables for the format string.
+
+The format string comprises literal text, and directives starting with %. Each directive controls the format of the next argument. Directives can include flags, width and precision controls. To literally incorporate "%" in the output you need to put "%%" in the format string.
+
+For example:
+
+
+print (string.format ("To wield the %s you need to be level %i", "sword", 10))
+
+Prints:
+
+To wield the sword you need to be level 10
+
+
+In this example the values "sword" and "10" are substituted where the %s and %i appear in the format string.
+
+Important! If you are using string.format in MUSHclient, and inside "send to script" in a trigger or alias, then the % sign has special meaning there (it is used to identify wildcards, such as %1 is wildcard 1). Thus the % signs in string.format need to be doubled or they won't work properly.
+
+For example:
+
+
+print (string.format ("To wield the %%s you need to be level %%i", "sword", 10))
+
+
+This does not apply if you are using a separate script file.
+
+
+
+Directives can be:
+
+
+%c - convert a number to a single character (like string.char)
+
+
+string.format ("%c", 65) --> A
+
+
+%d and %i - output as an integer number
+
+
+string.format ("%i", 123.456) --> 123
+
+
+%o - convert to octal
+
+
+string.format ("%o", 16) --> 20
+
+
+%u - convert to an unsigned number
+
+Negative numbers will be converted to 4294967296 (2^32) minus the number.
+
+
+string.format ("%u", 1234.566) --> 1234
+string.format ("%u", -1234)    --> 4294966062
+
+
+%x - hex (lower-case)
+
+
+string.format ("%x", 86543) --> 1520f
+
+
+%X - hex (upper-case)
+
+
+string.format ("%X", 86543)--> 1520F
+
+
+%e - scientific notation, "e" in lower case:
+
+
+string.format ("%e", 15) --> 1.500000e+001
+
+
+%E - scientific notation, "E" in upper case:
+
+
+string.format ("%E", 15) --> 1.500000E+001
+
+
+%f - floating point, default to 6 decimal places:
+
+
+string.format ("%f", 15.656e4) --> 156560.000000
+
+
+%g - Signed value printed in %f or %e format, whichever is more compact for the given value. To make it compact, only the required number of decimal places (if any) are shown.
+
+
+string.format ("%g", 15.656) --> 15.656
+string.format ("%g", 1)      --> 1
+string.format ("%g", 1.2)    --> 1.2
+
+
+%G - Same as %g except that an upper-case E is used where appropriate.
+
+
+string.format ("%G", 15.656e42) --> 1.5656E+043
+
+
+
+%q - formats a string in such a way Lua can read it back in (eg. as Lua source).
+
+Basically this means:
+
+
+It puts a backslash in front of the double quote character (hex 22), backslash itself (hex 5C), and newline (hex 0A).
+
+The nul character (hex 00) becomes \000
+
+Carriage return (hex 0D) becomes \r
+
+
+The string itself is surrounded by double quotes.
+
+For example:
+
+
+print (string.format ("%q", 'a cat called "Puss"')) --> "a cat called \"Puss\""
+
+
+%s - output a string (or something that can be converted to a string, such as a number).
+
+%% - output a single % character
+
+
+
+You can optionally supply 'flags width.precision' arguments before the letter.
+
+
+
+Flags can be:
+
+
+- : left align result inside field
++ : always prefix with a sign, using + if field positive
+0 : left-fill with zeroes rather than spaces
+(space) : If positive, put a space where the + would have been
+# : Changes the behaviour of various formats, as follows:
+For octal conversion (o), prefixes the number with 0 - if necessary.
+For hex conversion (x), prefixes the number with 0x
+For hex conversion (X), prefixes the number with 0X
+For e, E and f formats, always show the decimal point.
+For g and G format, always show the decimal point, and do not truncate trailing zeroes.
+The option to 'always show the decimal point' would only apply if you had the precision set to 0.
+
+
+
+
+Width is the width of the returned field. If the converted number/string is wider than the width it is not truncated. Thus, this is effectively the minimum width. The maximum width you can specify is 99.
+
+Decimal places are counted in the width, so something like %10.4f will actually have 5 digits before the decimal place. (5 before, plus 1 for the decimal point, plus 4 after adds up to 10).
+
+You cannot use "*" as the width (as you can for printf). If you want variable-size strings you can simulate that by modifying the format string on-the-fly.
+
+eg. instead of %*g, use "%" .. width .. "g"
+
+
+
+Precision is the number of decimal places to show for floating-point numbers. The maximum precision you can specify is 99.
+
+For strings the length of the source string is truncated to the precision size.
+
+If the precision is omitted it defaults to 6 decimal places for 'e', 'E' and 'f' format types. If decimal places are omitted by the specified precision, the result is rounded.
+
+
+
+Examples:
+
+
+string.format ("%15.1f", 15.656)   --> '           15.7'
+string.format ("%15.8f", 15.656)   --> '    15.65600000'
+string.format ("%-15.1f", 15.656)  --> '15.7           '
+string.format ("%015.1f", 15.656)  --> '0000000000015.7'
+string.format ("%+015.1f", 15.656) --> '+000000000015.7
+string.format ("%5s", "hi")          --> '   hi'
+string.format ("%-5s", "hi")         --> 'hi   '
+string.format ("%.4s", "Nick Gammon")--> 'Nick'  (truncation)
+string.format ("%9.4s", "John Smith")--> '     John'
+string.format ("%.f", 4.4)           --> '4'  (precision of zero)
+string.format ("%.f", 4.5)           --> '5'  (rounding)
+string.format ("%#.f", 4.4)          --> '4.' (decimal place forced)
+
+
+os.execute
+----------
+
+Summary
+
+Executes an operating system command
+
+Prototype
+
+status = os.execute (command)
+
+Description
+
+Passes 'command' to the operating system shell for execution. Returns a status code.
+
+
+status = os.execute ("dir") --> (directory listing whizzes by)
+
+
+Here is a method of capturing the output to a file, and reading it in:
+
+
+-- get a temporary file name
+n = os.tmpname ()
+
+-- execute a command
+os.execute ("dir > " .. n)
+
+-- display output
+for line in io.lines (n) do
+  print (line)
+end
+
+-- remove temporary file
+os.remove (n)
+
+
+os.rename
+---------
+
+Summary
+
+Renames a file
+
+Prototype
+
+ok, message = os.rename (oldname, newname)
+
+Description
+
+Renames a file. On success, returns true.
+
+If it cannot, it returns nil followed by an error message.
+
+
+os.rename("test.txt", "test2.txt") --> true
+os.rename("test.txt", "test2.txt") --> nil, test.txt: File exists 
+
+
+f:write
+-------
+Summary
+
+Writes to a file
+
+Prototype
+
+f:write (v1, v2, v3, ...)
+
+Description
+
+Writes arguments to the file. They must be strings or numbers.
+
+
+f:write ("hi there", 42, "some more data") 
+
+
+If the write was successful the function returns true.
+
+If the file cannot be written the function returns 3 things:
+
+
+nil
+An error message (string)
+An error code (number)
+
+
+A sensible thing to do would be to check the return code like this:
+
+
+assert (f:write ("hi there", 42, "some more data"))
+
+
+f:setvbuf
+---------
+
+Summary
+
+Sets the buffering mode for an output file
+
+Prototype
+
+f:setvbuf (mode, size)
+
+Description
+
+Sets the buffering mode for an output file. There are three available modes, which are supplied as strings:
+
+
+"no": no buffering; the result of any output operation appears immediately.
+
+"full": full buffering; output operation is performed only when the buffer is full (or when you explicitly flush the file (see io.flush)).
+
+"line": line buffering; output is buffered until a newline is output or there is any input from some special files (such as a terminal device).
+
+
+
+For the last two cases, size specifies the size of the buffer, in bytes. The default is an appropriate size.
+
+
+f:flush
+-------
+Summary
+
+Flushes outstanding data to disk
+
+Prototype
+
+f:flush ()
+
+Description
+
+Flushes outstanding data to disk.
+
+
+f:flush () -- save everything
+
+
+io.flush
+--------
+Summary
+
+Flushes outstanding data to disk for the default output file
+
+Prototype
+
+io.flush ()
+
+Description
+
+Equivalent to f:flush () for the default output file. Flushes outstanding data to disk.
+
+
+io.open
+-------
+
+Summary
+
+Opens a file
+
+Prototype
+
+f = io.open (filename, mode)
+
+Description
+
+Opens a file and returns a file handle for working with it.
+
+Modes can be a string which is:
+
+
+r - read mode
+w - write mode (overwrites existing)
+a - append mode (appends to existing)
+b - binary mode
+r+ - update mode (existing data preserved)
+w+ - update mode (existing data erased)
+a+ - append update mode (existing data preserved, append at end of file only)
+
+
+If the file cannot be opened this function does not raise an error (unlike io.input and io.output) but returns 3 things:
+
+
+nil
+An error message (string)
+An error code (number)
+
+
+Thus a sensible thing to do is wrap the io.open call with an assert, as in the example:
+
+
+f = assert (io.open ("test.txt", "r"))  -- open it
+s = f:read ("*a")  -- read all of it
+print (s)  -- print out
+f:close ()  -- close it
+
+
+f:read
+------
+
+Summary
+
+Reads the file according to the specified formats
+
+Prototype
+
+v1, v2 ... = f:read (format1, format2, ...)
+
+Description
+
+Reads the file f according to the given formats. Each format returns a string, a number, or nil and an error code if it fails (see below). The formats are:
+
+
+*n - reads a number and returns it
+*a - reads the entire file from the current position
+*l - (default) - reads the next line, returns nil on EOF
+number - returns a string with up that many characters in it, or nil on EOF
+
+
+
+f = io.input ("test.txt")
+repeat
+  s = f:read ("*l") -- read one line
+  if s then  -- if not end of file (EOF)
+   print (s) -- print that line
+  end
+until not s  -- until end of file
+
+f:close ()  -- close that file now
+
+
+If the file cannot be read the function returns 3 things:
+
+
+nil
+An error message (string)
+An error code (number)
+
+
+io.output
+---------
+
+Summary
+
+Opens a file for output
+
+Prototype
+
+f = io.output (filename)
+
+Description
+
+Opens filename for output in text mode. Raises an error if it cannot.
+
+If opened OK returns a handle to the opened file, and makes it the default output file.
+
+If called with no argument, returns the handle to the default output file.
+
+If called with a file handle, sets the default output file to that handle.
+
+
+f = io.output ("test.txt") --> handle to new file
+f:write ("some data here") -- write to it
+f:close ()  -- close that file now
+
+
+io.popen
+--------
+
+Summary
+
+Creates a pipe and executes a command
+
+Prototype
+
+f = io.popen (command, mode)
+
+Description
+
+Creates a pipe and executes a command. Mode can be one of:
+
+
+"r" - The calling process can read the spawned command’s standard output via the returned stream. This is the default.
+
+"w" - The calling process can write to the spawned command’s standard input via the returned stream.
+
+"b" - Open in binary mode.
+
+"t" - Open in text mode.
+
+
+However io.popen is not supported under the version compiled into MUSHclient, so don't get too excited. :)
+
+This is an example of using popen under the Linux Lua executable:
+
+
+ f = assert (io.popen ("ls -l"))
+  
+ for line in f:lines() do
+   print(line)
+ end -- for loop
+   
+ f:close()
+
+
+An alternative to using pipes, if you want to capture operating system output, is to redirect command output to a temporary file, like this:
+
+
+-- get a temporary file name
+n = os.tmpname ()
+
+-- execute a command
+os.execute ("dir > " .. n)
+
+-- display output
+for line in io.lines (n) do
+  print (line)
+end
+
+-- remove temporary file
+os.remove (n)
+
+
+f:seek
+------
+
+Summary
+
+Sets and gets the current file position
+
+Prototype
+
+n = f:seek (whence, offset)
+
+Description
+
+Sets and gets the current file position.
+
+f:seek () --> returns the current file position
+
+When setting a position you can supply a string which is one of:
+
+
+"set" - from beginning of file
+"cur" - from current position
+"end" - from end of file
+
+
+The offset is a number from the base position.
+
+
+
+f:seek ("set", 0)     -- go to start of file
+f:seek ("end", -100)  -- go to 100 bytes from end of file
+f:seek ("cur", 50)    -- go forwards 50 bytes
+
+f:lines
+-------
+
+Summary
+
+Returns an iterator function for reading the file line-by-line
+
+Prototype
+
+it = f:lines ()
+
+Description
+
+Returns an iterator function that reads the open file line-by-line.
+
+At end of file, returns nil.
+
+It does not close the file.
+
+
+f = io.input ("test.txt")
+for line in f:lines () do
+  print (line)
+end 
+f:close ()  -- close that file now
+
+ --> Entire contents of file listed
+ 
+ 
+io.lines
+--------
+
+
+Summary
+
+Returns an iterator function for reading a named file line-by-line
+
+Prototype
+
+it = io.lines (filename)
+
+Description
+
+Opens filename for input in text mode. Raises an error if it cannot.
+
+If opened OK returns an iterator function that reads the file line-by-line.
+
+At end of file, returns nil and closes the file.
+
+If filename not supplied, uses the default input file.
+
+
+for line in io.lines ("test.txt") do
+  print (line)
+end 
+
+ --> Entire contents of file listed
+ 
+
+io.type
+-------
+
+Summary
+
+Returns type of file handle
+
+Prototype
+
+s = io.type (f)
+
+Description
+
+Returns a string which is one of:
+
+
+file - an open file handle
+closed file - a closed file handle
+nil - not a file handle
+
+
+
+f = io.tmpfile ()
+print (io.type (f))
+f:close ()
+print (io.type (f))
+
+-->
+
+file
+closed file
+
+
+string.len
+----------
+
+Summary
+
+Return the length of a string
+
+Prototype
+
+n = string.len (str)
+
+Description
+
+Returns the length of the string, including any imbedded zero (0x00) bytes.
+
+
+string.len ("hi there") --> 8
+
+
+You can also use #string to find its length.
+
+
+#"hi there" --> 8
+
+
+string.sub
+----------
+Summary
+
+Returns a substring of a string
+
+Prototype
+
+s = string.sub (str, start, end)
+
+Description
+
+Returns a substring of the string, starting at index 'start' and ending at index 'end'. Both may be negative to indicate counting from the right. The end point is optional and defaults to -1, which is the entire rest of the string.
+
+
+string.sub ("ABCDEF", 2, 3)  --> BC
+string.sub ("ABCDEF", 3)     --> CDEF
+string.sub ("ABCDEF", -1)    --> F
+
+
+See also utils.utf8sub for doing the identical operation with UTF-8 strings.
+
+
+utils.filepicker
+----------------
+Summary
+
+Invokes the Windows standard "file picker" dialog box
+
+Prototype
+
+filename = utils.filepicker (title, name, extension, filter, save)
+
+Description
+
+This invokes the Windows standard "file picker" dialog box, which lets you choose a file for opening or saving. Usage is:
+
+
+filter = { txt = "Text files", ["*"] = "All files" }
+
+filename = utils.filepicker (title, name, extension, filter, save)
+
+
+
+title - title to appear on the dialog box (eg. "Name of plugin")
+name - default name of file to be loaded/saved
+extension - default extension to use
+filter - table of file filters, see example above
+save - true for a "save" dialog, false for a "load" dialog
+
+
+All arguments are optional.
+
+Returns nil if dialog dismissed, or the chosen filename if not.
+
+
+utils.inputbox
+--------------
+
+Summary
+
+Display a message box and get free-format reply
+
+Prototype
+
+result = utils.inputbox ( msg, title, default, font, fontsize, extras )
+
+Description
+
+This lets you display a Windows message box and accept a free-format reply (very similar to InputBox in VBscript). The intention is to allow you to display (in a small dialog box) a question and accept a typed response.
+
+The calling sequence is:
+
+result = utils.inputbox ( msg, title, default, font, fontsize, extras )
+
+
+The only required argument is the message text itself.
+
+
+msg = message to display (max 1000 characters)
+title = title of box - if nil, defaults to "MUSHclient" (max 100 characters)
+default = default text - defaults to no text
+font = font to use in response field - defaults to standard Windows font
+fontsize = size of font to use (ignored if no font supplied)
+extras = table of extra parameters
+
+
+The extra parameters (if supplied) is a table which can consist of one or more of:
+
+
+box_width --> width of message box in pixels (min 180)
+box_height --> height of message box in pixels (min 125)
+prompt_width --> width of prompt text in pixels (min 10)
+prompt_height --> height of prompt text in pixels (min 12)
+reply_width --> width of reply in pixels (min 10)
+reply_height --> height of reply in pixels (min 10)
+max_length --> max characters they can type (min 1)
+validate --> validation function
+ok_button --> what text to put on the OK button (default: OK)
+cancel_button --> what text to put on the Cancel button (default: Cancel)
+ok_button_width --> the width of the OK button in pixels (default: 75)
+cancel_button_width--> the width of the Cancel button in pixels (default: 75)
+read_only --> if true, input area is read-only
+no_default --> if true, pressing <enter> does not dismiss the dialog
+
+
+
+Examples of the extra parameters can be found here:
+
+http://gammon.com.au/forum/?id=10644
+
+The validate function (if used) should be a Lua function that takes a single argument (which is what was typed into the input box) and returns true if this reply was acceptable, and false if not. For example, you might return true if the reply was numeric, if a number was required. This function is called when they click the OK button.
+
+Return value = what they typed, or nil if cancelled
+
+Example:
+
+
+print (utils.inputbox ("What is your name?", "Query", "Nick", "Courier", 9)) --> Peter
+
+
+There is also similar function which will handle a larger response: utils.editbox
+
+
+utils.editbox
+-------------
+Summary
+
+Display a large message box and get free-format reply
+
+Prototype
+
+result = utils.editbox ( msg, title, default, font, fontsize, extras )
+
+Description
+
+This is almost identical to utils.inputbox, except that the response field:
+
+
+is much larger - for entering large amounts of text
+has scroll bars - for scrolling through it
+
+
+Otherwise, the arguments are the same as for utils.inputbox.
+
+
+utils.msgbox
+------------
+
+Summary
+
+Display a message box and get a response
+
+Prototype
+
+response = utils.msgbox ( msg, title, type, icon, default )
+
+Description
+
+This lets you display a Windows message box (very similar to MsgBox in VBscript). The intention is to allow you to display (in a small dialog box), information of an urgent nature, or ask a yes/no type question.
+
+The calling sequence is:
+
+
+result = utils.msgbox ( msg, title, type, icon, default )
+
+
+The only required argument is the message text itself, the others default to their first possible value. The first 4 arguments are string arguments, the last is a number.
+
+
+
+msg = message to display (max 1000 characters)
+title = title of box - if nil, defaults to "MUSHclient" (max 100 characters)
+type = type of box (must be in lower case and exactly as shown here):
+
+
+"ok" - The message box contains one push button: OK. This is the default.
+"abortretryignore" - The message box contains three push buttons: Abort, Retry, and Ignore.
+"okcancel" - The message box contains two push buttons: OK and Cancel.
+"retrycancel" - The message box contains two push buttons: Retry and Cancel.
+"yesno" - The message box contains two push buttons: Yes and No.
+"yesnocancel" - The message box contains three push buttons: Yes, No, and Cancel.
+
+icon = type of icon:
+
+
+"!" - An exclamation-point icon appears in the message box. This is the default.
+"?" - A question-mark icon appears in the message box.
+"i" - An icon consisting of a lowercase letter i in a circle appears in the message box.
+"." - A stop-sign icon appears in the message box.
+
+default = default button (1 - 3)
+
+This sets the default button (the one with the focus) to be either button 1, 2 or 3. The default is the first button.
+
+
+Return value = (string) yes, no, ok, retry, ignore, cancel, abort
+
+Example:
+
+
+print (utils.msgbox ("You are being paged", "Warning!", "ok", "!", 1)) --> ok
+print (utils.msgbox ("You are being paged")) --> ok
+print (utils.msgbox ("Go ahead?", "Question", "yesno", "?")) --> yes / no
+
+
+See also utils.umsgbox if you want to display a message in Unicode (UTF-8).
+
+
+utils.listbox
+-------------
+
+Summary
+
+Display a dialog box with choices in it in a single selection list box
+
+Prototype
+
+result = utils.listbox (msg, title, tbl, default)
+
+Description
+
+This displays a dialog box with a predetermined list of items for the user to choose from, in the form of a single-selection listbox. If the user cancels the dialog box, or does not make a selection, nil is returned. Otherwise the key of the selected item is returned.
+
+There are three similar functions that have the same arguments:
+
+
+utils.choose - displays a dialog box with a combo-box in it (drop-down list)
+utils.listbox - displays a dialog box with a list control in it - single selection
+utils.multilistbox - displays a dialog box with a list control in it - multiple selections allowed
+
+
+The utils.listbox function would be more suitable for longer lists, but that is probably partly personal preference.
+
+The utils.multilistbox function allows multiple selections, so this is useful when you want the user to be able to select multiple items.
+
+The calling sequence is:
+
+
+result = utils.listbox ( msg, title, t, default )
+
+
+The only required arguments are the message text and the table of choices (t).
+
+
+msg = message to display (max 1000 characters)
+title = title of box - if nil, defaults to "MUSHclient" (max 100 characters)
+t - table of key/value pairs, as described below
+default = default key - defaults to no selection
+
+
+Return value = the key of what they selected, or nil if cancelled, or nothing selected.
+
+The third argument is a table of key/value pairs. The value is displayed, however the corresponding key is returned. The values are automatically sorted into ascending alphabetic order.
+
+The fourth argument is the key (string or number) which corresponds to the key of the wanted default selection. If it does not correspond to any key in the table then no item will be selected. For no default selection just pass nil as the default.
+
+Example:
+
+
+
+print (utils.listbox ("Your favourite", "Foods ...", { "apples", "bananas", "peaches", "cream" } ))
+
+
+Possible returned values would be:
+
+
+nil - if no choice made or dialog cancelled
+1 - apples chosen
+2 - bananas chosen
+3 - peaches chosen
+4 - cream chosen
+
+
+(Note that peaches would actually be shown 4th in the list as the list is sorted).
+
+To convert from the key back to the value, simply index into your table. Eg.
+
+
+
+
+t = { "apples", "bananas", "peaches", "cream" } 
+result = utils.listbox ("Your favourite", "Foods ...", t)
+
+if result then
+  print ("You chose", t [result])
+else
+  print "Nothing chosen"
+end -- if
+
+
+
+
+Keys and values can be either strings or numbers. MUSHclient will distinguish between strings and numbers which are the same (eg. "10" and 10 are considered different keys).
+
+Here is an example of using string keys, and supplying a default choice:
+
+
+
+
+t = { 
+    fruit = "apple", 
+    vegetable = "potato", 
+    spice = "pepper", 
+    herb = "parsley",
+    } 
+result = utils.listbox ("Choose a food", "Foods ...", t, "fruit")
+
+if result then
+  print ("You chose key", result, "which is", t [result])
+else
+  print "Nothing chosen"
+end -- if
+
+
+
+
+Possible returned values would be:
+
+
+nil - if no choice made or dialog cancelled
+"fruit" - apple chosen
+"vegetable" - potato chosen
+"spice" - pepper chosen
+"herb" - parsley chosen
+
+
+
+The return value will be one of the following types:
+
+
+
+nil - if no selection made or dialog cancelled
+string - if an item with a string key is selected
+number - if an item with a numeric key is selected
+
+
+ipairs
+------
+
+Summary
+
+Iterates over a numerically keyed table
+
+Prototype
+
+it, t, 0 = ipairs (t)
+
+Description
+
+Returns an iterator function, the table t, and 0, for use in the generic "for" loop.
+
+
+
+for i, v in ipairs (t) do
+  -- process loop here (i is the key, v is the value)
+end -- for
+
+
+The iterator function, called repeatedly, returns the key and value pairs for each table item, starting at 1, until it finds the first missing integer key. For example, if keys 1 to 8 are present, and key 9 is nil, it will return the first 8 values. This occurs even if key 10 is present.
+
+In other words, you cannot use ipairs to iterate over a table with "holes" in the key ranges.
+
+If the table has non-numeric keys, there are gaps in the key sequence, or keys do not start at 1, then you need to use pairs (instead of ipairs) to access every item in the table (however this access will not necessarily be in numeric sequence).
+
+Most usually you simply use ipairs to traverse a numerically-keyed table, for example:
+
+
+t = {
+    "the",
+    "quick",
+    "brown",
+    "dog",
+   }
+
+for key, value in ipairs (t) do
+  print (key, value)
+end -- for
+
+
+Example output:
+
+
+1 the
+2 quick
+3 brown
+4 dog
+
+
+In this case the keys (automatically assigned) were 1, 2, 3, 4, and the values were the words in the table.
+
+
+pairs
+-----
+Summary
+
+Traverse all items in a table
+
+Prototype
+
+next, t, nil = pairs (t)
+
+Description
+
+Returns the 'next' function, the table t, and nil, for use in a for loop.
+
+
+t = { "hello", "world" }
+
+for k, v in pairs (t) do
+  print (k, v)   -- k is the key, v is the value
+end 
+
+
+Compare to ipairs which only traverses numerically-keyed entries.
+
+Use the pairs function to traverse any table. The table will not necessarily be accessed in alphabetic (or any particular) order.
+
+You must not add additional entries to the table during traversal. Doing so is undefined (that is, the script may crash or loop).
+
+You are permitted to delete items from the table during traversal. In other words, if you find an item you want to delete you may assign nil to it, to delete it.
+
+
+dofile
+------
+
+Summary
+
+Executes a Lua file
+
+Prototype
+
+val = dofile (filename)
+
+Description
+
+Opens the named file, parses and executes its contents as a Lua chunk.
+Raises errors if they occur. Returns any value returned by the chunk.
+
+For example:
+
+
+dofile ("myfile.lua") 
+
+
+Using dofile is the same as:
+
+
+function dofile (filename)
+  local f = assert (loadfile (filename))
+  return f ()
+end -- dofile
+
+
+loadstring
+----------
+
+Summary
+
+Compiles a string of Lua code
+
+Prototype
+
+f = loadstring (str, debugname)
+
+Description
+
+Parses the string and returns the compiled chunk as a function. Does not execute it.
+
+If the string cannot be parsed returns nil plus an error message.
+
+The optional debugname is used in debug error messages.
+
+
+f = assert (loadstring ("print 'hello, world'"))
+f ()   --> hello, world
+
+
+You can avoid the intermediate variable "f" in this example by simply putting the brackets on the same line:
+
+
+assert (loadstring ("print 'hello, world'")) () --> hello, world
+
+
+If the string was produced by string.dump, loadstring converts it back into the original function.
+
+
+function f () print "hello, world" end
+s = string.dump (f)
+
+
+
+module
+------
+
+Summary
+
+Creates a Lua module
+
+Prototype
+
+module (name, ···)
+
+Description
+
+Creates a module. This is intended for use with external "package" files, however it can be used internally as shown in the example below. The module effectively has its own global variable space (because module does a setfenv) so that any functions or variables used in the module are local to the module name (for example, foo.add in the example below).
+
+If there is a table in package.loaded[name], this table is the module. Thus, if the module has already been requested (by a require statement) another new table is not created.
+
+Otherwise, if there is a global table t with the given name, this table is the module.
+
+Otherwise creates a new table t and sets it as the value of the global name and the value of package.loaded[name].
+
+This function also initializes t._NAME with the given name, t._M with the module (t itself), and t._PACKAGE with the package name (the full module name minus last component).
+
+Finally, module sets t as the new environment of the current function and the new value of package.loaded[name], so that require returns t.
+
+The example below shows the creation of the module "foo". In practice you would probably put the contents of the "test" function into a separate file, and then: require "test"
+
+The nice thing about this approach is that nothing inside the module will "pollute" the global namespace, excepting the module name itself (foo in this case). Internally inside the module functions can call each other without having to use the package name (eg. add could call subtract without using foo.subtract).
+
+You can make a "private" function inside the "foo" package by simply putting "local" in front of the function name.
+
+
+function test ()
+  local print = print  --> we need access to this global variable
+  
+  module "foo"  --> create the module now
+  
+  function add (a, b)
+    return a + b
+  end -- add
+  
+  function subtract (a, b)
+    return a - b
+  end -- subtract
+
+  function hello (s)
+    print ("hello", s)
+  end -- hello
+
+end -- function test
+
+test ()  -- install module
+
+foo.hello ("world")   --> hello	world
+print (foo.add (2, 3))  --> 5
+print (foo.subtract (7, 8))  --> -1
+
+print (package.loaded["foo"]) --> table: 003055F0
+print (foo)  --> table: 003055F0
+
+for k, v in pairs (foo) do
+  print (k, v)
+end -- for 
+
+-->
+
+_M	table: 003055F0
+_NAME	foo
+_PACKAGE	
+
+hello	function: 00305810
+subtract	function: 00305760
+add	function: 00305780
+
+
+After the module has been created, we can see that:
+
+foo._M is foo itself (ie. the module)
+foo._NAME is "foo"
+foo._PACKAGE is an empty string (if the module was "foo.bar" then _PACKAGE would be "foo.")
+
+
+assert
+------
+
+Summary
+
+Asserts that condition is not nil and not false
+
+Prototype
+
+v = assert (v, message)
+
+Description
+
+Raises an error if value of v is nil or false.
+
+Message is optional, defaults to "assertion failed!".
+
+If no error, returns the value v.
+
+
+assert (5 == 6, "oh no!") --> error: oh no!
+
+
+It is very useful that assert returns the value on success, as you can build an assert into the same line that does something that might fail. For example:
+
+
+assert (loadstring ("print 'hello, world'")) ()
+
+
+In this case if the loadstring function succeeds it returns a function, that is then executed by the final brackets, otherwise you get an error message.
+
+
+print
+-----
+
+Summary
+
+Prints its arguments
+
+Prototype
+
+print (a1, a2, a3, ...)
+
+Description
+
+Prints its arguments to stdout (or the output window in the case of MUSHclient, using world.Note), formatted by calling 'tostring'. Not intended for formatted output, but rather for debugging. Each argument is separated by a space.
+
+
+print ("Hello", "world", 123, assert) --> Hello world 123 function: 02071C00
+
+
+For formatted output, see string.format.

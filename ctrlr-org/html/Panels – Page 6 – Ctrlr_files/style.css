@@ -1,0 +1,10 @@
+.google_recaptcha-recaptcha {
+	transform: scale(0.90);
+    transform-origin: 0 0;
+	clear: both;
+	padding: 10px 0 5px 0;
+}
+
+.login form {
+	padding-bottom: 26px;
+}

@@ -1,0 +1,41 @@
+Generic Sysex Record and Send
+-----------------------------
+January 23, 2016 
+
+t2k
+
+Hey all, been playing with CTRLR since yesterday after getting the idea that it would be really nice to store programs from my Prophet 12 inside of my Ableton sessions and not have to rely on some other external librarian tool.
+
+Here is a minimum working panel with a “Record” and “Send” button which will can save and restore a single sysex dump.
+
+The way to use it:
+
+1) Setup CTRLR Midi in and out so that your device is connected properly. Test with the Midi Monitor to be sure.
+
+2) Design a sound/configure your external midi instrument or device
+
+3) Hit “Record” on the CTRLR panel. Status label should say “Waiting…”
+
+4) On your external midi device, trigger a sysex dump of whatever you intend to record. On my Prophet 12 global menu, I select “Dump Current Program”
+
+5) Status label should now say “Received XXXX bytes”
+
+6) Save your DAW session, the sysex bytes are saved in the plugin state and will be there next time you load your DAW session.
+
+7) Whenever needed, click “Send” to send the Sysex to your device
+
+When reloading your DAW project later, the status will say “Loaded XXX bytes”. You will have to manually click Send if you want the sysex to go out to your device.
+
+Attachments:
+generic_sysex.panel.zip
+
+With the Prophet 12 I was able to expand the basic design significantly, triggering a sysex dump and record via a single button click in CTRLR… and then getting really crazy, I setup a knob that could morph the bytes of one sysex program into another, allowing you to find very odd/unique sounds “between” the two presets.
+
+
+caustik
+
+So far I’ve used it with a Dave Smith Poly Evolver. Morphing programs sounds awesome! Yesterday was my first time trying Ctrlr so I have only tried very basic things so far. Is it possible to automate pressing the load button as a VST parameter? I see that they are assigned a parameter number, but changing that parameter just seemed to remove the button text or something.
+
+Possemo
+
+Interesting stuff. I haven’t used stateData yet but I think I will implement it in my panels too. I didn’t knew that you can save a whole sysexdump in one go with stateData – this is great. I wonder how you did the morphing.
