@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:files="https://sourceforge.net/api/files.rdf#" xmlns:media="http://video.search.yahoo.com/mrss/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:sf="https://sourceforge.net/api/sfelements.rdf#" version="2.0">
+  <channel xmlns:files="https://sourceforge.net/api/files.rdf#" xmlns:media="http://video.search.yahoo.com/mrss/" xmlns:doap="http://usefulinc.com/ns/doap#" xmlns:sf="https://sourceforge.net/api/sfelements.rdf#">
+    <title>Ctrlr utilities</title>
+    <link>https://sourceforge.net</link>
+    <description><![CDATA[Files from Ctrlr utilities How to run these programs.
+
+Each program needs to be run from within the Ctrlr program itself. Download a copy of 5.3.201 for Windows/Linux or 5.3.198 for MacOS. and load this program into Ctrlr. This can be done from within a DAW too, by loading a panel into the VST version of Ctrlr, which will have been preinstalled into your VST folder.
+
+[1] Go to :: File » Open Panel
+
+VST or STANDALONE INSTANCE
+It is also possible to run these programs as a separate standalone executable or VST .
+
+[1] Open this program from within the Ctrlr program
+[2] Go to :: Panel » Panel Mode. Change the height of the panel  (See below)
+[3] Then go to File -&gt; Export -&gt; Export Restricted Instance.
+
+※ Workaround/Bug Fix :: To build as standalone executable on Windows or export as VST, please add 24 pixels to the panel height before exporting. (otherwise you will find the bottom 24 pixels have been truncated).]]></description>
+    <pubDate>Sun, 11 Feb 2024 13:49:47 UT</pubDate>
+    <managingEditor>noreply@sourceforge.net (SourceForge.net)</managingEditor>
+    <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+    <item>
+      <title><![CDATA[/M3Rup/Dump full sysex to M3R.exe]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/M3Rup/Dump%20full%20sysex%20to%20M3R.exe/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/M3Rup/Dump%20full%20sysex%20to%20M3R.exe/download</guid>
+      <pubDate>Mon, 30 Oct 2023 08:00:27 UT</pubDate>
+      <description><![CDATA[/M3Rup/Dump full sysex to M3R.exe]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">49385759</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">PE32+ executable</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-dosexec; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/M3Rup/Dump%20full%20sysex%20to%20M3R.exe/download" filesize="13270016"><media:hash algo="md5">d59ca54ce8883454624c28f4f0d45a78</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/RPC-011/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/README.md/download</guid>
+      <pubDate>Sat, 02 Sep 2023 11:45:20 UT</pubDate>
+      <description><![CDATA[/RPC-011/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">48614588</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=us-ascii" url="https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/README.md/download" filesize="62"><media:hash algo="md5">ee5f425c87f891e4ab94ee605f74715e</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/RPC-011/RPC-11.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/RPC-11.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/RPC-11.zip/download</guid>
+      <pubDate>Sat, 02 Sep 2023 11:39:58 UT</pubDate>
+      <description><![CDATA[/RPC-011/RPC-11.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">48614584</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">SysEx File (Zip archive data)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/RPC-011/RPC-11.zip/download" filesize="9384"><media:hash algo="md5">0db29153cd4f69fdd21f112bfe54d6d3</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/send sysex from file/send_sysex_from_file_2_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_2_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_2_0.bpanelz/download</guid>
+      <pubDate>Thu, 23 Mar 2023 09:09:27 UT</pubDate>
+      <description><![CDATA[/send sysex from file/send_sysex_from_file_2_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46929025</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_2_0.bpanelz/download" filesize="37011"><media:hash algo="md5">984acad64631e8804a28e7943120726e</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/send sysex from file/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/README.md/download</guid>
+      <pubDate>Thu, 23 Mar 2023 08:46:31 UT</pubDate>
+      <description><![CDATA[/send sysex from file/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46928925</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/README.md/download" filesize="404"><media:hash algo="md5">739807cdf2c44f51c93599eacfda1e52</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/README.md/download</guid>
+      <pubDate>Thu, 23 Mar 2023 08:34:57 UT</pubDate>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46928892</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/README.md/download" filesize="3525"><media:hash algo="md5">5433af1ad788e5cbd2b62a65d8d39ee1</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/send sysex from file/send_sysex_from_file_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_1_0.bpanelz/download</guid>
+      <pubDate>Thu, 23 Mar 2023 03:40:05 UT</pubDate>
+      <description><![CDATA[/send sysex from file/send_sysex_from_file_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46926960</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/send%20sysex%20from%20file/send_sysex_from_file_1_0.bpanelz/download" filesize="36897"><media:hash algo="md5">0d3029004bd7f46d54cab957274ffe5c</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/template/Template_4_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/Template_4_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/Template_4_0.bpanelz/download</guid>
+      <pubDate>Wed, 15 Mar 2023 00:23:31 UT</pubDate>
+      <description><![CDATA[/developer tools/template/Template_4_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46837977</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/Template_4_0.bpanelz/download" filesize="39300"><media:hash algo="md5">a2667a696d2d8aa92f20e32fc9c7a248</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/template/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/README.md/download</guid>
+      <pubDate>Tue, 14 Mar 2023 12:45:46 UT</pubDate>
+      <description><![CDATA[/developer tools/template/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46831611</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/template/README.md/download" filesize="459"><media:hash algo="md5">0d7a3d71535074306ade7aa9c11a1585</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/Roland-Yamaha Checksum Calculator_3_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Roland-Yamaha%20Checksum%20Calculator_3_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Roland-Yamaha%20Checksum%20Calculator_3_0.bpanelz/download</guid>
+      <pubDate>Thu, 19 Jan 2023 03:14:00 UT</pubDate>
+      <description><![CDATA[/developer tools/Roland-Yamaha Checksum Calculator_3_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46099563</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Roland-Yamaha%20Checksum%20Calculator_3_0.bpanelz/download" filesize="27098"><media:hash algo="md5">6bd780364b8eec995c020c2894b5c0c9</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/Volume_Randomiser/Volume Randomiser_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/Volume_Randomiser/Volume%20Randomiser_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/Volume_Randomiser/Volume%20Randomiser_1_0.bpanelz/download</guid>
+      <pubDate>Tue, 17 Jan 2023 03:22:32 UT</pubDate>
+      <description><![CDATA[/Volume_Randomiser/Volume Randomiser_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">46084152</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/Volume_Randomiser/Volume%20Randomiser_1_0.bpanelz/download" filesize="25190"><media:hash algo="md5">a20c53320517d28868cd8878f319dbb7</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/Ctrlr/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/README.md/download</guid>
+      <pubDate>Mon, 12 Dec 2022 03:47:48 UT</pubDate>
+      <description><![CDATA[/Ctrlr/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45666165</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=us-ascii" url="https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/README.md/download" filesize="166"><media:hash algo="md5">eec27d25b3fa75f122456169c15912bf</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/jknobman/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/README.md/download</guid>
+      <pubDate>Mon, 12 Dec 2022 03:43:45 UT</pubDate>
+      <description><![CDATA[/developer tools/jknobman/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45666150</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=us-ascii" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/README.md/download" filesize="609"><media:hash algo="md5">37d96bb8ea005db9624ad4064969af7a</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/jknobman/JKnobMan133-jar.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-jar.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-jar.zip/download</guid>
+      <pubDate>Mon, 12 Dec 2022 03:40:43 UT</pubDate>
+      <description><![CDATA[/developer tools/jknobman/JKnobMan133-jar.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45666149</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">Zip archive data (Zip archive data)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-jar.zip/download" filesize="1926600"><media:hash algo="md5">ab7cd80f8a3f229415200e38019f1340</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/JD-990 Bulk Dump Utility/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/README.md/download</guid>
+      <pubDate>Thu, 08 Dec 2022 11:46:19 UT</pubDate>
+      <description><![CDATA[/JD-990 Bulk Dump Utility/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613398</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/README.md/download" filesize="534"><media:hash algo="md5">febf9668c8ccaa433f3d679dd4d2d89b</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/ReDominator Converter/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/README.md/download</guid>
+      <pubDate>Thu, 08 Dec 2022 11:45:14 UT</pubDate>
+      <description><![CDATA[/ReDominator Converter/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613359</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/README.md/download" filesize="530"><media:hash algo="md5">87775c0765abf8720e2e218282f53997</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/MIDI Channel Changer/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/README.md/download</guid>
+      <pubDate>Thu, 08 Dec 2022 11:36:23 UT</pubDate>
+      <description><![CDATA[/MIDI Channel Changer/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613313</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/README.md/download" filesize="376"><media:hash algo="md5">0716af40b44a27efbb9b9d28aa83ba19</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/GSDR/README.md]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/README.md/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/README.md/download</guid>
+      <pubDate>Thu, 08 Dec 2022 11:38:30 UT</pubDate>
+      <description><![CDATA[/GSDR/README.md]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613312</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=utf-8" url="https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/README.md/download" filesize="390"><media:hash algo="md5">f1611ece57fe79369696bb45e2eb2220</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/GSDR/MacOs/GSDR.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/MacOs/GSDR.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/MacOs/GSDR.zip/download</guid>
+      <pubDate>Thu, 08 Dec 2022 10:25:12 UT</pubDate>
+      <description><![CDATA[/GSDR/MacOs/GSDR.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613104</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">empty (Zip archive data)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/MacOs/GSDR.zip/download" filesize="15469329"><media:hash algo="md5">f89fa603503a8d9a2ce16c203a7ac0c7</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/GSDR/src/GSDR_1_1.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/src/GSDR_1_1.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/src/GSDR_1_1.bpanelz/download</guid>
+      <pubDate>Thu, 08 Dec 2022 10:23:11 UT</pubDate>
+      <description><![CDATA[/GSDR/src/GSDR_1_1.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613103</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/src/GSDR_1_1.bpanelz/download" filesize="70770"><media:hash algo="md5">33c76ff0937eb18b8716293577f66e11</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/GSDR/Win64/GSDR.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/Win64/GSDR.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/Win64/GSDR.zip/download</guid>
+      <pubDate>Thu, 08 Dec 2022 10:22:10 UT</pubDate>
+      <description><![CDATA[/GSDR/Win64/GSDR.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45613090</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">PE32+ executable</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/GSDR/Win64/GSDR.zip/download" filesize="3870509"><media:hash algo="md5">1b9370627dd0b05ee790c1e5b825657d</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/MIDI Channel Changer/Win64/MIDI Channel Changer.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/Win64/MIDI%20Channel%20Changer.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/Win64/MIDI%20Channel%20Changer.zip/download</guid>
+      <pubDate>Thu, 08 Dec 2022 09:51:38 UT</pubDate>
+      <description><![CDATA[/MIDI Channel Changer/Win64/MIDI Channel Changer.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45612988</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">PE32+ executable</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/Win64/MIDI%20Channel%20Changer.zip/download" filesize="3841623"><media:hash algo="md5">e5d268a032b071ebd5707a9618ec4189</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/MIDI Channel Changer/MacOs/MIDI Channel Changer.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/MacOs/MIDI%20Channel%20Changer.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/MacOs/MIDI%20Channel%20Changer.zip/download</guid>
+      <pubDate>Thu, 08 Dec 2022 09:45:14 UT</pubDate>
+      <description><![CDATA[/MIDI Channel Changer/MacOs/MIDI Channel Changer.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45612975</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">empty (Zip archive data)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/MacOs/MIDI%20Channel%20Changer.zip/download" filesize="15446952"><media:hash algo="md5">af3405a61ce0d8d29c70cc164d772586</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/MIDI Channel Changer/src/MIDI Channel Changer_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/src/MIDI%20Channel%20Changer_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/src/MIDI%20Channel%20Changer_1_0.bpanelz/download</guid>
+      <pubDate>Thu, 08 Dec 2022 09:34:02 UT</pubDate>
+      <description><![CDATA[/MIDI Channel Changer/src/MIDI Channel Changer_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">45612909</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/MIDI%20Channel%20Changer/src/MIDI%20Channel%20Changer_1_0.bpanelz/download" filesize="25760"><media:hash algo="md5">43eaac5c4c03dac18f84bbbdeb37de5b</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/jknobman/JKnobMan133-exe.zip]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-exe.zip/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-exe.zip/download</guid>
+      <pubDate>Fri, 08 Oct 2021 02:02:53 UT</pubDate>
+      <description><![CDATA[/developer tools/jknobman/JKnobMan133-exe.zip]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">38285498</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">PE32 executable</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/zip; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/jknobman/JKnobMan133-exe.zip/download" filesize="1989897"><media:hash algo="md5">06550356a805bf0fb46949484a44718a</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/JSON example_3.0.simplified with timer.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_3.0.simplified%20with%20timer.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_3.0.simplified%20with%20timer.bpanelz/download</guid>
+      <pubDate>Sun, 11 Jul 2021 12:38:05 UT</pubDate>
+      <description><![CDATA[/developer tools/JSON example_3.0.simplified with timer.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36814496</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_3.0.simplified%20with%20timer.bpanelz/download" filesize="27237"><media:hash algo="md5">a04b29de2aec1d88f96452a006399278</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/JSON example_2.0.simplified.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_2.0.simplified.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_2.0.simplified.bpanelz/download</guid>
+      <pubDate>Sat, 03 Jul 2021 12:39:58 UT</pubDate>
+      <description><![CDATA[/developer tools/JSON example_2.0.simplified.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36689583</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_2.0.simplified.bpanelz/download" filesize="26412"><media:hash algo="md5">0b013d060a52cbd11b7227d24dc4ab93</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/JSON example_1.0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_1.0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_1.0.bpanelz/download</guid>
+      <pubDate>Sat, 03 Jul 2021 12:38:04 UT</pubDate>
+      <description><![CDATA[/developer tools/JSON example_1.0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36689580</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/JSON%20example_1.0.bpanelz/download" filesize="27075"><media:hash algo="md5">29711b7b6d8de919bde1ae8fccbf28f3</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/paint tab bgcolor_1.0.0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/paint%20tab%20bgcolor_1.0.0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/paint%20tab%20bgcolor_1.0.0.bpanelz/download</guid>
+      <pubDate>Thu, 24 Jun 2021 09:46:46 UT</pubDate>
+      <description><![CDATA[/developer tools/paint tab bgcolor_1.0.0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36584108</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/paint%20tab%20bgcolor_1.0.0.bpanelz/download" filesize="24643"><media:hash algo="md5">f9543b13b68af7b6367c818f2b3e46dc</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/zipFile-SVG_0_1.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/zipFile-SVG_0_1.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/zipFile-SVG_0_1.bpanelz/download</guid>
+      <pubDate>Thu, 24 Jun 2021 09:39:01 UT</pubDate>
+      <description><![CDATA[/developer tools/zipFile-SVG_0_1.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36584099</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/zipFile-SVG_0_1.bpanelz/download" filesize="58245"><media:hash algo="md5">cb3fb7f4a7f68ecaf2800f6b3c7f3ccd</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/LCD xpm Matrix_1.0.0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/LCD%20xpm%20Matrix_1.0.0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/LCD%20xpm%20Matrix_1.0.0.bpanelz/download</guid>
+      <pubDate>Thu, 24 Jun 2021 09:35:08 UT</pubDate>
+      <description><![CDATA[/developer tools/LCD xpm Matrix_1.0.0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36584094</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/LCD%20xpm%20Matrix_1.0.0.bpanelz/download" filesize="38205"><media:hash algo="md5">f7d0341d310cd40ddd4a046231770f6e</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/Interpolate Displayed Values Generator_1.0.0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Interpolate%20Displayed%20Values%20Generator_1.0.0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Interpolate%20Displayed%20Values%20Generator_1.0.0.bpanelz/download</guid>
+      <pubDate>Thu, 24 Jun 2021 09:17:46 UT</pubDate>
+      <description><![CDATA[/developer tools/Interpolate Displayed Values Generator_1.0.0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36584087</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Interpolate%20Displayed%20Values%20Generator_1.0.0.bpanelz/download" filesize="24603"><media:hash algo="md5">ce89346ad11dded64cfcc91fa93c41c8</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/ReDominator Converter/ReDominator XML to SYSEX converter_0_4.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/ReDominator%20XML%20to%20SYSEX%20converter_0_4.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/ReDominator%20XML%20to%20SYSEX%20converter_0_4.bpanelz/download</guid>
+      <pubDate>Wed, 12 May 2021 11:43:32 UT</pubDate>
+      <description><![CDATA[/ReDominator Converter/ReDominator XML to SYSEX converter_0_4.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">36070053</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/ReDominator%20Converter/ReDominator%20XML%20to%20SYSEX%20converter_0_4.bpanelz/download" filesize="42646"><media:hash algo="md5">d4cac2dfa2441bfb99bfc791b43afa92</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/archives/ReDominator-XML-to-SYSEX-converter_0_3_alpha.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/archives/ReDominator-XML-to-SYSEX-converter_0_3_alpha.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/archives/ReDominator-XML-to-SYSEX-converter_0_3_alpha.bpanelz/download</guid>
+      <pubDate>Sat, 01 May 2021 08:05:22 UT</pubDate>
+      <description><![CDATA[/archives/ReDominator-XML-to-SYSEX-converter_0_3_alpha.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">35937942</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/archives/ReDominator-XML-to-SYSEX-converter_0_3_alpha.bpanelz/download" filesize="40798"><media:hash algo="md5">9084d0e01ff692ab2593d29e9efd3ba6</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/archives/Roland-Yamaha Checksum Calculator_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Yamaha%20Checksum%20Calculator_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Yamaha%20Checksum%20Calculator_1_0.bpanelz/download</guid>
+      <pubDate>Wed, 07 Apr 2021 14:39:09 UT</pubDate>
+      <description><![CDATA[/archives/Roland-Yamaha Checksum Calculator_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">35493244</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Yamaha%20Checksum%20Calculator_1_0.bpanelz/download" filesize="38452"><media:hash algo="md5">258bff08fdebe9e47fa3976f84760b2a</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/Ctrlr/Ctrlr-5.3.198.dmg]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.198.dmg/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.198.dmg/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:20:47 UT</pubDate>
+      <description><![CDATA[/Ctrlr/Ctrlr-5.3.198.dmg]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452563</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data (bzip2 compressed data)</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-bzip2; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.198.dmg/download" filesize="45063483"><media:hash algo="md5">2ad1dae6440749ab57e5de7c0a49a04c</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/Ctrlr/Ctrlr-5.3.201.exe]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.201.exe/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.201.exe/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:20:09 UT</pubDate>
+      <description><![CDATA[/Ctrlr/Ctrlr-5.3.201.exe]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452562</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">PE32 executable</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/x-dosexec; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-5.3.201.exe/download" filesize="12452001"><media:hash algo="md5">38622d8fbcc983028a3c7498956beb43</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/Ctrlr/Ctrlr-x86_64-5.3.201.sh]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-x86_64-5.3.201.sh/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-x86_64-5.3.201.sh/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:19:26 UT</pubDate>
+      <description><![CDATA[/Ctrlr/Ctrlr-x86_64-5.3.201.sh]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452561</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/Ctrlr/Ctrlr-x86_64-5.3.201.sh/download" filesize="18213576"><media:hash algo="md5">fea58b08827aaf8207156f4654a759f5</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/COPYING .txt]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/COPYING%20.txt/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/COPYING%20.txt/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:12:00 UT</pubDate>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452552</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">text</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="text/plain; charset=us-ascii" url="https://sourceforge.net/projects/ctrlr-utilities/files/COPYING%20.txt/download" filesize="35821"><media:hash algo="md5">4e5ec44fe5564450f9c1061ad18aeb38</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/archives/Roland-Checksum-Calculator_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Checksum-Calculator_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Checksum-Calculator_1_0.bpanelz/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:03:21 UT</pubDate>
+      <description><![CDATA[/archives/Roland-Checksum-Calculator_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452547</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/archives/Roland-Checksum-Calculator_1_0.bpanelz/download" filesize="47842"><media:hash algo="md5">28208abaa8e916f3fbb6111e1cb108de</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/developer tools/Radio-Button-Code-Generator_1_0.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Radio-Button-Code-Generator_1_0.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Radio-Button-Code-Generator_1_0.bpanelz/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:03:20 UT</pubDate>
+      <description><![CDATA[/developer tools/Radio-Button-Code-Generator_1_0.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452544</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/developer%20tools/Radio-Button-Code-Generator_1_0.bpanelz/download" filesize="52277"><media:hash algo="md5">9ffc534fa30d4f4bb17336f55aca5b78</media:hash></media:content>
+    </item>
+    <item>
+      <title><![CDATA[/JD-990 Bulk Dump Utility/JD-990-Bulk-Dump-Utility_1.5.bpanelz]]></title>
+      <link>https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/JD-990-Bulk-Dump-Utility_1.5.bpanelz/download</link>
+      <guid>https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/JD-990-Bulk-Dump-Utility_1.5.bpanelz/download</guid>
+      <pubDate>Sun, 03 Jan 2021 02:03:19 UT</pubDate>
+      <description><![CDATA[/JD-990 Bulk Dump Utility/JD-990-Bulk-Dump-Utility_1.5.bpanelz]]></description>
+      <files:sf-file-id xmlns:files="https://sourceforge.net/api/files.rdf#">34452542</files:sf-file-id>
+      <files:extra-info xmlns:files="https://sourceforge.net/api/files.rdf#">data</files:extra-info>
+      <media:content xmlns:media="http://video.search.yahoo.com/mrss/" type="application/octet-stream; charset=binary" url="https://sourceforge.net/projects/ctrlr-utilities/files/JD-990%20Bulk%20Dump%20Utility/JD-990-Bulk-Dump-Utility_1.5.bpanelz/download" filesize="85173"><media:hash algo="md5">f7273e494c43301b0cbf971d034e2f5b</media:hash></media:content>
+    </item>
+  </channel>
+</rss>

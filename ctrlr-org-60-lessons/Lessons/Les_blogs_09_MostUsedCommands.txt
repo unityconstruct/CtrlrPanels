@@ -1,0 +1,356 @@
+Msepsis
+
+I’ve kept this list of frequently used scripts:
+
+
+get value of a modulator, assign it to a variable:
+variableName = panel:getModulatorByName(“Modulator Name”):getModulatorValue()
+
+—————————————————————————————————————
+get a modulator and assign a value to it:
+panel:getModulatorByName(“ModulatorName”):setModulatorValue((2), false, true, false)
+panel:getModulatorByName(“ModulatorName”):setModulatorValue((variableName), false, true, false)
+
+—————————————————————————————————————
+print some message in the console:
+console (“this is my message that will appear in the console…”)
+
+—————————————————————————————————————
+print the value of something in the console:
+console (string.format (“this is a number %d”, number ))
+
+—————————————————————————————————————
+Print value to console:
+a = 10
+console(“a = “..a)
+
+—————————————————————————————————————
+call some other script to run:
+scriptNameToRun()
+
+—————————————————————————————————————
+display the value of a variable on a uiLabel
+label = panel:getComponent(“label”)
+if label ~= nil then
+label:setPropertyString (“uiLabelText”, “text”)
+end
+
+or by using the special component method
+
+label:setComponentText (string.format(“my text”))
+
+—————————————————————————————————————
+Write variables to string:
+a = “a”
+b = 10
+c = string.format(“%s%s”,a,b)
+console(“c = “..c)
+
+——————————————------------------------
+
+&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+Hecticcc
+
+Insert values into a hexstring:
+
+val1 = 1
+val2 = 10
+hexstring = string.format(“f0 18 21 %.2x  55 01 02 5f 01 %.2x 00 6b f7″, val1, val2)
+
+produces:
+f0 18 21 01 55 01 02 5f 01 0a 00 6b f7
+
+Of course you can also get values from modulators and use those
+
+val = panel:getModulatorByName(“myModulator”):getModulatorValue()
+
+_______________________________________________________________________
+
+ 
+Grabbing values from an incoming hexstring
+
+Suppose this is the string you received:
+
+f0 18 21 01 55 01 02 5f 01 0a 00 6b f7
+
+--Now to extract the byte with value 55:
+
+extractedByte = midi:getLuaData():getByte(4)
+
+--Notice that although 01 is on the 5th place it is infact the 4th byte, as ctrlr starts counting AFTER the header “f0” .
+
+
+--You can also extract a range of bytes:
+
+ rangeOfBytes = midi:getLuaData():getRange(3, 7)
+
+this will store the values “01 55 01 02 5f” in rangeOfBytes
+
+_____________________________________________________________________ 
+
+To check the results of these operations in console you need to do some conversion or you get errors like “sting expected, received number”:
+
+string1 = string.format(someHexString)
+console(string.format(string1))
+
+ ______________________________________________________________________
+
+ Bomma72
+ 
+ Thought I would add one —
+
+panel:sendMidiMessageNow(CtrlrMidiMessage(“f0 11 63  7d 3d 00 00 00 f7”))
+
+Sends message to Synth
+
+
+Atom
+
+There is a lot of useful shortcuts, handy lua tricks in the latest DEMO panel
+
+
+Ifo2vco
+
+OK, I have a couple of useful functions that can be applied to strings containing patch names for instance.
+—————————————————————————————————————
+The following Function extracts a piece of the string from characters 1 to 16
+
+function edit (s)
+	return (string.sub(s,1,16))
+end
+
+nameEdit = (edit(myString))
+—————————————————————————————————————
+The following Function removes whitespace (spaces) from either end of a string
+
+function trim (s)
+	return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+end
+
+nameTrim = (trim(myString))
+—————————————————————————————————————
+
+zeoka
+
+Hi
+add this example : a shared textbox parameter name/value linked to one/several
+mods + a default color for default value (here 64)
+
+--
+-- Called when a modulator value changes
+-- @mod   http://ctrlr.org/api/class_ctrlr_modulator.html
+-- @value    new numeric value of the modulator
+--
+Slidval64 = function(mod, newValue)
+sl64 = mod:getComponent()
+function ValueCallback(timerId)
+if timer ~= nil then
+timer:stopTimer(40)
+end
+panel:getComponent("my label text"):setText(mod:getModulatorName())
+end
+panel:getComponent("my label text"):setText(sl64:getComponentText())
+if newValue ~= 64 then
+sl64:setProperty("uiSliderThumbColour",col1:toString(),false) 
+sl64:setProperty("uiSliderTrackColour",col2:toString(),false)
+sl64:setProperty("uiSliderValueTextColour",col5:toString(),false)
+else
+sl64:setProperty("uiSliderThumbColour",col3:toString(),false) 
+sl64:setProperty("uiSliderTrackColour",col4:toString(),false)
+sl64:setProperty("uiSliderValueTextColour",col6:toString(),false)
+end
+       timer:setCallback (40,ValueCallback)
+       timer:startTimer(40,500)
+end
+colors are defined elsewhere(Called when the panel is created).ex col4 = Colour(0x5dc68e6c)
+
+It is possible to share parameter name/value directly on the modulator too : just use the adequate properties
+
+Dnaldoog
+
+How just send three separate messages???
+
+panel:sendMidiMessageNow(CtrlrMidiMessage(
+        {0xF0, 0x43, 0x10, 0x4C, 0x08, 0x00, 0x01, MSB, 0xF7}))
+    panel:sendMidiMessageNow(CtrlrMidiMessage(
+        {0xF0, 0x43, 0x10, 0x4C, 0x08, 0x00, 0x02, LSB, 0xF7}))
+    panel:sendMidiMessageNow(CtrlrMidiMessage(
+        {0xF0, 0x43, 0x10, 0x4C, 0x08, 0x00, 0x03, Patch, 0xF7}))
+
+-------------------------------------------------------------------------------------------------------
+
+ON COLOURED MENU       
+
+human fly
+
+i made a little popup menu of all my parameters with their sysex address, as a quick reference thing.
+
+[Inresponse spk77]
+
+now this should work
+
+I don’t know how to get a text from a menu item, but maybe this would work:
+
+-- Create a table for menu item names
+itemNames =
+{
+	"blablabla",
+	"blablabla2",
+	"blablabla3"
+}
+
+-- Create a popupMenu
+local pMenu = PopupMenu()
+
+-- Create menu items from the "itemNames" -table
+-- ‘image()’ for some frames I would otherwise have in an image strip
+for itemIndex=1, #itemNames do
+	pMenu:addColouredItem(itemIndex, itemNames[itemIndex], Colour(0xff21c630), true, false, Image())
+end
+
+-- Show the menu
+local ret = pMenu:show(0,0,0,0)
+
+-- Return if nothing is selected
+if ret == 0 then 
+	return
+end
+
+-- Print the correct name from the "itemNames" -table
+-- Here you could send the name to a label
+console(itemNames[ret])
+
+[Later]
+For some reason, I can’t paste the correct code inside the “code tags”…
+This line:
+pMenu:addColouredItem(i, itemNames, Colour(0xff21c630), true, false, Image())
+should be:
+pMenu:addColouredItem(i, itemNames[ i ], Colour(0xff21c630), true, false, Image())
+
+edit: square brackets and letter “i” don’t work in this forum…
+
+--[[
+(To see it working: look for png-file in this drawer)
+Q: is that your popup with green text and black bg?
+A: That’s just a text label.
+A: ok, labeltext, got that. 
+--]]
+
+
+This seem to work for menu item text color:
+
+-- 'addcolouritem'  I found it here
+-- https://www.juce.com/doc/classPopupMenu#abca9890f63f22575c190c0115a1f3acf
+-- and here:
+-- https://github.com/RomanKubiak/ctrlr/blob/master/Source/UIComponents/CtrlrMIDI/CtrlrMIDIMon.cpp#L108
+
+Tone_params:addColouredItem(1, "toneName1 00 00/VSTindex1", Colour(0xff21c630), true, false, Image())
+
+[Human Fly]
+
+void setLookAndFeel (LookAndFeel* newLookAndFeel);
+
+    //==============================================================================
+    /** A set of colour IDs to use to change the colour of various aspects of the menu.
+        These constants can be used either via the LookAndFeel::setColour()
+        method for the look and feel that is set for this menu with setLookAndFeel()
+        @see setLookAndFeel, LookAndFeel::setColour, LookAndFeel::findColour
+    */
+    enum ColourIds
+    {
+        backgroundColourId             = 0x1000700,  /**< The colour to fill the menu's background with. */
+        textColourId                   = 0x1000600,  /**< The colour for normal menu item text, (unless the
+                                                          colour is specified when the item is added). */
+        headerTextColourId             = 0x1000601,  /**< The colour for section header item text (see the
+                                                          addSectionHeader() method). */
+        highlightedBackgroundColourId  = 0x1000900,  /**< The colour to fill the background of the currently
+                                                          highlighted menu item. */
+        highlightedTextColourId        = 0x1000800,  /**< The colour to use for the text of the currently
+                                                          highlighted item. */
+    };
+
+-------------------------------------------------------------------------
+
+ON USING CONSOLE
+
+m.tarenskeen
+
+I installed Ctrlr-5.5.2 on Windows 7.
+Suddenly I can’t do a simple thing like 
+console("Hello World")
+
+in my LUA code anymore.
+I also tried from Panel->LUA Editor
+
+>>> console("Hello world")
+ERROR: Ambiguous, candidates:
+void console(String const&)
+void console(std::string const&)
+What’s this? I use console() a lot, especially when developing a new panel, and to try and test lua code.
+
+human fly
+
+please give a step-by-step on how to print Hello World.
+(5.4.29 win10 here) i still haven’t figured out how to
+print anything in the console.
+
+May 11, 2017 at 10:40 pm#72100REPLY | REPORT | QUOTE
+
+m.tarenskeen
+
+1. Start ctrlr
+2. From dropdown menu go to: Panel -> LUA console
+3. Click on the bottom part of the Console
+4. type console("Hello world")
+5. The text “Hello world” should appear on the upper part of the Console.
+
+If this works, you can try using console(“Any text bla bla”) in LUA code you use for your Panels.
+
+I have reverted to Ctrlr 5.4.29 after having too much trouble with 5.5.2.
+
+May 12, 2017 at 8:07 am#72102REPLY | REPORT | QUOTE
+
+human fly
+
+ah, great. thank you.
+when i tried, i was using print so that works 🙂 and i can get on with some tutorials.
+
+is console the same as print? i’ve seen console used in methods ie: where a patch name string is being assembled. where does ‘console’ come into play in a finished panel?
+
+here’s an example:
+if you open the DEMO-Move component with animation panel,
+myMethod() has:
+
+myMethod = function(mod, value)
+	console ("animate")
+	anim = CtrlrLuaComponentAnimator()
+
+	if value == 1 then
+		anim:animateComponent(
+			panel:getComponent("modulator-1"),
+			panel:getComponent("pos1"):getLuaBounds(),
+			1.0,
+			1000,
+			false,
+			1000,
+			1000
+		)
+	end
+
+	-- etc.
+end
+and it indeed prints ‘animate’ to the console.
+
+so, from there, what can i do with that?
+ie: if i can get it to print to the console, is it just a display of what i can send to something else? (newb…) example please, if possible.
+
+May 14, 2017 at 11:16 am#72148REPLY | REPORT | QUOTE
+
+m.tarenskeen
+
+I frequently use the console() function to insert code in my LUA code for testing and debugging purposes. For example to track the value of certain variables when doing things in my panel. The console window has to be open to see anything. Or, on my Linux laptop, sometimes I start Ctrlr from aterminal window and I can see the messages in the terminal window, or redirect them to a logfile from there.
+
+If you want all kinds of strings and values to show up in a dialog window that pops up from a panel there are other methods that you need. There are several examples of that in the Ctrlr DEMO distribution.
+
+------------------------------

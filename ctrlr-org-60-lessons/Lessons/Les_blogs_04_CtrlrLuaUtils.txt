@@ -1,0 +1,301 @@
+CtrlrLuaUtils
+
+SWB
+
+I use CtrlrLuaUtils to invoke a window to allow a user to input (in my case) a (preset)name:
+
+perName = utils.askForTextInputWindow(“Performance Name”,””,”Grand Piano”,”New name:”,false,”OK”,”Cancel”).
+
+Basically it works fine, but the strange thing is that each time I start Ctrlr it ALWAYS shows this window first. When I click on a button the window disappears and the rest of the panel is shown. This is a bit annoying. How can one avoid this behavior?
+
+Secondly, how do I know which button is clicked by an user?
+
+Thans for any input or help!
+
+February 19, 2013 at 1:59 am#6484REPLY | REPORT | QUOTE
+
+
+atom
+
+Have a loop at the PopupMenu demo, it shows how to avoid things popping up on start
+
+February 19, 2013 at 11:36 am#6487REPLY | REPORT | QUOTE
+
+
+SWB
+
+Thanks! I show the code here, so other forum members can also benefit.
+
+function storePerformance()
+
+if panel:getBootstrapState() then — avoid showing the dialog window at startup
+
+return
+
+end
+
+inputPerformanceName() — calls the dialog window to input user text
+
+mySysex = CtrlrMidiMessage({0xF0, 0xB0, 0x75, 0x00, 0x13, 0xF7})
+
+panel:sendMidiMessageNow(mySysex)
+
+end
+
+——————————————————————-
+
+function inputPerformanceName()
+
+perfName = utils.askForTextInputWindow(“Performance Name”,””,”Grand Piano”,”New name:”,false,”OK”,”Cancel”)
+
+pn = string.format(perfName)
+
+console(pn)
+
+end
+
+Still my question how to know which button (OK or Cancel) is clicked. I try of course to find out myself, but it saves time if someone points me in the direction where to look 😉
+
+February 19, 2013 at 3:43 pm#6489REPLY | REPORT | QUOTE
+
+
+atom
+
+With that call you can’t tell witch button was clicked, there is a special class for that called AlertWindow i’ll add that to Ctrlr soon, those utils. calls are not too complicated.
+
+February 19, 2013 at 4:11 pm#6490REPLY | REPORT | QUOTE
+
+
+SWB
+
+Thanks! Do I have to wait until you have added that class or is there another way to get user input?
+
+February 19, 2013 at 4:22 pm#6491REPLY | REPORT | QUOTE
+
+
+atom
+
+Please wait i’ll add this today i hope with an example panel.
+
+February 19, 2013 at 4:27 pm#6492REPLY | REPORT | QUOTE
+
+
+SWB
+
+OK. TIA!
+
+May 1, 2017 at 5:40 pm#71951REPLY | REPORT | QUOTE
+
+
+Mr.ToR
+
+was this issue resolved?
+I can not obtain which button was clicked as well.
+This applies to utils.askForTextInputWindow
+utils.questionWindow tells which button was clicked.
+
+February 22, 2018 at 5:33 pm#81987REPLY | REPORT | QUOTE
+
+
+goodweather
+
+Getting into the same issue.
+Does anyone knows how to know the user has pressed the Cancel button?
+If this is not possible, what workaround are you using?
+Thx in advance!
+
+atom (lua doc 2013)
+
+It’s not, it used to be but ever since i moved to JUCE classes (not my own ones), all the documentation is on the JUCE website (for the classes), http://www.rawmaterialsoftware.com/juce/api/annotated.html but there are execptions from this rule and that’s a bigger problem.
+
+Start with luabind docs: http://www.rasterbar.com/products/luabind/docs.html
+
+The list of currently supported classes are always visible as files: https://sourceforge.net/p/ctrlrv4/code/1284/tree/nightly/Source/Lua/JuceClasses/ if a class name is not here, it’s not bound to Ctrlr yet (or never will be), inside the .cpp file of the file there is a list of methods that are available in Ctrlr.
+
+In LUA itself when you run Ctrlr, execute a function in the LUA Console
+
+how()
+to see all the available classes and if you want information about a list of method for an object, run (for example, you can do that for any already existing variable in LUA)
+
+mb = MemoryBlock()
+debug (what(mb))
+
+dasfaker (2012) :
+Atom, could you give us an example of how to use OpenFileWindow? Everything I’ve tried give me errors.
+Thx
+
+Atom
+
+[code:3alwjkje]
+f = utils.openFileWindow ("open file", File(""), "*.*", true)
+console (f:getFullPathName())
+[/code:3alwjkje]
+
+dasfaker
+
+Thanks Atom. I can open the file, but how I work with the data? I want to open a sysex file and send this data to the midiMessageReceived, but I don’t know how to access the file data.
+
+atom
+
+I made a type-o in the code so you need to wait for the latest nightly but the code that will work will be
+[code:w7zg8hie]
+f = utils.openFileWindow ("open file", File(""), "*.*", true)
+data = f:loadFileAsData()
+— data is a CtrlrLuaMemoryBlock with the contents of the file
+console (data:toHexString(1))
+[/code:w7zg8hie]
+
+dasfaker
+
+It works fine.
+Great, Atom.
+
+atom (jan 2012)
+
+Again i had to do a small fix but the code that will work with the next nightly:
+[code:bc1r74k4]
+>>> table = panel:getModulatorsWildcard("joe*", false)
+>>> console (type(table))
+userdata
+>>> o = table:getObject()
+>>> console (type(o))
+table
+
+>>> for k,v in pairs(o) do
+console ("table key="..k)
+modulator = o[k]
+if modulator ~= nil then
+console (modulator:getLuaName())
+end
+end
+
+table key=3
+joe1
+table key=4
+joe0
+table key=5
+joe2
+[/code:bc1r74k4]
+
+atom
+
+There might be more bugs like that in the LUA code, at first i wanted to use the String class but some problems occured with that and i had to fall back to std::string so there might be more stuff like that in the code, i’ll what i can find and post a build asap.
+
+But the code there works, you just need to pass a String class as the parameters
+[code:thzmr075]
+f = utils.saveFileWindow (String("Save File"), File(""), String("*.syx"), true)
+[/code:thzmr075]
+
+Tronic
+
+As always, thank you.
+functions you posted work well.
+
+To pass data to the file to be saved, the only method I’ve found is = ‘data: loadFromHexString ("f0 00 f7")’
+other options?
+
+another question, but the functions table.insert, table.remove, table.sort etc. are not present?
+
+Then when ready will post my work.
+
+atom
+
+I think the LUA native stuff should work so the string. table. math and others are there. If it’s not working let me know i’ll give it a check.
+If you want to write something to the file you need to do it on the file object in your case
+[code:1dpbf872]
+f = utils.saveFileWindow (String("Save File"), File(""), String("*.syx"), true)
+if f:existsAsFile() then
+f:replaceFileContentWithData(data)
+end
+[/code:1dpbf872]
+Other file methods are described here http://www.rawmaterialsoftware.com/juce … sFile.html like i wrote on the API Docs page, api/class_ctrlr_lua_file.html#af5b2054af101fc9bd1663c40a9e71b5f
+
+Tronic
+
+atom I confirm that I was unable to have the ability to manage the table, with the functions sort, insert, and so on.
+I take this opportunity to ask another question:
+how to prevent a lua function is executed when you start the application?
+I have assigned the lua function to the modulator, it is immediately executed when the application starts.
+
+
+atom
+
+It will always execute since at the start the modulator needs to have an assigned value and that causes the LUA method to execute (since it’s linked to the modulator value changed event).
+
+dasfaker
+
+Create a method and put it on the panel option "Called before any modulators are created". In this method set a variable 
+(p.e. [i:5n4tuo9b]
+panelLoaded = 0
+[/i:5n4tuo9b])
+
+Put this variable at the beginning of the method , and if the variable is true the method is executed, otherwise not.
+[i:5n4tuo9b]
+—
+— Called when a modulator value changes
+—
+method = function(modulator, newValue)
+If panelLoaded = 1 then
+method
+end[/i:5n4tuo9b]
+
+Then you can set to true this variable when you need it, may be when the panel has finished loading or at the press of a button, and from this moment the method will be executed when the modulator is called.
+
+[Later] Hi Atom
+
+When I try to open a file and the open file window pop up, pressing Cancel (so I don’t open any file) crash Ctrlr. Otherwise works fine.
+
+I’m using the code you posted here
+
+[code:2nbn7olf]
+f = utils.openFileWindow ("open file", File(""), "*.*", true)
+data = f:loadFileAsData()
+— data is a CtrlrLuaMemoryBlock with the contents of the file
+console (data:toHexString(1))
+[/code:2nbn7olf]
+
+atom
+
+Well i don’t think that printing loads of data to the console is a good idea it’s a simple component that console.
+
+As for the crash i know why it’s happening you get and invalid file and trying to write to it so that will crash, always check if the file is valid and writable before writing to it.
+
+[Later (jan 2012)]
+
+This is how to get a list of files in c: in the new nightly:
+[code:16jkc61m]
+t = {}
+f = File("c:\") — create a file that points to the directory we want to list
+f:findChildFiles (t, File.findDirectories, false, "*") — search the file for directories only, don’t recurse
+for i,v in ipairs(t) do console(v:getFullPathName()) end — print each found element in the table
+[/code:16jkc61m]
+
+Tronic
+
+thanks for this.
+it works well, but I think I’m missing something else in the management of data in lua.
+
+how to make this code work?
+
+[code:1kknlnro]
+t = {} — it store userdata
+myfile = File("") — empty file ???
+f = myfile.getSpecialLocation(File.userApplicationDataDirectory) — C:Users<username>AppDataRoaming
+f:findChildFiles (t, File.findFilesAndDirectories, false, "/Ctrlr/*") — find and assign result to table "t"
+
+for k,v in pairs(t) do
+getPathLine = v:getFullPathName() — get value but is always userdata
+console(getPathLine)
+console(type(getPathLine))
+— how get value from userdata ??? getPathLine:getObject / not work
+graphics:drawText (getPathLine, 10, 0, 100, k*40, Justification(1) ,true) — of course, does not work, It takes a userdata value in "getPathLine"
+end
+[/code:1kknlnro]
+
+Atom
+
+In your code,
+I think you need to convert the strings to lua strings using stringToLua() function
+[code:346ryv3b]
+graphics:drawText (stringToLua(getPathLine), 10, 0, 100, k*40, Justification(1) ,true)
+[/code:346ryv3b]

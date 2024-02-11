@@ -1,0 +1,90 @@
+/*
+* This file is for styling of the bbPress Advanced Statistics plugin
+* 
+* Please note, any changes made to this file will be overwritten upon
+* plugin updates. If you want to make changes, simply copy the code into your
+* theme CSS file and make adjustments there ( and then disable CSS loading within
+* the extras tab )
+*
+* Plugin Version: 1.5
+*/
+
+/* Heading of the plugin can be changed here */
+.bbpas-header {
+    background: rgba(0, 0, 0, 0.03);
+    color: #666;
+    border-radius: 6px;
+    margin: 6px 0;
+    padding: 3px;
+    font-weight: bold;
+}
+
+/* User Group key */
+.bbpas-key {
+    margin: 10px 0;
+}
+
+/* Styling applied to the header of the plugin (e.g Forum Statistics) */
+h2.bbpas-h2 {
+    
+}
+
+/* Styling applied to all user links within the plugin */
+a.bbpas-user {
+    font-weight: normal;
+}
+
+/* Styling applied to the title, e.g Threads, Members and Posts */
+span.bbpas-title {
+    font-weight: bold;
+}
+
+/* Style all roles, a.bbpas-user is a better way of doing this! */
+.keymaster a, .moderator a, .blocked a, .spectator a {
+    
+}
+
+/* Style Keymaster and Moderator roles */
+.keymaster a, .moderator a, .keymaster, .moderator {
+    font-weight: bold;
+}
+
+    .keymaster a, .keymaster {
+        color: red;
+    }
+    
+    .moderator, .moderator a {
+        color: black;
+    }
+
+/* Lets make blocked/banned members stand out a little more */
+.blocked, .blocked a {
+    text-decoration: line-through;
+    font-style: italic;
+    color: grey;
+}
+
+/* Each block within the Forum Statistics can be customised. */
+
+.bbpas-version {
+    display: none;
+}
+
+/* Styling for all of the elements in the Statistics */
+.bbpas-active, .bbpas-inactive, .bbpas-forum_key, .bbpas-forum_stats, .bbpas-most_users {
+    
+}
+
+/*  Make the user stats bold and stand out */
+.bbpas-most_users span {
+    font-weight: bold;
+}
+
+/* Separate the Most Users online section a little */
+.bbpas-most_users {
+    margin-top: 10px;
+}
+
+.bbpas-others {
+    font-weight: normal;
+}

@@ -1,0 +1,26 @@
+.gtf-ajax-loader {
+	display: none;
+	vertical-align: middle;
+}
+
+span#gtf-mark-topic-read {
+	float: right;
+}
+
+a#gtf-mark-forum-read-link {
+	line-height: 16px;
+}
+
+.gtf-new-post {
+	text-decoration: none;
+	border: 1px solid #ddd;
+	padding: 0 3px;
+}
+
+.gtf-new-post:after {
+	content: '>';
+}
+
+.gtf-unread {
+	font-weight: bold;
+}
