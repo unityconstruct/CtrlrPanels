@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<panel name="Ctrlr Panel" panelShowDialogs="1" panelMessageTime="10000"
+       panelAuthorName="" panelAuthorEmail="" panelAuthorUrl="" panelAuthorDesc=""
+       panelVersionMajor="1" panelVersionMinor="0" panelVersionName="Hell-O-Kitty"
+       panelVendor="" panelDevice="" panelMidiSnapshotAfterLoad="0"
+       panelMidiSnapshotAfterProgramChange="0" panelMidiSnapshotDelay="10"
+       panelMidiInputChannelDevice="1" panelMidiInputDevice="Virus TI Synth"
+       panelMidiControllerChannelDevice="1" panelMidiControllerDevice="-- None"
+       panelMidiOutputChannelDevice="1" panelMidiOutputDevice="Virus TI Synth"
+       panelMidiInputFromHost="0" panelMidiInputChannelHost="1" panelMidiOutputToHost="0"
+       panelMidiOutputChannelHost="1" panelMidiThruH2H="0" panelMidiThruH2HChannelize="0"
+       panelMidiThruH2D="0" panelMidiThruH2DChannelize="0" panelMidiThruD2D="0"
+       panelMidiThruD2DChannelize="0" panelMidiThruD2H="0" panelMidiThruD2HChannelize="0"
+       panelMidiRealtimeIgnore="1" panelMidiInputThreadPriority="7"
+       panelMidiProgram="0" panelMidiBankLsb="0" panelMidiBankMsb="0"
+       panelMidiSendProgramChangeOnLoad="0" panelMidiProgramCalloutOnprogramChange="0"
+       panelMidiMatchCacheSize="32" panelMidiGlobalDelay="0" luaPanelMidiChannelChanged="-- None"
+       luaPanelMidiReceived="-- None" luaPanelLoaded="InitPanel" luaPanelBeforeLoad="-- None"
+       luaPanelSaved="-- None" luaPanelResourcesLoaded="-- None" luaPanelProgramChanged="-- None"
+       luaPanelGlobalChanged="-- None" luaPanelMessageHandler="-- None"
+       panelFilePath="D:\Documents and Settings\Hugo\Escritorio\Ctrlr 2\Game.panel"
+       panelUID="8.PoF80vrE.wD" panelInstanceUID="frAQ" panelInstanceManufacturerID="Bc8W"
+       panelModulatorListColumns="-- None" panelModulatorListCsvDelimiter=","
+       panelModulatorListXmlRoot="ctrlrModulatorList" panelModulatorListXmlModulator="ctrlrModulator"
+       panelModulatorListSortOption="1" panelGlobalVariables="-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1:-1"
+       panelResources="-- None" panelPropertyDisplayIDs="0" ctrlrMenuItemBackgroundColour="ffffffff"
+       ctrlrMenuItemTextColour="ff000000" ctrlrMenuItemHighlightedTextColour="ffffffff"
+       ctrlrMenuItemHighlightColour="ff4364ff" ctrlrMenuItemFont="&lt;Sans-Serif&gt;;18;0;0;0;0;1;3"
+       ctrlrMenuItemSeparatorColour="44000000" ctrlrMenuItemHeaderColour="ff000000"
+       ctrlrMenuBarBackgroundColour1="fff7f7f7" ctrlrMenuBarBackgroundColour2="ffcccccc"
+       ctrlrMenuBarTextColour="ff000000" ctrlrMenuBarHighlightedTextColour="ffffffff"
+       ctrlrMenuBarHighlightColour="ff4364ff" ctrlrMenuBarFont="&lt;Sans-Serif&gt;;18;0;0;0;0;1;3"
+       ctrlrUseEditorWrapper="0" panelIndex="0">
+  <uiWindowManager>
+    <uiChildWindow uiChildWindowName="LuaMethodEditor" uiChildWindowState="576 220 800 500">
+      <uiChildWindowContentState luaMethodEditor="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&#13;&#10;&#13;&#10;&lt;CLOSED id=&quot;LUA Method&quot; scrollPos=&quot;0&quot;/&gt;&#13;&#10;;f38fbe00654449d990fe34f8da8b32e8:bcf729b974234b25a1620e70bf5ac3fa:925091ca9e494e1d8f13d32892b35f6f"/>
+    </uiChildWindow>
+    <uiChildWindow uiChildWindowName="LuaConsole" uiChildWindowState="509 523 800 500">
+      <uiChildWindowContentState/>
+    </uiChildWindow>
+    <uiChildWindow uiChildWindowName="LayerEditor" uiChildWindowState="440 260 800 500">
+      <uiChildWindowContentState/>
+    </uiChildWindow>
+  </uiWindowManager>
+  <midiLibrary uuid="7dcba6e461604378b176bb7a90e39ca5" luaTransInfo="-- None"
+               midiLibraryParameterIndexProperty="modulatorCustomIndex" midiLibraryMidiProgramChangeControl="0"
+               midiLibrarySendSnapAfterPChg="0" midiLibraryDefaultBankName="New Bank - %H:%M:%S"
+               midiLibraryDefaultProgramName="New Program - %H:%M:%S" midiLibraryDefaultSnapshotName="Snapshot - %H:%M:%S"
+               midiLibraryCustomRequests="">
+    <midiLibrarySnapshots name="Snapshots"/>
+    <midiLibraryFirmware name="Firmware"/>
+    <midiLibraryEditBuffer name="Edit buffer"/>
+    <midiLibraryTransactions name="Transactions">
+      <trans name="Request Identity" enabled="1" internal="1" transCap="midiLibrary"
+             timeout="1000" transReqFormulaPrefix="F0 7E 7F 06 01" transReqFormulaSuffix="F7"
+             transRespSizeCheck="0" transReqDataLen="0" transReqExists="1"
+             transConfExists="0" transRespFormulaPrefix="F0 7E 7F 06 02" transRespFormulaSuffix="F7"
+             transRespDataLen="8" transRespDataCheck="1" transRespExists="1"/>
+      <trans name="Request Identity [LUA]" enabled="1" internal="1" transCap="midiLibrary"
+             timeout="1000" transReqFormulaPrefix="" transReqFormulaSuffix=""
+             transReqDataLen="0" transReqExists="1" transConfExists="0" transRespFormulaPrefix=""
+             transRespFormulaSuffix="" transRespDataLen="8" transRespDataCheck="0"
+             transRespSizeCheck="0" transRespExists="1" luaTransRequest="transIdReq"
+             luaTransProcess="transIdProc"/>
+      <trans name="Send SYX file" enabled="1" internal="1" transCap="midiLibrary"
+             timeout="1000" transReqFormulaPrefix="" transReqFormulaSuffix=""
+             transReqDataLen="0" transReqExists="1" transConfExists="0" transRespFormulaPrefix=""
+             transRespFormulaSuffix="" transRespDataLen="0" transRespDataCheck="0"
+             transRespExists="0" luaTransRequest="transSYXSendReq"/>
+      <trans name="Recieve SYX file" enabled="1" internal="1" transCap="midiLibrary"
+             timeout="1000" transReqFormulaPrefix="" transReqFormulaSuffix=""
+             transReqDataLen="0" transReqExists="1" transConfExists="0" transRespFormulaPrefix=""
+             transRespFormulaSuffix="" transRespDataLen="0" transRespDataCheck="0"
+             transRespExists="1" luaTransRequest="transSYXRcvReq" luaTransProcess="transSYXRcvProc"/>
+    </midiLibraryTransactions>
+  </midiLibrary>
+  <luaManager>
+    <luaManagerMethods>
+      <luaMethodGroup name="Built-In" uuid="8ec7ffb8441e43babc456cf6983b43f6">
+        <luaMethod luaMethodName="table_dump" luaMethodCode="--&#13;&#10;-- Print table contents&#13;&#10;--&#13;&#10;function table_dump(table)&#13;&#10;&#9;for key,value in ipairs(table) do&#13;&#10;&#9;&#9;debug (&quot;KEY= [&quot;..key..&quot;]&quot;)&#13;&#10;&#13;&#10;&#9;&#9;if (type(value) == &quot;table&quot;) then&#13;&#10;&#9;&#9;&#9;table_dump(value)&#13;&#10;&#9;&#9;elseif (type(value) == &quot;nil&quot;) then&#13;&#10;&#9;&#9;&#9;debug (&quot; = NIL&quot;)&#13;&#10;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;what (value)&#13;&#10;&#9;&#9;end&#13;&#10;&#9;end&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000001"
+                   luaMethodValid="1"/>
+        <luaMethod luaMethodName="what" luaMethodCode="--&#13;&#10;-- Print methods for an object&#13;&#10;--&#13;&#10;function what(o)&#13;&#10;&#9;info = class_info(o)&#13;&#10;&#9;if info ~= nil then&#13;&#10;&#9;&#9;ret = &quot;Object type [&quot; .. info.name .. &quot;]\n-----------------------------------------------------------------\n\n&quot;..&quot;Members:\n&quot;&#13;&#10;&#13;&#10;&#9;&#9;if info.name == &quot;table&quot; then&#13;&#10;&#9;&#9;&#9;table_dump(o)&#13;&#10;&#9;&#9;end&#13;&#10;&#13;&#10;&#9;&#9;for k, v in pairs(info.methods) do&#13;&#10;&#9;&#9;&#9;ret = ret .. string.format (&quot;\t%30s:\t%5s\n&quot;, k, type(v))&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#9;ret = ret .. &quot;\n\nAttributes:\n&quot;&#13;&#10;&#9;&#9;for k, v in pairs(info.attributes) do&#13;&#10;&#9;&#9;&#9;ret = ret .. string.format (&quot;\t%30s:\t%5s\n&quot;, k, type(v))&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#9;ret = ret .. &quot;\n-----------------------------------------------------------------&quot;&#13;&#10;&#9;end&#13;&#10;&#13;&#10;&#9;debug (ret)&#13;&#10;&#9;return ret&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000002"
+                   luaMethodValid="1"/>
+        <luaMethod luaMethodName="how" luaMethodCode="--&#13;&#10;-- Print all available classes&#13;&#10;--&#13;&#10;function how()&#13;&#10;&#9;ret = &quot;Available classes:\n&quot;&#13;&#10;&#9;ret = ret .. &quot;\n-----------------------------------------------------------------&quot;&#13;&#10;&#9;for i,v in ipairs(class_names()) do&#13;&#10;&#9;&#9;ret = ret .. &quot;\t&quot;.. v .. &quot;\n&quot;&#13;&#10;&#9;end&#13;&#10;&#9;ret = ret .. &quot;\n-----------------------------------------------------------------&quot;&#13;&#10;&#9;debug (ret)&#13;&#10;&#9;return ret&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000003"
+                   luaMethodValid="1"/>
+        <luaMethod luaMethodName="transSYXSendReq" luaMethodCode="function transSYXSendReq(transaction)&#13;&#10;&#9;console(&quot;transSYXSendReq&quot;)&#13;&#10;&#9;fileToSend = utils.openFileWindow(&quot;SYX file to send&quot;, File.getSpecialLocation(File.userHomeDirectory), &quot;*.*&quot;, true)&#13;&#10;&#13;&#10;&#9;if fileToSend:existsAsFile() then&#13;&#10;&#9;&#9;result = MemoryBlock (0, true)&#13;&#10;&#9;&#9;fileToSend:loadFileAsData (result)&#13;&#10;&#13;&#10;&#9;&#9;if result:getSize() &lt;= 0 then&#13;&#10;&#9;&#9;&#9;utils.warnWindow (&quot;Send SYX File&quot;, &quot;Reading the file resultet in 0 data bytes&quot;)&#13;&#10;&#9;&#9;&#9;return&#13;&#10;&#9;&#9;end&#13;&#10;&#13;&#10;&#9;&#9;debug (&quot;sending file: &quot;..fileToSend:getFullPathName())&#13;&#10;&#13;&#10;&#9;&#9;transaction:setRequest (result)&#13;&#10;&#9;else&#13;&#10;&#9;&#9;utils.warnWindow (&quot;Send SYX File&quot;, &quot;Can't read selected file&quot;)&#13;&#10;&#9;end&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000004"
+                   luaMethodValid="1"/>
+        <luaMethod luaMethodName="transSYXRcvReq" luaMethodCode="function transSYXRcvReq(transaction)&#13;&#10;&#9;console(&quot;transSYXRcvReq&quot;)&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000005"
+                   luaMethodValid="1"/>
+        <luaMethod luaMethodName="transSYXRcvProc" luaMethodCode="function transSYXRcvProc(transaction)&#13;&#10;&#9;console(&quot;transSYXRcvProc&quot;)&#13;&#10;end"
+                   luaMethodLinkedProperty="" luaMethodSource="0" uuid="00000000000000000000000000000006"
+                   luaMethodValid="1"/>
+      </luaMethodGroup>
+      <luaMethod luaMethodName="drawGame" luaMethodCode="--&#13;-- Called when a component needs repainting&#13;-- @comp&#13;-- @g    http://ctrlr.org/api/class_ctrlr_lua_graphics.html&#13;--              see also http://www.rawmaterialsoftware.com/juce/api/classGraphics.html&#13;--&#13;drawGame = function(comp,g)&#13;&#10;&#13;&#10;&#9;xFract = comp:getWidth()/100&#13;&#10;&#9;yFract = comp:getHeight()/100&#13;&#10;&#13;&#10;&#9;player1 = panel:getModulatorByIndex(1):getValue()&#13;&#10;&#9;player2 = panel:getModulatorByIndex(2):getValue()&#13;&#10;&#9;player1Height = yFract*25&#13;&#10;&#9;player2Height = yFract*25&#13;&#10;&#13;&#10;&#9;g:setColour(Colour(0xFF000000))&#13;&#10;&#9;g:fillRect(0, 0, comp:getWidth(), comp:getHeight())&#13;&#10;&#13;&#10;&#9;if startPlay == 0 then&#13;&#10;&#9;&#9;font = resources:getResourceAsFont (&quot;ERICSSON&quot;)&#13;&#10;&#9;&#9;font:setSizeAndStyle(math.floor(yFract * 25),&quot;normal&quot;,1,0)&#13;&#10;&#9;&#9;g:setFont(font)&#13;&#10;&#9;&#9;g:setColour (Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:drawSingleLineText(string.format(&quot;%s&quot;,  &quot;PONG&quot;), xFract * 50 , yFract * 50, Justification (Justification. horizontallyCentred))&#13;&#10;&#9;&#9;font:setSizeAndStyle(math.floor(yFract * 8),&quot;normal&quot;,1,0)&#13;&#10;&#9;&#9;g:setFont(font)&#13;&#10;&#9;&#9;g:drawSingleLineText(string.format(&quot;%s&quot;,  &quot;Click to Play&quot;), xFract * 50 , yFract * 70, Justification (Justification. horizontallyCentred))&#13;&#10;&#13;&#10;&#9;else&#13;&#10;&#9;&#9;if hits == 10 then&#13;&#10;&#9;&#9;&#9;ballSpeedX = ballSpeedX + 0.5&#13;&#10;&#9;&#9;&#9;ballSpeed = ballSpeed + 0.5&#13;&#10;&#9;&#9;&#9;hits = 0&#13;&#10;&#9;&#9;&#9;round = round + 1&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#9;&#13;&#10;&#9;--draw lines&#13;&#10;&#9;&#9;g:setColour(Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:drawRect(0, yFract*3, comp:getWidth(), comp:getHeight() - yFract*6, 1)&#13;&#10;&#9;&#13;&#10;&#9;&#9;for a = 0, 18 do&#13;&#10;&#9;&#9;&#9;g:fillRect(xFract*50, yFract*3 + (a*(yFract*5)), xFract*1, yFract*2)&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#13;&#10;&#9;--draw left player&#13;&#10;&#9;&#13;&#10;&#9;&#9;player1Y = ((127-player1) * (comp:getHeight() - player1Height - (yFract*6)))/127&#13;&#10;&#9;&#9;player1Top = player1Y + (yFract*3)&#13;&#10;&#9;&#9;player1Bot = player1Top + player1Height&#13;&#10;&#9;&#9;player1Center = player1Top + (player1Height/2)&#13;&#10;&#9;&#9;g:setColour(Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:fillRect(xFract*5, player1Y + (yFract*3) , xFract*2, player1Height)&#13;&#10;&#9;&#13;&#10;&#9;--draw right player&#13;&#10;&#9;&#13;&#10;&#9;&#9;player2Y = ((127-player2) * (comp:getHeight() - player2Height - (yFract*6)))/127 &#13;&#10;&#9;&#9;player2Top = player2Y + (yFract*3)&#13;&#10;&#9;&#9;player2Bot = player2Top + player2Height&#13;&#10;&#9;&#9;player2Center = player2Top + (player2Height/2)&#13;&#10;&#9;&#9;g:setColour(Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:fillRect(comp:getWidth()-(xFract*7), player2Y + (yFract*3) , xFract*2, player2Height)&#13;&#10;&#9;&#9;&#13;&#10;&#9;&#13;&#10;&#9;-- horizontal ball movement&#13;&#10;&#9;&#13;&#10;&#9;&#9;if ballDirectionX == 0 then &#9;&#9;-- ball go left&#13;&#10;&#9;&#9;&#9;if ballX &gt; 0 then&#9;&#9;&#9;&#13;&#10;&#9;&#9;&#9;&#9;if ballX + ballSpeedX &lt; xFract*8 and ballX + ballSpeedX &gt; xFract*5 then &#13;&#10;&#9;&#9;&#9;&#9;&#9;if ballY &gt; player1Top and ballY&lt; player1Bot then -- hit the ball&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballDirectionX = 1&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballX = ballX + ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballSpeedY = ((round)/3) + math.abs(ballY - player1Center)/(20)&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;if ballSpeedY &gt; ballSpeed then ballSpeedY = ballSpeed - 0.1 end&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballSpeedX = ballSpeed - ballSpeedY&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;hits = hits + 1&#13;&#10;&#9;&#9;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballX = ballX - ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;&#9;ballX = ballX - ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;&#9;else &#9;&#9;&#9;&#9;&#9;&#9;&#9;-- player 2 goal&#13;&#10;&#9;&#9;&#9;&#9;goal(2, comp)&#13;&#10;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;else&#9;&#9;&#9;&#9;&#9;&#9;&#9;&#9;-- ball go right&#13;&#10;&#9;&#9;&#9;if ballX &lt; comp:getWidth() then&#13;&#10;&#9;&#9;&#9;&#9;if ballX + ballSpeedX &gt; comp:getWidth() - (xFract*8) and ballX + ballSpeedX &lt; comp:getWidth() - (xFract*5) then&#13;&#10;&#9;&#9;&#9;&#9;&#9;if ballY + (1.5) &gt; player2Top and ballY&lt; player2Bot- (xFract * 1.5) then -- hit the ball&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballDirectionX = 0&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballX = ballX - ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballSpeedY = (round/3)  + math.abs(ballY - player2Center)/(20)&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;if ballSpeedY &gt; ballSpeed then ballSpeedY = ballSpeed - 0.1 end&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballSpeedX = ballSpeed - ballSpeedY&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;hits = hits + 1&#13;&#10;&#9;&#9;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;&#9;&#9;ballX = ballX + ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;&#9;ballX = ballX + ballSpeedX&#13;&#10;&#9;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;&#9;else &#9;&#9;&#9;&#9;&#9;&#9;&#9;-- player 2 goal&#13;&#10;&#9;&#9;&#9;&#9;goal(1, comp)&#13;&#10;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#13;&#10;&#9;-- vertical ball movement&#13;&#10;&#9;&#13;&#10;&#9;&#9;if ballDirectionY == 0 then&#13;&#10;&#9;&#9;&#9;if ballY &gt; (xFract * 3) then&#13;&#10;&#9;&#9;&#9;&#9;ballY = ballY - ballSpeedY &#13;&#10;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;ballDirectionY = 1&#13;&#10;&#9;&#9;&#9;&#9;ballY = ballY + ballSpeedY&#13;&#10;&#9;&#9;&#9;end&#9;&#13;&#10;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;if ballY &lt; comp:getHeight() - (xFract * 5) then&#13;&#10;&#9;&#9;&#9;&#9;ballY = ballY + ballSpeedY&#13;&#10;&#9;&#9;&#9;else&#13;&#10;&#9;&#9;&#9;&#9;ballDirectionY = 0&#13;&#10;&#9;&#9;&#9;&#9;ballY = ballY  - ballSpeedY&#13;&#10;&#9;&#9;&#9;end&#13;&#10;&#9;&#9;end&#13;&#10;&#9;&#9;&#13;&#10;&#9;-- draw ball&#13;&#10;&#9;&#9;g:setColour(Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:fillEllipse(ballX , ballY, (xFract * 3), (xFract * 3))&#13;&#10;&#9;&#9;&#13;&#10;&#9;&#9;font:setSizeAndStyle(math.floor(yFract * 16),&quot;normal&quot;,1,0)&#13;&#10;&#9;&#9;g:setFont(font)&#13;&#10;&#9;&#9;g:setColour (Colour(0xFFFFFFFF))&#13;&#10;&#9;&#9;g:drawSingleLineText(string.format(&quot;%s&quot;,  player1Score), xFract * 45 , yFract * 26, Justification (Justification.right))&#13;&#10;&#9;&#9;g:drawSingleLineText(string.format(&quot;%s&quot;,  player2Score), xFract * 55 , yFract * 26, Justification (Justification.left))&#13;&#13;&#10;&#9;&#9;player1Prev = player1&#13;&#10;&#9;&#9;player2Prev = player2&#13;&#10;&#13;&#10;&#9;&#9;comp:repaint()&#13;&#10;&#9;end&#13;&#10;end&#13;&#10;&#13;&#10;function goal(player, comp)&#13;&#10;&#9;if player == 1 then&#13;&#10;&#9;&#9;player1Score = &#9;player1Score + 1&#13;&#10;&#9;else&#13;&#10;&#9;&#9;player2Score = &#9;player2Score + 1&#9;&#9;&#13;&#10;&#9;end&#13;&#10;&#9;ballX = math.random(comp:getWidth()/2) + comp:getWidth()/4&#13;&#10;&#9;ballY = math.random(comp:getHeight()/2) + comp:getHeight()/4&#13;&#10;&#9;ballDirectionX = math.floor(math.random(2)) - 1&#13;&#10;&#9;ballDirectionY = math.floor(math.random(2)) - 1&#13;&#10;&#9;ballSpeedX = 1&#13;&#10;&#9;ballSpeedY = 1&#13;&#10;&#9;ballSpeed = 2&#13;&#10;&#9;hits = 0&#13;&#10;&#9;round = 0&#13;&#10;end"
+                 luaMethodLinkedProperty="uiCustomPaintCallback" luaMethodSource="0"
+                 uuid="f38fbe00654449d990fe34f8da8b32e8" luaMethodValid="1"/>
+      <luaMethod luaMethodName="InitPanel" luaMethodCode="--&#13;-- Called when the panel has finished loading&#13;--&#13;InitPanel = function()&#13;&#10;&#13;&#10;&#9;comp = panel:getModulatorByIndex(0):getComponent()&#13;&#10;&#9;ballX = math.random(comp:getWidth()/2) + comp:getWidth()/4&#13;&#10;&#9;ballY = math.random(comp:getHeight()/2) + comp:getHeight()/4&#13;&#10;&#9;ballDirectionX = math.floor(math.random(2)) - 1&#13;&#10;&#9;ballDirectionY = math.floor(math.random(2)) - 1&#13;&#10;&#9;ballSpeedX = 1&#13;&#10;&#9;ballSpeedY = 1&#13;&#10;&#9;ballSpeed = 2&#13;&#10;&#9;player1Score = 0&#13;&#10;&#9;player2Score = 0&#13;&#10;&#9;timer1 = 0&#13;&#10;&#9;hits = 0&#13;&#10;&#9;round = 0&#13;&#10;&#9;startPlay = 0&#13;&#10;&#9;player1Prev = panel:getModulatorByIndex(1):getValue()&#13;&#10;&#9;player2Prev = panel:getModulatorByIndex(2):getValue()&#13;&#10;end&#13;&#10;&#13;&#10;"
+                 luaMethodLinkedProperty="luaPanelLoaded" luaMethodSource="0"
+                 uuid="bcf729b974234b25a1620e70bf5ac3fa" luaMethodValid="1"/>
+      <luaMethod luaMethodName="mouseDown" luaMethodCode="--&#13;-- Called when a mouse DOWN (any mouse button) event happens on a component&#13;-- @comp&#13;-- @event   http://www.rawmaterialsoftware.com/juce/api/classMouseEvent.html&#13;--&#13;mouseDown = function(comp, event)&#13;&#10;&#9;&#13;&#10;&#9;if startPlay == 0 then&#13;&#10;&#9;&#9;startPlay = 1&#13;&#10;&#9;&#9;comp:repaint()&#13;&#10;&#9;else&#13;&#10;&#9;&#9;startPlay = 0&#13;&#10;&#9;&#9;InitPanel()&#13;&#10;&#9;end&#13;end"
+                 luaMethodLinkedProperty="uiCustomMouseDownCallback" luaMethodSource="0"
+                 uuid="925091ca9e494e1d8f13d32892b35f6f" luaMethodValid="1"/>
+    </luaManagerMethods>
+  </luaManager>
+  <panelResources>
+    <resource resourceHash="3078408237085581455" resourceLoadedTime="1409351542468"
+              resourceSize="48416" resourceFile="ERICSSON.TTF" resourceSourceFile="D:\Documents and Settings\Hugo\Escritorio\Ctrlr 2\Virus TI 3\Panels\ERICSSON.TTF"
+              resourceName="ERICSSON" resourceType="Font"/>
+  </panelResources>
+  <uiPanelEditor uiPanelCanvasRectangle="0 0 316 237" uiPanelSnapSize="8" uiPanelBackgroundColour="0xffffffff"
+                 uiPanelBackgroundColour1="ff000000" uiPanelBackgroundColour2="ff000000"
+                 uiPanelBackgroundGradientType="1" uiPanelImageResource="-- None"
+                 uiPanelEditMode="0" uiPanelViewPortSize="1338" uiPanelPropertiesSize="334"
+                 uiPanelLock="0" uiPanelDisabledOnEdit="0" uiPanelWidth="400"
+                 uiPanelHeight="400" name="Ctrlr Panel" uiPanelImageAlpha="255"
+                 uiPanelImageLayout="64" uiPanelSnapActive="1" uiPanelPropertiesOnRight="0"
+                 luaPanelPaintBackground="-- None" luaPanelResized="-- None" luaPanelFileDragDropHandler="-- None"
+                 luaPanelFileDragEnterHandler="-- None" luaPanelFileDragExitHandler="-- None"
+                 uiPanelInvisibleComponentAlpha="0.5" uiPanelMidiToolbarVisible="0"
+                 uiPanelTooltipBackgroundColour="0xffeeeebb" uiPanelTooltipOutlineColour="0xff000000"
+                 uiPanelTooltipColour="0xff000000" uiPanelTooltipCornerRound="1"
+                 uiPanelTooltipPlacement="2" uiPanelTooltipFont="&lt;Sans-Serif&gt;;15;1;0;0;0;1;3"
+                 uiPanelZoom="1">
+    <uiPanelCanvasLayer uiPanelCanvasLayerName="New layer" uiPanelCanvasLayerUid="0bf3a74101000000d0fb1200e001927c"
+                        uiPanelCanvasLayerColour="0x000000" uiPanelCanvasLayerVisibility="1"
+                        uiPanelCanvasLayerIndex="0"/>
+  </uiPanelEditor>
+  <modulator modulatorVstExported="1" modulatorMax="65536" vstIndex="0" modulatorIsStatic="0"
+             modulatorGlobalVariable="-1" modulatorMuteOnStart="0" modulatorExcludeFromSnapshot="0"
+             modulatorValueExpression="modulatorValue" modulatorValueExpressionReverse="midiValue"
+             luaModulatorGetValueForMIDI="-- None" luaModulatorGetValueFromMIDI="-- None"
+             modulatorLinkedToPanelProperty="-- None" modulatorLinkedToModulatorProperty="-- None"
+             modulatorLinkedToModulator="-- None" modulatorLinkedToModulatorSource="1"
+             modulatorLinkedToComponent="0" modulatorBaseValue="0" modulatorCustomIndex="0"
+             modulatorCustomName="" modulatorCustomIndexGroup="0" modulatorCustomNameGroup=""
+             modulatorVstNameFormat="%n" luaModulatorValueChange="-- None"
+             name="modulator-1">
+    <midi midiMessageType="9" midiMessageChannelOverride="0" midiMessageChannel="1"
+          midiMessageCtrlrNumber="1" midiMessageCtrlrValue="0" midiMessageMultiList=""
+          midiMessageSysExFormula=""/>
+    <component componentLabelPosition="top" componentLabelJustification="centred"
+               componentLabelHeight="14" componentLabelWidth="0" componentLabelVisible="0"
+               componentLabelAlwaysOnTop="1" componentSentBack="0" componentLabelColour="ffffffff"
+               componentLabelFont="LCD;12;0;0;0;0;1;2" componentVisibleName="modulator-1"
+               componentMouseCursor="2" componentGroupName="" componentGroupped="0"
+               componentSnapSize="0" componentIsLocked="0" componentDisabled="0"
+               componentRadioGroupId="0" componentRadioGroupNotifyMidi="1" componentVisibility="1"
+               componentEffect="0" componentEffectRadius="1" componentEffectColour="fff1ff00"
+               componentEffectOffsetX="0" componentEffectOffsetY="0" componentExcludedFromLabelDisplay="0"
+               componentBubbleRoundAngle="10" componentBubbleBackgroundColour1="0x9cffffff"
+               componentBubbleBackgroundColour2="0xbab9b9b9" componentBubbleBackgroundGradientType="1"
+               componentBubbleValueColour="0xff000000" componentBubbleValueFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3"
+               componentBubbleValueJustification="centred" componentBubbleNameColour="0xff000000"
+               componentBubbleNameFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3" componentBubbleNameJustification="centred"
+               componentValueDecimalPlaces="0" uiCustomResizedCallback="" uiCustomPaintCallback="drawGame"
+               uiCustomPaintOverChildrenCallback="" componentRectangle="8 8 297 199"
+               uiCustomMouseDownCallback="mouseDown" uiCustomMouseUpCallback=""
+               uiCustomMouseEnterCallback="" uiCustomMouseExitCallback="" uiCustomMouseMoveCallback=""
+               uiCustomMouseDragCallback="" uiCustomKeyDownCallback="" uiCustomKeyStateChangedCallback="-- None"
+               uiCustomMouseDoubleClickCallback="" uiCustomMouseWheelMoveCallback=""
+               uiCustomMouseDownGrabsFocus="0" uiCustomWantsKeyboardFocus="0"
+               uiType="uiCustomComponent" componentLayerUid="0bf3a74101000000d0fb1200e001927c"/>
+  </modulator>
+  <modulator modulatorVstExported="1" modulatorMax="127" vstIndex="1" modulatorIsStatic="0"
+             modulatorGlobalVariable="-1" modulatorMuteOnStart="0" modulatorExcludeFromSnapshot="0"
+             modulatorValueExpression="modulatorValue" modulatorValueExpressionReverse="midiValue"
+             luaModulatorGetValueForMIDI="-- None" luaModulatorGetValueFromMIDI="-- None"
+             modulatorLinkedToPanelProperty="-- None" modulatorLinkedToModulatorProperty="-- None"
+             modulatorLinkedToModulator="-- None" modulatorLinkedToModulatorSource="1"
+             modulatorLinkedToComponent="0" modulatorBaseValue="0" modulatorCustomIndex="0"
+             modulatorCustomName="" modulatorCustomIndexGroup="0" modulatorCustomNameGroup=""
+             modulatorVstNameFormat="%n" luaModulatorValueChange="-- None"
+             name="Left Player" modulatorMin="0" modulatorValue="30">
+    <midi midiMessageType="0" midiMessageChannelOverride="0" midiMessageChannel="1"
+          midiMessageCtrlrNumber="1" midiMessageCtrlrValue="0" midiMessageMultiList=""
+          midiMessageSysExFormula=""/>
+    <component componentLabelPosition="top" componentLabelJustification="centred"
+               componentLabelHeight="14" componentLabelWidth="0" componentLabelVisible="0"
+               componentLabelAlwaysOnTop="1" componentSentBack="0" componentLabelColour="0xff000000"
+               componentLabelFont="&lt;Sans-Serif&gt;;12;0;0;0;0;1;3" componentVisibleName="modulator-2"
+               componentMouseCursor="2" componentGroupName="" componentGroupped="0"
+               componentSnapSize="0" componentIsLocked="0" componentDisabled="0"
+               componentRadioGroupId="0" componentRadioGroupNotifyMidi="1" componentVisibility="1"
+               componentEffect="0" componentEffectRadius="1" componentEffectColour="0xff000000"
+               componentEffectOffsetX="0" componentEffectOffsetY="0" componentExcludedFromLabelDisplay="0"
+               componentBubbleRoundAngle="10" componentBubbleBackgroundColour1="0x9cffffff"
+               componentBubbleBackgroundColour2="0xbab9b9b9" componentBubbleBackgroundGradientType="1"
+               componentBubbleValueColour="0xff000000" componentBubbleValueFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3"
+               componentBubbleValueJustification="centred" componentBubbleNameColour="0xff000000"
+               componentBubbleNameFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3" componentBubbleNameJustification="centred"
+               componentValueDecimalPlaces="0" uiSliderStyle="LinearHorizontal"
+               uiSliderMin="0" uiSliderMax="127" uiSliderInterval="1" uiSliderDoubleClickEnabled="1"
+               uiSliderDoubleClickValue="0" uiSliderValuePosition="0" uiSliderValueHeight="12"
+               uiSliderValueWidth="64" uiSliderTrackCornerSize="0" uiSliderThumbCornerSize="0"
+               uiSliderThumbWidth="0" uiSliderThumbHeight="0" uiSliderThumbFlatOnLeft="0"
+               uiSliderThumbFlatOnRight="0" uiSliderThumbFlatOnTop="0" uiSliderThumbFlatOnBottom="0"
+               uiSliderValueTextColour="0xff000000" uiSliderValueBgColour="0xffffffff"
+               uiSliderRotaryOutlineColour="0xff0000ff" uiSliderRotaryFillColour="0xff0000ff"
+               uiSliderThumbColour="ffffffff" uiSliderValueHighlightColour="0xff0000ff"
+               uiSliderValueOutlineColour="0xffffffff" uiSliderTrackColour="ffffffff"
+               uiSliderIncDecButtonColour="0xff0000ff" uiSliderIncDecTextColour="0xffffffff"
+               uiSliderValueFont="&lt;Sans-Serif&gt;;12;0;0;0;0;1;3" uiSliderValueTextJustification="centred"
+               uiSliderVelocitySensitivity="1" uiSliderVelocityThreshold="1"
+               uiSliderVelocityOffset="0" uiSliderVelocityMode="0" uiSliderVelocityModeKeyTrigger="1"
+               uiSliderSpringMode="0" uiSliderSpringValue="0" uiSliderMouseWheelInterval="1"
+               uiSliderPopupBubble="0" componentLayerUid="0bf3a74101000000d0fb1200e001927c"
+               componentRectangle="5 208 150 30" uiType="uiSlider"/>
+  </modulator>
+  <modulator modulatorVstExported="1" modulatorMax="127" vstIndex="3" modulatorIsStatic="0"
+             modulatorGlobalVariable="-1" modulatorMuteOnStart="0" modulatorExcludeFromSnapshot="0"
+             modulatorValueExpression="modulatorValue" modulatorValueExpressionReverse="midiValue"
+             luaModulatorGetValueForMIDI="-- None" luaModulatorGetValueFromMIDI="-- None"
+             modulatorLinkedToPanelProperty="-- None" modulatorLinkedToModulatorProperty="-- None"
+             modulatorLinkedToModulator="-- None" modulatorLinkedToModulatorSource="1"
+             modulatorLinkedToComponent="0" modulatorBaseValue="0" modulatorCustomIndex="0"
+             modulatorCustomName="" modulatorCustomIndexGroup="0" modulatorCustomNameGroup=""
+             modulatorVstNameFormat="%n" luaModulatorValueChange="-- None"
+             name="Right Player" modulatorMin="0" modulatorValue="23">
+    <midi midiMessageType="0" midiMessageChannelOverride="0" midiMessageChannel="1"
+          midiMessageCtrlrNumber="3" midiMessageCtrlrValue="0" midiMessageMultiList=""
+          midiMessageSysExFormula=""/>
+    <component componentLabelPosition="top" componentLabelJustification="centred"
+               componentLabelHeight="14" componentLabelWidth="0" componentLabelVisible="0"
+               componentLabelAlwaysOnTop="1" componentSentBack="0" componentLabelColour="0xff000000"
+               componentLabelFont="&lt;Sans-Serif&gt;;12;0;0;0;0;1;3" componentVisibleName="modulator-2"
+               componentMouseCursor="2" componentGroupName="" componentGroupped="0"
+               componentSnapSize="0" componentIsLocked="0" componentDisabled="0"
+               componentRadioGroupId="0" componentRadioGroupNotifyMidi="1" componentVisibility="1"
+               componentEffect="0" componentEffectRadius="1" componentEffectColour="0xff000000"
+               componentEffectOffsetX="0" componentEffectOffsetY="0" componentExcludedFromLabelDisplay="0"
+               componentBubbleRoundAngle="10" componentBubbleBackgroundColour1="0x9cffffff"
+               componentBubbleBackgroundColour2="0xbab9b9b9" componentBubbleBackgroundGradientType="1"
+               componentBubbleValueColour="0xff000000" componentBubbleValueFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3"
+               componentBubbleValueJustification="centred" componentBubbleNameColour="0xff000000"
+               componentBubbleNameFont="&lt;Sans-Serif&gt;;14;0;0;0;0;1;3" componentBubbleNameJustification="centred"
+               componentValueDecimalPlaces="0" uiSliderStyle="LinearHorizontal"
+               uiSliderMin="0" uiSliderMax="127" uiSliderInterval="1" uiSliderDoubleClickEnabled="1"
+               uiSliderDoubleClickValue="0" uiSliderValuePosition="0" uiSliderValueHeight="12"
+               uiSliderValueWidth="64" uiSliderTrackCornerSize="0" uiSliderThumbCornerSize="0"
+               uiSliderThumbWidth="0" uiSliderThumbHeight="0" uiSliderThumbFlatOnLeft="0"
+               uiSliderThumbFlatOnRight="0" uiSliderThumbFlatOnTop="0" uiSliderThumbFlatOnBottom="0"
+               uiSliderValueTextColour="0xff000000" uiSliderValueBgColour="0xffffffff"
+               uiSliderRotaryOutlineColour="0xff0000ff" uiSliderRotaryFillColour="0xff0000ff"
+               uiSliderThumbColour="ffffffff" uiSliderValueHighlightColour="0xff0000ff"
+               uiSliderValueOutlineColour="0xffffffff" uiSliderTrackColour="ffffffff"
+               uiSliderIncDecButtonColour="0xff0000ff" uiSliderIncDecTextColour="0xffffffff"
+               uiSliderValueFont="&lt;Sans-Serif&gt;;12;0;0;0;0;1;3" uiSliderValueTextJustification="centred"
+               uiSliderVelocitySensitivity="1" uiSliderVelocityThreshold="1"
+               uiSliderVelocityOffset="0" uiSliderVelocityMode="0" uiSliderVelocityModeKeyTrigger="1"
+               uiSliderSpringMode="0" uiSliderSpringValue="0" uiSliderMouseWheelInterval="1"
+               uiSliderPopupBubble="0" uiType="uiSlider" componentRectangle="152 208 150 30"
+               componentLayerUid="0bf3a74101000000d0fb1200e001927c"/>
+  </modulator>
+</panel>
