@@ -1,0 +1,178 @@
+
+Frequently asked questions for Roland VR09 VR09B VR730
+
+
+#############################################################################
+# General 
+#############################################################################
+
+Q: What is the difference between VR09 and VR09*B*?
+A: A part from cosmetic changes (colours) there is ZERO difference.
+   VR09B is shipped with a newer firmware version,  but VR09 can easily be upgraded.
+
+Q: What is the difference between VR09(B) and VR730?
+A: VR730 has a 73 key Waterfall keybed like on 'real Hammonds', is bigger and a bit heavier. 
+   VR730 has a couple of (rather uninteresting) additional sounds, some of them are taken from RD2000 but _NO_ RD2000 acoustic piano
+
+Q: Has the VR730 the same keybed as the predecessors VR760 and VR700? 
+A: No. VR730 has a 'standard' Waterfall Fatar FP80 used on other clones (Nord Electro, Hammond SK1, Mojo, Viscount, etc)
+   The Fatar-feel is ok but in no way comparable to the 'magic' of the VR700/760 keybed
+
+Q: How can I use two sounds (split/dual mode) from the same sound group (e.g. 2 acoustic pianos)?
+A: Set split/dual mode with 2 sounds from different groups
+   use the dial to select the sound you want to change
+   press the sound group button a longer time until the sound menu appears
+   select the sound
+
+Q: Are there software editors for the VR09/09B/730?
+A: Yes: Roland VR-09 EDITOR (IOS) and CTRLR V-Combo EDITOR (Windows/OSX/Linux)
+
+Q: Does the VR have 'hidden' features or sounds? 
+A: Yes, a LOT of them (~1000 sounds, multiple zones and voices, etc). Use CTRLR V-Combo EDITOR to exploit them.
+
+Q: Can I use program change messages to switch VR registrations?
+A: The VR CANNOT RECEIVE registration program changes (no, no... and no!)
+   The VR CAN SEND registration program changes: see p. 50+51 Roland VR09 reference manual (download from Roland website) 
+
+Q: Can I use program change messages to switch VR patches (sounds)?
+A: No. You can send a program change (PC) message to the 'keyboard sound engine, but the result will be aleaoric.
+   To switch patches you have to use sysex messages.
+   On the other hand, program change messages are well understood by the GM2 sound engine.
+
+Q: What are these 'GM2 sounds' and why can't I access/play them on the VR?
+A: The VR has a 2nd sound engine under the hood - the GM sounds. 
+   They can be played by:
+   - external midi gear (e.g. a 2nd keyboard or software) 
+   - running a midi song file from the VR USB-stick
+   - directly on the VR by plugging a 5-pin midi cable from VR midi-out to -in and setting the TX channel(s) of each manual 
+     to another midi channel (e.g. channel 5 for playing a GM sound on channel 5)
+   To select (and customize) GM sounds you can use the GM2 user interface of CTRLR EDITOR or any programmable midi controller
+
+Q: I lost some caps of the VR draw-faders. Where can I buy them? 
+A: Eeerrr... good luck!
+
+#############################################################################
+# VR acoustic pianos 
+#############################################################################
+
+Q: The VR pianos do not sound very good. Why? 
+   Issues are:
+   - Identical samples for damper on and damper off: the piano sound of a real piano is very different if damper is on or off.
+     Digital pianos use different samples or sophisticated algorithms when damper is off. The VR simply sustains the 'damped' samples.  
+   - No (additional) sympathetic resonance in the undamped sound.
+   - A piano note does not only sound louder but also with a different timbre if the key is hit harder. 
+     The VR has (only) 5 discrete 'velocity' samples (= different samples relied to the force on the key). 
+     The difference between the highest and second highest sample is very pronounced and difficult to control.
+     The play becomes 'disjointed' when unvoluntary triggering the highest sample.
+
+Q: Is there a any difference in acoustic pianos between VR09, VR09B, VR730?
+A: No. VR730 has been (missleadingly) annonced with 'sounds from Roland RD 2000' but this does NOT include the RD2000 APs!
+   A minor improvement on APs came with VR09/730 firmware 1.11 (e.g. 2D effect with bass notes on the left and higher notes
+   on the right speaker)
+
+Q: Is there a way to get better piano samples? 
+A: No. The VR cannot load samples. But you can use a tablet/computer running a piano app (e.g. Sampletank) that you play through the VR.
+
+Q: Is there a way to improve the VR 'onboard' Grand to sound more like a real Grand?
+A: Only in nuances. 
+   a) VR 'only': add some 'stage' hall and use the filter to add a bit of resonance 
+   b) CTRLR editor: CTRLR editor has a 'V-piano' mode that can be used live (reacts to damper pedal) 
+      Depending on damper pedal position, it adds (customizable) amounts of brilliance, 'sympathetic resonance' (in fact
+      a special 'hall' setting) etc. 
+
+Q: Is there a way to improve the VR piano to have more grunch for playing in a (rock) band?  
+A: Yes, VR users layer 2 APs (e.g. Grand and Rock piano) in dual mode
+
+Q: What stage piano do you recommend to complete my VR? 
+A: See 'GEARLIST'
+
+#############################################################################
+# VR MIDI
+#############################################################################
+
+Q: How does the VR handle MIDI? 
+A: The VR is 99% based on 'midi system exclusiv' (sysex) messages. 
+   It understands only a very few classical control canges (CC) e.g NOTE on/off, modulation (CC1), volume (CC 7), Midi PANIC
+
+Q: Can I control drawbars with an external midi controller or master keyboard?
+A: Only with a controller/master that can handle sysex messages (with Roland checksum). See the 'GEARLIST' below 
+
+
+#############################################################################
+# VR GEARLIST
+#############################################################################
+
+Q: Which hardware controllers/masterkeyboards are recommended for the VR?
+A: The parameters of the VR keyboard can only be changed by midi system exclusiv (sysex) messages
+   The number of hardware controllers beeing able to handle sysex messages including the Roland checksum is limited:
+
+  *) Midi Controllers (hardware-controller w/o keys) 
+
+    Actually (2020) no such controllers are on the market 
+ 
+    Discontinued (available 2nd hand):
+    - Behringer BCF2000 (2011): pots, 8 motor(!)faders, usb
+    - Behringer BCR2000 (2011): a lot of pots, no faders, usb
+    - Novation ZeRO SL MK1, MK2 (2009) : pots, 8 faders, usb, windows editor
+    - CME Bitstream 3X (200?): many pots, 8 faders, Roland checksum with firmware 1.8
+    - Doepfer Drehbank (200?): 64 pots, only pots, complicated programming
+
+    NOTE: Behringer BCF/BCR are one of the most versatile controllers ever built. 
+          Use freeware 'BC Manager' (MountainUtilities) for Windows/OSX to setup midi, eg. defining the Roland checksum formula
+
+  *) Midi Master Keyboard (hardware-controller with keys) 
+
+     Actually (2020) on the market:
+     - Novation SL Mk2 25/49/61: 25, 49 or 61 semiweighted keys, pots, 8 faders, 8 pads
+     - Novation SL Mk3 49/61:    49 or 61 semiweighted keys, pots, 8 faders, 8 pads
+
+     Discontinued (available 2nd hand):
+     - Novation Remote SL 25/37/61: 25, 37 or 61 semiweighted keys, pots, 8 faders, 8 pads
+     - Novation Remote SL COMPACT 25/49:: 25 or 49 semiweighted keys, light variant of the SL, e.g. no faders
+
+Q: I have a hardware/software controller that only handles midi control changes. Is there a way to 'translate' them into system exclusiv?
+A: Yes. You can use a computer/tablet with 'mapping software' that you put between the controller and the VR for mapping 
+   sysex coming from the VR to the controller. The opposite direction (controller -> VR) is more sophisticated: either the software can
+   handle Roland sysex checksum (which generally does not) or a 'mapping rule' has to be created for each single midi value.
+  
+   Examples for mapping software: 
+   CTRLR V-COMBO EDITOR (free): Midi-Mapper section, including Roland checksum handling
+   BOME midi translator PRO for Windows and OSX
+   BOME midi translator CLASSIC for Windows (free)
+   KeyStage for IOS (tablet/smartphone)
+
+Q: What stage/digital piano is recommended to complete my VR?
+A: Stagepianogs in the 'market niche' of the VR (max 15kg, max 1000 Euro/USD):
+
+  - Roland GO:Piano: good piano sound, NO HAMMER ACTION, 61 or 88 unweighted but piano-shaped keys, ultra-light (4kg)
+  - Casio PX5S: hybrid digital-piano/synth/midi-controller, very good hammer action, nice (a bit 'sharp') sounding pianos,
+       hundreds of sounds and customizations, 4 zones, controllers, arp, 6-osc synth, light (11kg) 
+  - Casio PX M560: workstation-like, hammer action and grand/piano sound identical to PX5S,
+       hundreds of sounds and customizations, 2 zones, rhythms/accompaignment, 6-osc synth, speakers, light (11kg) 
+  - Casio PX S1000: hammer action with some issues (like it or hate it), very good grand/piano sound, speakers, light (11kg) 
+  - Casio PX S3000: hammer action and piano sound like S1000,
+        hundreds of sounds and customizations, 2 zones, rhythms/accompaignment, 6-osc synth, speakers, light (11kg) 
+  - Roland FP10: good hammer action, decent 'Roland-sounding' piano, few 'other' sounds, speakers, light (12kg) 
+  - Roland FP30: good hammer action, decent 'Roland-sounding' piano, some more 'other' sounds, speakers, not so light (14kg) 
+  - Roland RD 88:   good hammer action (like FP), decent 'Roland-sounding' piano,
+        some 'other' sounds, 2 zones, limited as controller, speakers, not so light (13,5kg) 
+  - Roland RD 64: very good hammer action (like FP80), 64 keys, decent 'Roland-sounding' piano, not so light (13kg)
+  - Yamaha P 45: low spec hammer action, rather basic piano sound, speakers, light (12 kg)
+  - Yamaha P 125: low spec hammer action, decent 'Yamaha-sounding' piano, speakers, light (12 kg)
+  - Yamaha P 121: like P121 but with 73 keys
+
+Q: Can the VR organ be improved using a rotary/overdrive pedal?
+A: Yes an no: if it's an improvment depends on your personal taste :)
+   Some pedals on the market:
+   - NEO Instruments Ventilator II/mini Vent II: THE reference, but very expensive (start thinking to buy a Nord Electro or SK1 instead ...)
+   - Electro Harmonix Lester G/Lester K 
+   - Nux Roctary (very inexpensive, nice sounding, ca. 60 euro/USD)
+
+Q: Any recommendations for amplifiers/speakers?
+A: For realistic grand piano sound, don't use 'keyboard amps' (like Roland KC series) which are designed to pronounce 'synth'-sounds 
+   but lack linear frequency response (Behringer KXD 12/15 are said to be quite linear though). Rather go for 2.1 PAs or 'monitors'. 
+   If you want realistic grand piano or Leslie sound, REAL stereo is a must (stereo effect of '2-into-1' boxes is lost within one meter range...)
+
+
+
+
